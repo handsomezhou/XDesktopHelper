@@ -29,5 +29,7 @@
     <dimen name="top_tab_height">54dp</dimen>
     <dimen name="top_tab_height_without_icon">44dp</dimen>
     <dimen name="item_height">54dp</dimen>
+    <dimen name="app_icon_height">96dp</dimen>
+    <dimen name="app_icon_width">96dp</dimen>
 
 </resources>

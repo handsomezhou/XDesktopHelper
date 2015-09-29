@@ -3,6 +3,7 @@ package com.handsomezhou.xdesktophelper.fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
@@ -13,8 +14,11 @@ public class AboutFragment extends BaseFragment implements
 		OnNavigationBarLayout {
 
 	private NavigationBarLayout mNavigationBarLayout;
+	private TextView mVersionNameTv;
+	
 	private String mTitle;
 	private String mVersionName;
+	
 
 	@Override
 	public void onResume() {
@@ -41,7 +45,8 @@ public class AboutFragment extends BaseFragment implements
 				.findViewById(R.id.navigation_bar_layout);
 		mNavigationBarLayout.setOnNavigationBarLayout(this);
 		mNavigationBarLayout.setTitle(mTitle);
-
+		mVersionNameTv=(TextView) view.findViewById(R.id.version_name_text_view);
+		mVersionNameTv.setText(mVersionName);
 		return view;
 	}
 
