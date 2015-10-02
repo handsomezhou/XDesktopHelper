@@ -24,6 +24,7 @@ import com.handsomezhou.xdesktophelper.util.ViewUtil;
  */
 public class T9TelephoneDialpadView extends LinearLayout implements
 		OnClickListener, OnLongClickListener {
+	private static final char DIAL_1_SECOND_MEANING = ' ';
 	private static final char DIAL_X_SECOND_MEANING = ',';
 	private static final char DIAL_0_SECOND_MEANING = '+';
 	private static final char DIAL_J_SECOND_MEANING = ';';
@@ -111,8 +112,11 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 		}
 
 		/**
-		 * set long click listener for button('*','0','#')
+		 * set long click listener for button('1','*','0','#')
 		 * */
+		View view1=mDialpadView.findViewById(R.id.dialNum1);
+		view1.setOnLongClickListener(this);
+		
 		View viewX = mDialpadView.findViewById(R.id.dialx);
 		viewX.setOnLongClickListener(this);
 
@@ -203,6 +207,9 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 	@Override
 	public boolean onLongClick(View v) {
 		switch (v.getId()) {
+		case R.id.dialNum1:
+			addSingleDialCharacter(String.valueOf(DIAL_1_SECOND_MEANING));
+			break;
 		case R.id.dialx:
 			addSingleDialCharacter(String.valueOf(DIAL_X_SECOND_MEANING));
 			break;
