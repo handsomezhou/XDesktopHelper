@@ -97,6 +97,9 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox{
 	}
 	
 	public void updateSearch(){
+		if(null==mSearchBox){
+			return;
+		}
 		updateSearch(mSearchBox.getSearchEtInput());
 	}
 	
