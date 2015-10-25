@@ -15,14 +15,14 @@ import android.util.Log;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
-import com.handsomezhou.xdesktophelper.model.AppType;
-import com.handsomezhou.xdesktophelper.model.SearchMode;
 import com.handsomezhou.xdesktophelper.model.AppInfo.SearchByType;
+import com.handsomezhou.xdesktophelper.model.AppType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
+import com.pinyinsearch.model.PinyinSearchUnit;
 import com.pinyinsearch.model.PinyinUnit;
 import com.pinyinsearch.util.PinyinUtil;
-import com.pinyinsearch.util.QwertyMatchPinyinUnits;
-import com.pinyinsearch.util.T9MatchPinyinUnits;
+import com.pinyinsearch.util.QwertyUtil;
+import com.pinyinsearch.util.T9Util;
 
 public class AppInfoHelper {
 	private static final String TAG="AppInfoHelper";
@@ -174,11 +174,16 @@ public class AppInfoHelper {
 				boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext, pi.packageName);
 				if(true==canLaunchTheMainActivity){
 					AppInfo appInfo=getAppInfo(pm, pi);
+					if(null==appInfo){
+						continue;
+					}
+					
 					if(TextUtils.isEmpty(appInfo.getLabel())){
 						continue;
 					}
-					PinyinUtil.chineseStringToPinyinUnit(appInfo.getLabel(), appInfo.getLabelPinyinUnits());
-					String sortKey=PinyinUtil.getSortKey(appInfo.getLabelPinyinUnits()).toUpperCase();
+					appInfo.getLabelPinyinSearchUnit().setBaseData(appInfo.getLabel());
+					PinyinUtil.parse(appInfo.getLabelPinyinSearchUnit());
+					String sortKey=PinyinUtil.getSortKey(appInfo.getLabelPinyinSearchUnit()).toUpperCase();
 					appInfo.setSortKey(praseSortKey(sortKey));
 					boolean isKanji=PinyinUtil.isKanji(appInfo.getLabel().charAt(0));
 					if(true==isKanji){
@@ -207,11 +212,11 @@ public class AppInfoHelper {
 		int lastIndex=0;
 		boolean shouldBeAdd=false;
 		for(int i=0; i<nonKanjiStartAppInfos.size(); i++){
-			String nonKanfirstLetter=PinyinUtil.getFirstLetter(nonKanjiStartAppInfos.get(i).getLabelPinyinUnits());
+			String nonKanfirstLetter=PinyinUtil.getFirstLetter(nonKanjiStartAppInfos.get(i).getLabelPinyinSearchUnit());
 			//Log.i(TAG, "nonKanfirstLetter=["+nonKanfirstLetter+"]["+nonKanjiStartAppInfos.get(i).getLabel()+"]["+Integer.valueOf(nonKanjiStartAppInfos.get(i).getLabel().charAt(0))+"]");
 			int j=0;
 			for(j=0+lastIndex; j<appInfos.size(); j++){
-				String firstLetter=PinyinUtil.getFirstLetter(appInfos.get(j).getLabelPinyinUnits());
+				String firstLetter=PinyinUtil.getFirstLetter(appInfos.get(j).getLabelPinyinSearchUnit());
 				lastIndex++;
 				if(nonKanfirstLetter.charAt(0)<firstLetter.charAt(0)||nonKanfirstLetter.charAt(0)>THE_LAST_ALPHABET){
 					shouldBeAdd=true;
@@ -296,22 +301,18 @@ public class AppInfoHelper {
 		mQwertySearchAppInfos.clear();
 		int baseAppInfosCount=baseAppInfos.size();
 		for(int i=0; i<baseAppInfosCount; i++){
-			List<PinyinUnit> pinyinUnits = baseAppInfos.get(i).getLabelPinyinUnits();
-			StringBuffer chineseKeyWord = new StringBuffer();// In order to get Chinese KeyWords.Ofcourse it's maybe not Chinese characters.
-			String name = baseAppInfos.get(i).getLabel();
-			boolean match=QwertyMatchPinyinUnits.matchPinyinUnits(pinyinUnits, name,search, chineseKeyWord);
+			PinyinSearchUnit labelPinyinSearchUnit=baseAppInfos.get(i).getLabelPinyinSearchUnit();
+			boolean match=QwertyUtil.match(labelPinyinSearchUnit,search);
 			
 			
 			if (true == match) {// search by LabelPinyinUnits;
 				AppInfo appInfo = baseAppInfos.get(i);
 				appInfo.setSearchByType(SearchByType.SearchByLabel);
-				appInfo.setMatchKeywords(chineseKeyWord.toString());
+				appInfo.setMatchKeywords(labelPinyinSearchUnit.getMatchKeyWord().toString());
 				appInfo.setMatchStartIndex(appInfo.getLabel().indexOf(appInfo.getMatchKeywords().toString()));
 				appInfo.setMatchLength(appInfo.getMatchKeywords().length());
 				
 				mQwertySearchAppInfos.add(appInfo);
-
-				chineseKeyWord.delete(0, chineseKeyWord.length());
 
 				continue;
 			}
@@ -386,21 +387,16 @@ public class AppInfoHelper {
 		mT9SearchAppInfos.clear();
 		int baseAppInfosCount=baseAppInfos.size();
 		for(int i=0; i<baseAppInfosCount; i++){
-			List<PinyinUnit> pinyinUnits = baseAppInfos.get(i).getLabelPinyinUnits();
-			StringBuffer chineseKeyWord = new StringBuffer();// In order to get Chinese KeyWords.Ofcourse it's maybe not Chinese characters.
-			String name = baseAppInfos.get(i).getLabel();
-			boolean match=T9MatchPinyinUnits.matchPinyinUnits(pinyinUnits, name,search, chineseKeyWord);
+			PinyinSearchUnit labelPinyinSearchUnit=baseAppInfos.get(i).getLabelPinyinSearchUnit();
+			boolean match=T9Util.match(labelPinyinSearchUnit, search);
 			
 			if (true == match) {// search by LabelPinyinUnits;
 				AppInfo appInfo = baseAppInfos.get(i);
 				appInfo.setSearchByType(SearchByType.SearchByLabel);
-				appInfo.setMatchKeywords(chineseKeyWord.toString());
+				appInfo.setMatchKeywords(labelPinyinSearchUnit.getMatchKeyWord().toString());
 				appInfo.setMatchStartIndex(appInfo.getLabel().indexOf(appInfo.getMatchKeywords().toString()));
 				appInfo.setMatchLength(appInfo.getMatchKeywords().length());
 				mT9SearchAppInfos.add(appInfo);
-
-				chineseKeyWord.delete(0, chineseKeyWord.length());
-
 				continue;
 			}
 		}
