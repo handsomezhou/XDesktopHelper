@@ -10,7 +10,9 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
+import com.handsomezhou.xdesktophelper.database.AppStartRecordDateBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
+import com.handsomezhou.xdesktophelper.model.AppStartRecord;
 
 public class AppUtil {
 	/**
@@ -55,6 +57,9 @@ public class AppUtil {
 				boolean startAppSuccess=AppUtil.startApp(context, appInfo.getPackageName());
 				if(false==startAppSuccess){
 					Toast.makeText(context, R.string.app_can_not_be_launched_directly, Toast.LENGTH_SHORT).show();
+				}else{
+				    AppStartRecord appStartRecord=new AppStartRecord(appInfo.getPackageName(), System.currentTimeMillis());
+				    AppStartRecordDateBaseHelper.getInstance().insert(appStartRecord);
 				}
 			}else{
 				Toast.makeText(context, R.string.the_app_has_been_launched, Toast.LENGTH_SHORT).show();

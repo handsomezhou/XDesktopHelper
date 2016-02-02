@@ -92,7 +92,7 @@ public class MainActivity extends BaseSingleFragmentActivity {
 				.currentTimeMillis()) {
 
 			moveTaskToBack(true);
-			XDesktopHelperService.startEasyHelperService(getApplicationContext());
+			XDesktopHelperService.startService(getApplicationContext());
 
 		} else {
 			String DoubleBackPressExitApp = mContext.getString(

@@ -16,6 +16,7 @@ import com.handsomezhou.xdesktophelper.adapter.CustomPartnerViewPagerAdapter;
 import com.handsomezhou.xdesktophelper.dialog.BaseProgressDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper.OnAppInfoLoad;
+import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper;
 import com.handsomezhou.xdesktophelper.model.IconButtonData;
 import com.handsomezhou.xdesktophelper.model.IconButtonValue;
 import com.handsomezhou.xdesktophelper.model.PartnerView;
@@ -59,6 +60,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad,
 					getContext().getString(R.string.app_info_loading));
 		}
 		AppInfoHelper.getInstance().setOnAppInfoLoad(this);
+		AppStartRecordHelper.getInstance().startLoadAppStartRecord();
 
 	}
 

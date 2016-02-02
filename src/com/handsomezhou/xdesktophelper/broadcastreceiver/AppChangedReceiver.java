@@ -22,17 +22,17 @@ public class AppChangedReceiver extends BroadcastReceiver {
 				AppInfoHelper.getInstance().setAppInfoChanged(true);
 			}
 			
-			XDesktopHelperService.startEasyHelperService(context);
+			XDesktopHelperService.startService(context);
 		} else if (intent.getAction().equals(Intent.ACTION_PACKAGE_CHANGED)) {
 			//Toast.makeText(context, "AppChangedReceiver ACTION_PACKAGE_CHANGED", Toast.LENGTH_LONG).show();
 			Log.i(TAG, "ACTION_PACKAGE_CHANGED");
 			//AppInfoHelper.getInstance().setAppInfoChanged(true);
-			XDesktopHelperService.startEasyHelperService(context);
+			XDesktopHelperService.startService(context);
 		} else if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
 			//Toast.makeText(context, "AppChangedReceiver ACTION_PACKAGE_REMOVED", Toast.LENGTH_LONG).show();
 			Log.i(TAG, "ACTION_PACKAGE_REMOVED");
 			//AppInfoHelper.getInstance().setAppInfoChanged(true);
-			XDesktopHelperService.startEasyHelperService(context);
+			XDesktopHelperService.startService(context);
 		}
 	}
 	

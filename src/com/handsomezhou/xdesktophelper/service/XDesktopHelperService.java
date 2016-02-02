@@ -36,19 +36,19 @@ public class XDesktopHelperService extends Service{
 	@Override
 	public void onDestroy() {
 		Log.i(TAG, "onDestroy");
-		startEasyHelperService();
+		startService();
 		super.onDestroy();
 	}
 	
 
 	
-	private void startEasyHelperService(){
+	private void startService(){
 		Intent intent=new Intent();
 		intent.setAction(ACTION_X_DESKTOP_HELPER_SERVICE);
 		startService(intent);
 	}
 	
-	public static void startEasyHelperService(Context context){
+	public static void startService(Context context){
 		Intent easyHelperServiceIntent=new Intent(context,XDesktopHelperService.class);
 		easyHelperServiceIntent.setAction(XDesktopHelperService.ACTION_X_DESKTOP_HELPER_SERVICE);
 		context.startService(easyHelperServiceIntent);
@@ -56,7 +56,7 @@ public class XDesktopHelperService extends Service{
 		
 	}
 	
-	public static void stopEasyHelperService(Context context){
+	public static void stopService(Context context){
 		Intent easyHelperServiceIntent=new Intent(context,XDesktopHelperService.class);
 		context.stopService(easyHelperServiceIntent);
 	}
