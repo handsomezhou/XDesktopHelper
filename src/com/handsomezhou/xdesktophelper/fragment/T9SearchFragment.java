@@ -15,15 +15,18 @@ import android.widget.TextView;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.adapter.AppInfoAdapter;
+import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog;
+import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog.OnAppOperationDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
+import com.handsomezhou.xdesktophelper.model.AppOperationType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView.OnT9TelephoneDialpadView;
 
 public class T9SearchFragment extends BaseFragment implements
-		OnT9TelephoneDialpadView {
+		OnT9TelephoneDialpadView,OnAppOperationDialog{
 	private static final String TAG="T9SearchFragment";
 	private GridView mT9SearchGv;
 	private TextView mSearchResultPromptTv;
@@ -31,8 +34,10 @@ public class T9SearchFragment extends BaseFragment implements
 	private View mKeyboardSwitchLayout;
 	private ImageView mKeyboardSwitchIv;
 	private AppInfoAdapter mAppInfoAdapter;
+	private AppOperationDialog mAppOperationDialog;
+	
 
-	@Override
+    @Override
 	public void onResume() {
 		refreshView();
 		super.onResume();
@@ -84,7 +89,7 @@ public class T9SearchFragment extends BaseFragment implements
 					int position, long id) {
 				AppInfo appInfo=(AppInfo) parent.getItemAtPosition(position);
 	
-				AppUtil.uninstallApp(getContext(), appInfo);
+				getAppOperationDialog(appInfo).show();
 			
 				return true;
 			}
@@ -136,6 +141,49 @@ public class T9SearchFragment extends BaseFragment implements
 
 	/* end: OnT9TelephoneDialpadView */
 
+	/*start: OnAppOperationDialog*/
+    @Override
+    public void onPortfolioStockOperation(AppOperationType appOperationType, Object dialogData) {
+         AppInfo appInfo=(AppInfo)dialogData;
+        switch (appOperationType) {
+            case SET_TO_TOP:
+                
+                break;
+            case RESET_SEQUENCE:
+                boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo.getPackageName());
+                if(true==resetSequenceSuccess){
+                    updateSearch();
+                    refreshView();
+                }
+                
+                break;
+            case UNINSTALL:
+                AppUtil.uninstallApp(getContext(),(AppInfo)dialogData);
+                break;
+
+            default:
+                break;
+        }
+        
+    }
+    /*end: OnAppOperationDialog*/
+    
+    public AppOperationDialog getAppOperationDialog(AppInfo appInfo) {
+        if (null == mAppOperationDialog) {
+            mAppOperationDialog = new AppOperationDialog(getContext());
+            mAppOperationDialog.setOnAppOperationialog(this);
+            mAppOperationDialog.setCanceledOnTouchOutside(true);
+        }
+
+        mAppOperationDialog.setDialogData(appInfo);
+
+        return mAppOperationDialog;
+    }
+
+    public void setAppOperationDialog(AppOperationDialog appOperationDialog) {
+        mAppOperationDialog = appOperationDialog;
+    }
+    
 	public void refreshView() {		
 		refreshT9SearchGv();
 		refreshT9TelephoneDialpadView();
@@ -211,6 +259,7 @@ public class T9SearchFragment extends BaseFragment implements
 			AppInfoHelper.getInstance().getT9SearchAppInfo(curCharacter);
 		}
 	}
+
 	
 
 }

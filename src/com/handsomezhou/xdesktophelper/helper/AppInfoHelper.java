@@ -2,24 +2,29 @@ package com.handsomezhou.xdesktophelper.helper;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.text.TextUtils;
 import android.util.Log;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
+import com.handsomezhou.xdesktophelper.database.AppStartRecordDateBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppInfo.SearchByType;
 import com.handsomezhou.xdesktophelper.model.AppType;
+import com.handsomezhou.xdesktophelper.model.LoadStatus;
+import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
+import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.pinyinsearch.model.PinyinSearchUnit;
-import com.pinyinsearch.model.PinyinUnit;
 import com.pinyinsearch.util.PinyinUtil;
 import com.pinyinsearch.util.QwertyUtil;
 import com.pinyinsearch.util.T9Util;
@@ -32,8 +37,14 @@ public class AppInfoHelper {
 	
 	private AppType mCurrentAppType;
 	private List<AppInfo> mBaseAllAppInfos;
+	private LoadStatus mBaseAllAppInfosLoadStatus;
 	
-	private List<AppInfo> mQwertySearchAppInfos;
+
+    private HashMap<String, AppInfo> mBaseAllAppInfosHashMap=null;
+	
+
+
+    private List<AppInfo> mQwertySearchAppInfos;
 	private List<AppInfo> mT9SearchAppInfos;
 	
 	private StringBuffer mFirstNoQwertySearchResultInput=null;
@@ -65,7 +76,7 @@ public class AppInfoHelper {
 	private void initAppInfoHelper(){
 		mContext=XDesktopHelperApplication.getContext();
 		setCurrentAppType(AppType.ALL_APP);
-		
+		setBaseAllAppInfosLoadStatus(LoadStatus.NOT_LOADED);
 		clearAppInfoData();
 		
 		return;
@@ -88,6 +99,22 @@ public class AppInfoHelper {
 		mBaseAllAppInfos = baseAllAppInfos;
 	}
 	
+	public LoadStatus getBaseAllAppInfosLoadStatus() {
+        return mBaseAllAppInfosLoadStatus;
+    }
+
+    public void setBaseAllAppInfosLoadStatus(LoadStatus baseAllAppInfosLoadStatus) {
+        mBaseAllAppInfosLoadStatus = baseAllAppInfosLoadStatus;
+    }
+    
+   public HashMap<String, AppInfo> getBaseAllAppInfosHashMap() {
+        return mBaseAllAppInfosHashMap;
+    }
+
+    public void setBaseAllAppInfosHashMap(HashMap<String, AppInfo> baseAllAppInfosHashMap) {
+        mBaseAllAppInfosHashMap = baseAllAppInfosHashMap;
+    }
+	    
 	public List<AppInfo> getQwertySearchAppInfos() {
 		return mQwertySearchAppInfos;
 	}
@@ -166,8 +193,8 @@ public class AppInfoHelper {
 			
 			long startLoadTime=System.currentTimeMillis();
 			int flags = PackageManager.GET_UNINSTALLED_PACKAGES;
-		
-		
+			
+			setBaseAllAppInfosLoadStatus(LoadStatus.LOADING);
 			List<PackageInfo> packageInfos=pm.getInstalledPackages(flags);
 			Log.i(TAG, packageInfos.size()+"");
 			for(PackageInfo pi:packageInfos){
@@ -202,8 +229,8 @@ public class AppInfoHelper {
 		
 		long sortStartTime=System.currentTimeMillis();
 		
-		Collections.sort(kanjiStartAppInfos, AppInfo.mAscComparator);
-		Collections.sort(nonKanjiStartAppInfos, AppInfo.mAscComparator);
+		Collections.sort(kanjiStartAppInfos, AppInfo.mSortBySortKeyAsc);
+		Collections.sort(nonKanjiStartAppInfos, AppInfo.mSortBySortKeyAsc);
 		
 		//appInfos.addAll(nonKanjiStartAppInfos);
 		appInfos.addAll(kanjiStartAppInfos);
@@ -331,7 +358,7 @@ public class AppInfoHelper {
 
 			}
 		}else{
-			Collections.sort(mQwertySearchAppInfos, AppInfo.mSearchComparator);
+			Collections.sort(mQwertySearchAppInfos, AppInfo.mSortBySearch);
 		}
 		return;
 	}
@@ -414,7 +441,7 @@ public class AppInfoHelper {
 
 			}
 		}else{
-			Collections.sort(mT9SearchAppInfos, AppInfo.mSearchComparator);
+			Collections.sort(mT9SearchAppInfos, AppInfo.mSortBySearch);
 		}
 		return;
 	}
@@ -423,36 +450,163 @@ public class AppInfoHelper {
 		boolean appExist=false;
 		do{
 			if(TextUtils.isEmpty(packageName)){
+			    appExist=false;
 				break;
 			}
 			
-			for(AppInfo ai:mBaseAllAppInfos){
+			/*for(AppInfo ai:mBaseAllAppInfos){
 				if(ai.getPackageName().equals(packageName)){
 					appExist=true;
 					break;
 				}
+			}*/
+			if(mBaseAllAppInfosHashMap.containsKey(packageName)){
+			    appExist=true;
+			    break;
 			}
 		}while(false);
 		
 		return appExist;
 	}
 	
+	public boolean add(String packageName){
+	    boolean addSuccess=false;
+	    do{
+	        if(TextUtils.isEmpty(packageName)){
+	            addSuccess=false;
+                break;
+            } 
+	        boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext,packageName);
+
+	        if(true==canLaunchTheMainActivity){
+	            PackageManager pm=mContext.getPackageManager();
+	            int flags = PackageManager.GET_UNINSTALLED_PACKAGES;
+	            PackageInfo pi=null;
+                try {
+                    pi = pm.getPackageInfo(packageName, flags);
+                } catch (NameNotFoundException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                
+                if(null!=pi){
+                    AppInfo appInfo=getAppInfo(pm, pi);
+                    if(TextUtils.isEmpty(appInfo.getLabel())){
+                        addSuccess=false;
+                        break;
+                    }
+                    appInfo.getLabelPinyinSearchUnit().setBaseData(appInfo.getLabel());
+                    PinyinUtil.parse(appInfo.getLabelPinyinSearchUnit());
+                    String sortKey=PinyinUtil.getSortKey(appInfo.getLabelPinyinSearchUnit()).toUpperCase();
+                    appInfo.setSortKey(praseSortKey(sortKey));
+                    
+                    mBaseAllAppInfosHashMap.put(appInfo.getPackageName(), appInfo);
+                    mBaseAllAppInfos.add(appInfo);
+                    Collections.sort(mBaseAllAppInfos, AppInfo.mSortByDefault);
+                    addSuccess=true;
+                }
+            }
+	       
+	    }while(false);
+	    return addSuccess;
+	}
+	
+	/**
+	 
+	boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext, pi.packageName);
+                if(true==canLaunchTheMainActivity){
+                    AppInfo appInfo=getAppInfo(pm, pi);
+                    if(null==appInfo){
+                        continue;
+                    }
+                    
+                    if(TextUtils.isEmpty(appInfo.getLabel())){
+                        continue;
+                    }
+                    appInfo.getLabelPinyinSearchUnit().setBaseData(appInfo.getLabel());
+                    PinyinUtil.parse(appInfo.getLabelPinyinSearchUnit());
+                    String sortKey=PinyinUtil.getSortKey(appInfo.getLabelPinyinSearchUnit()).toUpperCase();
+                    appInfo.setSortKey(praseSortKey(sortKey));
+                    boolean isKanji=PinyinUtil.isKanji(appInfo.getLabel().charAt(0));
+                    if(true==isKanji){
+                        kanjiStartAppInfos.add(appInfo);
+                    }else{
+                        nonKanjiStartAppInfos.add(appInfo);
+                    }
+                    
+                }
+
+	 */
+	
+	public boolean resetSequence(String packageName){
+	    boolean resetSequenceSuccess=false;
+	    do{
+	        if(TextUtils.isEmpty(packageName)){
+	            resetSequenceSuccess=false;
+                break;
+            } 
+	        
+	        AppStartRecordDateBaseHelper.getInstance().delete(packageName);
+	        
+	        if(mBaseAllAppInfosHashMap.containsKey(packageName)){
+	            mBaseAllAppInfosHashMap.get(packageName).setCommonWeights(AppCommonWeightsUtil.COMMON_WEIGHTS_DEFAULT);
+	            Collections.sort(mBaseAllAppInfos, AppInfo.mSortByDefault);
+	        }
+	        
+	        resetSequenceSuccess=true;
+	    }while(false);
+	    
+	    return resetSequenceSuccess;
+	}
+	
+	public boolean remove(String packageName){
+	    boolean removeSuccess=false;
+	    
+	    do{
+	        if(TextUtils.isEmpty(packageName)){
+	            removeSuccess=false;
+	            break;
+	        }
+	        
+	        AppStartRecordDateBaseHelper.getInstance().delete(packageName);
+	        
+	        mBaseAllAppInfosHashMap.remove(packageName);
+	        for(int i=0; i<mBaseAllAppInfos.size(); i++){
+	            if(mBaseAllAppInfos.get(i).getPackageName().equals(packageName)){
+	                mBaseAllAppInfos.remove(i);
+	                break;
+	            }
+	        }
+	        removeSuccess=true;
+	    }while(false);
+	    return removeSuccess;
+	}
+	
 	private void clearAppInfoData(){
 		
 		if(null==mBaseAllAppInfos){
 			mBaseAllAppInfos=new ArrayList<AppInfo>();
+		}else{
+		    mBaseAllAppInfos.clear();
 		}
-		mBaseAllAppInfos.clear();
+		
+		if(null==mBaseAllAppInfosHashMap){
+		    mBaseAllAppInfosHashMap=new HashMap<String, AppInfo>();
+		}else{
+		    mBaseAllAppInfosHashMap.clear();
+		}
 		
 		if(null==mQwertySearchAppInfos){
 			mQwertySearchAppInfos=new ArrayList<AppInfo>();
+		}else{
+		    mQwertySearchAppInfos.clear();
 		}
-		mQwertySearchAppInfos.clear();
 		
 		if(null==mT9SearchAppInfos){
 			mT9SearchAppInfos=new ArrayList<AppInfo>();
+		}else{
+		    mT9SearchAppInfos.clear();
 		}
-		mT9SearchAppInfos.clear();
 		
 		if(null==mFirstNoQwertySearchResultInput){
 			mFirstNoQwertySearchResultInput=new StringBuffer();
@@ -487,6 +641,7 @@ public class AppInfoHelper {
 	private void parseAppInfo(List<AppInfo> appInfos){
 		Log.i(TAG, "parseAppInfo");
 		if(null==appInfos||appInfos.size()<1){
+		    setBaseAllAppInfosLoadStatus(LoadStatus.NOT_LOADED);
 			if(null!=mOnAppInfoLoad){
 				mOnAppInfoLoad.onAppInfoLoadFailed();
 			}
@@ -496,11 +651,19 @@ public class AppInfoHelper {
 		Log.i(TAG, "before appInfos.size()"+ appInfos.size());
 		mBaseAllAppInfos.clear();
 		mBaseAllAppInfos.addAll(appInfos);
+		
+		mBaseAllAppInfosHashMap.clear();
+		for(AppInfo ai:mBaseAllAppInfos){
+		    mBaseAllAppInfosHashMap.put(ai.getPackageName(), ai);
+		}
+		
 		Log.i(TAG, "after appInfos.size()"+ appInfos.size());
 		
+		setBaseAllAppInfosLoadStatus(LoadStatus.LOAD_FINISH);
 		if(null!=mOnAppInfoLoad){
 			mOnAppInfoLoad.onAppInfoLoadSuccess();
 		}
+		
 		
 		return;
 	}

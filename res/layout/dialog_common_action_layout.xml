@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <View
+        style="@style/dividing_line_horizontal"
+        android:background="@color/grey" />
+
+    <LinearLayout
+        android:id="@+id/action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dialog_padding_bottom"
+        android:paddingLeft="@dimen/dialog_padding_left"
+        android:paddingRight="@dimen/dialog_padding_right"
+        android:paddingTop="@dimen/dialog_padding_top" >
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/dialog_margin_right"
+            android:layout_weight="1"
+            android:background="@drawable/dialog_action_btn_selector"
+            android:gravity="center"
+            android:minHeight="@dimen/dialog_action_btn_height"
+            android:text="@string/common_cancel"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/prompt_large_text_size" />
+
+        <Button
+            android:id="@+id/ok_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/dialog_margin_left"
+            android:layout_weight="1"
+            android:background="@drawable/btn_blue_selector"
+            android:gravity="center"
+            android:minHeight="@dimen/dialog_action_btn_height"
+            android:text="@string/common_ok"
+            android:textColor="@color/white"
+            android:textSize="@dimen/prompt_large_text_size" />
+    </LinearLayout>
+
+</LinearLayout>

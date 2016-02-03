@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/dialog_action_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <View
+            style="@style/dividing_line_horizontal"
+            android:layout_marginLeft="@dimen/dialog_margin_left2"
+            android:layout_marginRight="@dimen/dialog_margin_right2"
+            android:background="@color/grey" />
+
+        <Button
+            android:id="@+id/set_to_top_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/prompt_normal_text_size_item_height"
+            android:layout_marginLeft="@dimen/margin_left4x"
+            android:layout_marginRight="@dimen/margin_right4x"
+            android:background="@drawable/btn_white_selector"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/padding_left2x"
+            android:paddingRight="@dimen/padding_right2x"
+            android:text="@string/set_to_top"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/prompt_large_text_size"
+            android:visibility="gone" />
+
+        <View
+            style="@style/dividing_line_horizontal"
+            android:layout_marginLeft="@dimen/dialog_margin_left2"
+            android:layout_marginRight="@dimen/dialog_margin_right2"
+            android:background="@color/grey"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/reset_sequence_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/prompt_normal_text_size_item_height"
+            android:layout_marginLeft="@dimen/margin_left4x"
+            android:layout_marginRight="@dimen/margin_right4x"
+            android:background="@drawable/btn_white_selector"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/padding_left2x"
+            android:paddingRight="@dimen/padding_right2x"
+            android:text="@string/reset_sequence"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/prompt_large_text_size" />
+
+        <View
+            style="@style/dividing_line_horizontal"
+            android:layout_marginLeft="@dimen/dialog_margin_left2"
+            android:layout_marginRight="@dimen/dialog_margin_right2"
+            android:background="@color/grey" />
+
+        <Button
+            android:id="@+id/uninstall_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/prompt_normal_text_size_item_height"
+            android:layout_marginLeft="@dimen/margin_left4x"
+            android:layout_marginRight="@dimen/margin_right4x"
+            android:background="@drawable/btn_white_selector"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/padding_left2x"
+            android:paddingRight="@dimen/padding_right2x"
+            android:text="@string/uninstall"
+            android:textColor="@color/blue"
+            android:textSize="@dimen/prompt_large_text_size" />
+    </LinearLayout>
+
+</LinearLayout>

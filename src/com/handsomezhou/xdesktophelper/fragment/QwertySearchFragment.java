@@ -14,20 +14,23 @@ import android.widget.TextView;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.adapter.AppInfoAdapter;
+import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog;
+import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog.OnAppOperationDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
+import com.handsomezhou.xdesktophelper.model.AppOperationType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.SearchBox;
 import com.handsomezhou.xdesktophelper.view.SearchBox.OnSearchBox;
 
-public class QwertySearchFragment extends BaseFragment implements OnSearchBox{
+public class QwertySearchFragment extends BaseFragment implements OnSearchBox,OnAppOperationDialog{
 	private static final String TAG="QwertySearchFragment";
 	private GridView mQwertySearchGv;
 	private TextView mSearchResultPromptTv;
 	private SearchBox mSearchBox;
 	private AppInfoAdapter mAppInfoAdapter;
-	
+	private AppOperationDialog mAppOperationDialog;
 	@Override
 	public void onResume() {
 		refreshView();
@@ -74,7 +77,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox{
 					int position, long id) {
 				AppInfo appInfo=(AppInfo) parent.getItemAtPosition(position);
 	
-				AppUtil.uninstallApp(getContext(), appInfo);
+				getAppOperationDialog(appInfo).show();
 			
 				return true;
 			}
@@ -91,7 +94,48 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox{
 	}
 	/*end: OnSearchBox*/
 	
-	
+	/*start: OnAppOperationDialog*/
+    @Override
+    public void onPortfolioStockOperation(AppOperationType appOperationType, Object dialogData) {
+         AppInfo appInfo=(AppInfo)dialogData;
+        switch (appOperationType) {
+            case SET_TO_TOP:
+                
+                break;
+            case RESET_SEQUENCE:
+                boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo.getPackageName());
+                if(true==resetSequenceSuccess){
+                    updateSearch();
+                    refreshView();
+                }
+                
+                break;
+            case UNINSTALL:
+                AppUtil.uninstallApp(getContext(),(AppInfo)dialogData);
+                break;
+
+            default:
+                break;
+        }
+        
+    }
+    /*end: OnAppOperationDialog*/
+    
+    public AppOperationDialog getAppOperationDialog(AppInfo appInfo) {
+        if (null == mAppOperationDialog) {
+            mAppOperationDialog = new AppOperationDialog(getContext());
+            mAppOperationDialog.setOnAppOperationialog(this);
+            mAppOperationDialog.setCanceledOnTouchOutside(true);
+        }
+
+        mAppOperationDialog.setDialogData(appInfo);
+
+        return mAppOperationDialog;
+    }
+
+    public void setAppOperationDialog(AppOperationDialog appOperationDialog) {
+        mAppOperationDialog = appOperationDialog;
+    }
 	public void refreshView() {
 		refreshQwertySearchGv();
 	}

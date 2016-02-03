@@ -10,6 +10,13 @@
     <string name="app_can_not_be_launched_directly">该应用无法被直接启动</string>
     <string name="the_app_has_been_launched">该应用已经打开</string>
     <string name="can_not_to_uninstall_yourself">无法卸载自己</string>
+    <string name="set_to_top">置顶</string>
+    <string name="set_to_top_success">%s已置顶</string>
+    <string name="set_to_top_failed">%s置顶失败</string>
+    <string name="reset_sequence">顺序复位</string>
+    <string name="reset_sequence_success">%s顺序复位成功</string>
+    <string name="reset_sequence_failed">%s顺序复位失败</string>
+    <string name="uninstall">卸载</string>
 
     <!-- start: exit_app_prompt_mode -->
     <string name="whether_prompt_exit_app">退出应用时是否提示</string>
@@ -33,5 +40,11 @@
     <!-- start: long_press_uninstall_app -->
     <string name="long_press_uninstall_app">长按卸载应用</string>
     <!-- end: long_press_uninstall_app -->
+
+
+    <!-- Start: common dialog -->
+    <string name="common_ok">确定</string>
+    <string name="common_cancel">取消</string>
+    <!-- End: common dialog -->
 
 </resources>

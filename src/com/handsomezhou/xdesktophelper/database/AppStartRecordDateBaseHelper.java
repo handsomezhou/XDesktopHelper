@@ -3,9 +3,11 @@ package com.handsomezhou.xdesktophelper.database;
 import java.util.ArrayList;
 import java.util.List;
 
+import junit.framework.Test;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.text.TextUtils;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
 import com.handsomezhou.xdesktophelper.model.AppStartRecord;
@@ -82,6 +84,30 @@ public class AppStartRecordDateBaseHelper {
     }
     
     /*start: delete*/
+    public boolean delete(String packageName){
+        boolean deleteSuccess=false;
+        do{
+            if(TextUtils.isEmpty(packageName)){
+                deleteSuccess=false;
+                break;
+            }
+            
+              SQLiteDatabase db=mXDesktopHelperSQLiteOpenHelper.getWritableDatabase();
+              if(null!=db){
+                  String whereClause=XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME+" =?";
+                  String[] whereArgs=new String[]{packageName};
+                  db.delete(XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE, whereClause, whereArgs);
+                  db.close();
+                  deleteSuccess=true;
+              }
+
+                
+                
+        }while(false);
+        
+        return deleteSuccess;
+    }
+    
     public boolean delete(AppStartRecord appStartRecord){
         boolean deleteSuccess=false;
         do{

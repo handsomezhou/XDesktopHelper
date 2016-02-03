@@ -1,15 +1,13 @@
 package com.handsomezhou.xdesktophelper.model;
 
 import java.text.Collator;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Locale;
 
 import android.graphics.drawable.Drawable;
 
+import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.pinyinsearch.model.PinyinSearchUnit;
-import com.pinyinsearch.model.PinyinUnit;
 
 public class AppInfo extends BaseAppInfo{
 	public enum SearchByType{
@@ -22,8 +20,10 @@ public class AppInfo extends BaseAppInfo{
 	private StringBuffer mMatchKeywords;// Used to save the type of Match Keywords.(label)
 	private int mMatchStartIndex;		//the match start  position of mMatchKeywords in original string(label).
 	private int mMatchLength;			//the match length of mMatchKeywords in original string(name or phoneNumber).
+	private long mCommonWeights;       //Common weights 
 	
-	public AppInfo() {
+
+    public AppInfo() {
 		super();
 		setLabelPinyinSearchUnit(new PinyinSearchUnit());
 		setSearchByType(SearchByType.SearchByNull);
@@ -31,6 +31,7 @@ public class AppInfo extends BaseAppInfo{
 		getMatchKeywords().delete(0, getMatchKeywords().length());
 		setMatchStartIndex(-1);
 		setMatchLength(0);
+		setCommonWeights(0);
 	}
 	
 	public AppInfo(String label, Drawable icon, String packageName) {
@@ -41,11 +42,12 @@ public class AppInfo extends BaseAppInfo{
 		getMatchKeywords().delete(0, getMatchKeywords().length());
 		setMatchStartIndex(-1);
 		setMatchLength(0);
+	    setCommonWeights(0);
 	}
 
 	private static Comparator<Object> mChineseComparator = Collator.getInstance(Locale.CHINA);
 	
-	public static Comparator<AppInfo> mDesComparator = new Comparator<AppInfo>() {
+	public static Comparator<AppInfo> mSortBySortKeyDes = new Comparator<AppInfo>() {
 
 		@Override
 		public int compare(AppInfo lhs, AppInfo rhs) {
@@ -54,7 +56,7 @@ public class AppInfo extends BaseAppInfo{
 		}
 	};
 
-	public static Comparator<AppInfo> mAscComparator = new Comparator<AppInfo>() {
+	public static Comparator<AppInfo> mSortBySortKeyAsc = new Comparator<AppInfo>() {
 
 		@Override
 		public int compare(AppInfo lhs, AppInfo rhs) {
@@ -62,14 +64,28 @@ public class AppInfo extends BaseAppInfo{
 		}
 	};
 	
-	public static Comparator<AppInfo> mSearchComparator = new Comparator<AppInfo>() {
+	
+	public static Comparator<AppInfo> mSortByDefault = new Comparator<AppInfo>() {
+
+        @Override
+        public int compare(AppInfo lhs, AppInfo rhs) {      
+            long compareCommonWeights=rhs.mCommonWeights-lhs.mCommonWeights;
+            int compareCommonWeightsValue=CommonUtil.compare(compareCommonWeights);
+            
+            return ((0!=compareCommonWeightsValue)?(compareCommonWeightsValue):(mChineseComparator.compare(lhs.mSortKey, rhs.mSortKey)));
+        }
+    };
+    
+	public static Comparator<AppInfo> mSortBySearch = new Comparator<AppInfo>() {
 
 		@Override
 		public int compare(AppInfo lhs, AppInfo rhs) {
 			int compareMatchStartIndex=(lhs.mMatchStartIndex-rhs.mMatchStartIndex);
 			int compareMatchLength=rhs.mMatchLength-lhs.mMatchLength;
-			
-			return ((0!=compareMatchStartIndex)?(compareMatchStartIndex):((0!=compareMatchLength)?(compareMatchLength):(lhs.getLabel().length()-rhs.getLabel().length())));
+			long compareCommonWeights=rhs.mCommonWeights-lhs.mCommonWeights;
+	        int compareCommonWeightsValue=CommonUtil.compare(compareCommonWeights);
+	        
+			return ((0!=compareMatchStartIndex)?(compareMatchStartIndex):((0!=compareMatchLength)?(compareMatchLength):((0!=compareCommonWeightsValue)?(compareCommonWeightsValue):(lhs.getLabel().length()-rhs.getLabel().length()))));
 		}
 	};
 
@@ -129,4 +145,12 @@ public class AppInfo extends BaseAppInfo{
 	public void setMatchLength(int matchLength) {
 		mMatchLength = matchLength;
 	}
+	
+	public long getCommonWeights() {
+        return mCommonWeights;
+    }
+
+    public void setCommonWeights(long commonWeights) {
+        mCommonWeights = commonWeights;
+    }
 }

@@ -1,5 +1,7 @@
 package com.handsomezhou.xdesktophelper.util;
 
+import java.util.Collections;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -7,14 +9,17 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.database.AppStartRecordDateBaseHelper;
+import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppStartRecord;
 
 public class AppUtil {
+    private static final String TAG="AppUtil";
 	/**
 	 * Return true when start app success,otherwise return false.
 	 * @param context
@@ -58,8 +63,16 @@ public class AppUtil {
 				if(false==startAppSuccess){
 					Toast.makeText(context, R.string.app_can_not_be_launched_directly, Toast.LENGTH_SHORT).show();
 				}else{
-				    AppStartRecord appStartRecord=new AppStartRecord(appInfo.getPackageName(), System.currentTimeMillis());
+				    long startTimeMs=System.currentTimeMillis();
+				    AppStartRecord appStartRecord=new AppStartRecord(appInfo.getPackageName(), startTimeMs);
 				    AppStartRecordDateBaseHelper.getInstance().insert(appStartRecord);
+				    AppInfo ai=AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().get(appInfo.getPackageName());
+				    if(null!=ai){
+				        ai.setCommonWeights(ai.getCommonWeights()+AppCommonWeightsUtil.getCommonWeights(startTimeMs));
+				        Log.i(TAG, ai.getPackageName()+":"+ai.getCommonWeights());
+			            Collections.sort(AppInfoHelper.getInstance().getBaseAllAppInfos(), AppInfo.mSortByDefault);
+				        
+				    }
 				}
 			}else{
 				Toast.makeText(context, R.string.the_app_has_been_launched, Toast.LENGTH_SHORT).show();
