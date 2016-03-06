@@ -7,9 +7,11 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.text.TextUtils;
@@ -23,7 +25,6 @@ import com.handsomezhou.xdesktophelper.model.AppType;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
 import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
-import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.pinyinsearch.model.PinyinSearchUnit;
 import com.pinyinsearch.util.PinyinUtil;
 import com.pinyinsearch.util.QwertyUtil;
@@ -192,15 +193,19 @@ public class AppInfoHelper {
 			PackageManager pm=context.getPackageManager();
 			
 			long startLoadTime=System.currentTimeMillis();
-			int flags = PackageManager.GET_UNINSTALLED_PACKAGES;
-			
+		/*	int flags = PackageManager.GET_UNINSTALLED_PACKAGES;
+			List<PackageInfo> packageInfos=pm.getInstalledPackages(flags);*/
+
 			setBaseAllAppInfosLoadStatus(LoadStatus.LOADING);
-			List<PackageInfo> packageInfos=pm.getInstalledPackages(flags);
-			Log.i(TAG, packageInfos.size()+"");
-			for(PackageInfo pi:packageInfos){
-				boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext, pi.packageName);
+			Intent it = new Intent(Intent.ACTION_MAIN);
+			it.addCategory(Intent.CATEGORY_LAUNCHER);
+			List<ResolveInfo> resolveInfos = pm.queryIntentActivities(it, 0);
+			
+			Log.i(TAG, resolveInfos.size()+"");
+			for(ResolveInfo ri:resolveInfos){
+				boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext, ri.activityInfo.packageName);
 				if(true==canLaunchTheMainActivity){
-					AppInfo appInfo=getAppInfo(pm, pi);
+					AppInfo appInfo=getAppInfo(pm, ri);
 					if(null==appInfo){
 						continue;
 					}
@@ -476,21 +481,18 @@ public class AppInfoHelper {
 	            addSuccess=false;
                 break;
             } 
+	     
+	        
 	        boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext,packageName);
 
 	        if(true==canLaunchTheMainActivity){
 	            PackageManager pm=mContext.getPackageManager();
-	            int flags = PackageManager.GET_UNINSTALLED_PACKAGES;
-	            PackageInfo pi=null;
-                try {
-                    pi = pm.getPackageInfo(packageName, flags);
-                } catch (NameNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+		        Intent intent = new Intent();
+		        intent.setPackage(packageName);
+		        ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
                 
-                if(null!=pi){
-                    AppInfo appInfo=getAppInfo(pm, pi);
+                if(null!=resolveInfo){
+                    AppInfo appInfo=getAppInfo(pm, resolveInfo);
                     if(TextUtils.isEmpty(appInfo.getLabel())){
                         addSuccess=false;
                         break;
@@ -622,7 +624,7 @@ public class AppInfoHelper {
 		
 		return;
 	}
-	
+	/*
 	private AppInfo getAppInfo(PackageManager pm,PackageInfo packageInfo){
 		if((null==pm)||(null==packageInfo)){
 			return null;
@@ -631,6 +633,19 @@ public class AppInfoHelper {
 		appInfo.setIcon(packageInfo.applicationInfo.loadIcon(pm));
 		appInfo.setLabel((String)packageInfo.applicationInfo.loadLabel(pm));
 		appInfo.setPackageName(packageInfo.packageName);
+		return appInfo;
+		
+	}*/
+	private AppInfo getAppInfo(PackageManager pm,ResolveInfo resolveInfo){
+		if((null==pm)||(null==resolveInfo)){
+			return null;
+		}
+		AppInfo appInfo=new AppInfo();
+		appInfo.setIcon(resolveInfo.loadIcon(pm));  
+		appInfo.setLabel(resolveInfo.loadLabel(pm).toString());
+		
+		appInfo.setPackageName(resolveInfo.activityInfo.packageName);
+		appInfo.setName(resolveInfo.activityInfo.name);
 		return appInfo;
 		
 	}

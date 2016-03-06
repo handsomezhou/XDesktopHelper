@@ -2,6 +2,7 @@ package com.handsomezhou.xdesktophelper.util;
 
 import java.util.Collections;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -47,6 +48,46 @@ public class AppUtil {
 	}
 	
 	/**
+	 * 
+	 * @param context
+	 * @param packageName
+	 * @param cls
+	 * @return
+	 */
+	
+	
+	public static boolean startApp(Context context,String packageName, String cls){
+		boolean startAppSuccess=false;
+		do{
+			if((null==context)||TextUtils.isEmpty(packageName)){
+				break;
+			}
+			ComponentName 	componet = new ComponentName(packageName, cls);
+			Intent intent =  createLaunchIntent(componet);
+			if (context.getPackageManager().getLaunchIntentForPackage(
+					packageName) != null){
+				context.startActivity(intent);
+				startAppSuccess=true;
+			}
+			else{
+				System.out.println("app not found");
+			}
+		}while(false);
+		
+		
+		return startAppSuccess;
+	}
+	
+	public static Intent createLaunchIntent(ComponentName componentName) {
+		Intent intent = new Intent(Intent.ACTION_MAIN);
+		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+		intent.setComponent(componentName);
+		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+				| Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+		return intent;
+	}
+	
+	/**
 	 * start app via appinfo
 	 * @param context
 	 * @param appInfo
@@ -59,7 +100,7 @@ public class AppUtil {
 		if(null!=appInfo){
 			
 			if(!appInfo.getPackageName().equals(context.getPackageName())){
-				boolean startAppSuccess=AppUtil.startApp(context, appInfo.getPackageName());
+				boolean startAppSuccess=AppUtil.startApp(context, appInfo.getPackageName(), appInfo.getName());
 				if(false==startAppSuccess){
 					Toast.makeText(context, R.string.app_can_not_be_launched_directly, Toast.LENGTH_SHORT).show();
 				}else{

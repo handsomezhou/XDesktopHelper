@@ -34,8 +34,8 @@ public class AppInfo extends BaseAppInfo{
 		setCommonWeights(0);
 	}
 	
-	public AppInfo(String label, Drawable icon, String packageName) {
-		super(label, icon, packageName);
+	public AppInfo(String label, Drawable icon, String packageName,String name) {
+		super(label, icon, packageName,name);
 		setLabelPinyinSearchUnit(new PinyinSearchUnit(label));
 		setSearchByType(SearchByType.SearchByNull);
 		setMatchKeywords(new StringBuffer());

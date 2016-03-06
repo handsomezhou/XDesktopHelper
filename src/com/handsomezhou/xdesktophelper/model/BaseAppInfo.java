@@ -6,18 +6,19 @@ public class BaseAppInfo implements Cloneable{
 	private String mLabel;
 	private Drawable mIcon;
 	private String mPackageName;
-	
+	private String mName;
 	
 	public BaseAppInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public BaseAppInfo(String label, Drawable icon, String packageName) {
+	public BaseAppInfo(String label, Drawable icon, String packageName,String name) {
 		super();
 		mLabel = label;
 		mIcon = icon;
 		mPackageName = packageName;
+		mName=name;
 	}
 
 	@Override
@@ -48,6 +49,14 @@ public class BaseAppInfo implements Cloneable{
 	
 	public void setPackageName(String packageName) {
 		mPackageName = packageName;
+	}
+	
+	public String getName() {
+		return mName;
+	}
+
+	public void setName(String name) {
+		mName = name;
 	}
 	
 }
