@@ -55,6 +55,7 @@ public class AppStartRecordDateBaseHelper {
                     conferenceMemberValues.clear();
                     conferenceMemberValues.put(XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME,asr.getPackageName());
                     conferenceMemberValues.put(XDesktopHelperDatabase.AppStartRecordColumns.START_TIME,asr.getStartTime());
+                    conferenceMemberValues.put(XDesktopHelperDatabase.AppStartRecordColumns.SET_TO_TOP,asr.getSetToTop());
                    
                     db.insert(XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE, null, conferenceMemberValues);
                 }
@@ -165,6 +166,7 @@ public class AppStartRecordDateBaseHelper {
             String[] appStartRecordColumns={
                     XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME,
                     XDesktopHelperDatabase.AppStartRecordColumns.START_TIME,
+                    XDesktopHelperDatabase.AppStartRecordColumns.SET_TO_TOP,
             };
             
             String appStartRecordOrderBy=XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME+" ASC";//" DESC";
@@ -172,15 +174,18 @@ public class AppStartRecordDateBaseHelper {
             if(null!=appStartRecordCursor){
                 int packageNameColumnIndex=appStartRecordCursor.getColumnIndex(appStartRecordColumns[0]);
                 int startTimeColumnIndex=appStartRecordCursor.getColumnIndex(appStartRecordColumns[1]);
+                int setToTopColumnIndex=appStartRecordCursor.getColumnIndex(appStartRecordColumns[2]);
                
                 while(appStartRecordCursor.moveToNext()){
                     AppStartRecord appStartRecord=new AppStartRecord();
                    
                     String packageName=appStartRecordCursor.getString(packageNameColumnIndex);
                     long startTime=appStartRecordCursor.getLong(startTimeColumnIndex);
-                   
+                    long setToTop=appStartRecordCursor.getLong(setToTopColumnIndex);
+                    
                     appStartRecord.setPackageName(packageName);
                     appStartRecord.setStartTime(startTime);
+                    appStartRecord.setSetToTop(setToTop);
                    
                     stocks.add(appStartRecord);
                 }

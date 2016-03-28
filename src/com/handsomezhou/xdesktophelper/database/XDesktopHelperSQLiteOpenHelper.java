@@ -14,7 +14,8 @@ public class XDesktopHelperSQLiteOpenHelper extends SQLiteOpenHelper {
             + "("
             + XDesktopHelperDatabase.AppStartRecordColumns.ID + " integer unique,"
             + XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME + " text,"
-            + XDesktopHelperDatabase.AppStartRecordColumns.START_TIME + " integer"
+            + XDesktopHelperDatabase.AppStartRecordColumns.START_TIME + " integer,"
+            + XDesktopHelperDatabase.AppStartRecordColumns.SET_TO_TOP + " integer"
             + ")";
 
     public static synchronized XDesktopHelperSQLiteOpenHelper getInstance(Context context) {
@@ -47,8 +48,8 @@ public class XDesktopHelperSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("drop table if exists "
                 + XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE);
-       
-
+        
+        onCreate(db);
     }
 
 }

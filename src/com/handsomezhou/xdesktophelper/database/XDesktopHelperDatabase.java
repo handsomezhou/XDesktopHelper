@@ -4,7 +4,7 @@ import android.provider.BaseColumns;
 
 public class XDesktopHelperDatabase {
     public static final String DB_NAME = "xdesktophelper.db";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
     
     public interface Table {
 
@@ -18,6 +18,7 @@ public class XDesktopHelperDatabase {
         public final String ID="id";
         public final String PACKAGE_NAME = "package_name";
         public final String START_TIME="start_time";// start time(currentTimeMillis)
+        public final String SET_TO_TOP="set_to_top";//set set_to_top time(currentTimeMillis)
     }
     
    

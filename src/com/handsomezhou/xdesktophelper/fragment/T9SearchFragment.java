@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -39,6 +41,7 @@ public class T9SearchFragment extends BaseFragment implements
 
     @Override
 	public void onResume() {
+        showKeyboard();
 		refreshView();
 		super.onResume();
 	}
@@ -95,6 +98,39 @@ public class T9SearchFragment extends BaseFragment implements
 			}
 		});
 		
+		mT9SearchGv.setOnScrollListener(new OnScrollListener() {
+            
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                switch (scrollState) {  
+                    case OnScrollListener.SCROLL_STATE_IDLE: //  
+                        Log.i(TAG, "SCROLL_STATE_IDLE");
+                        // mBusy = false;  
+                        break;  
+                    case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:  
+                        Log.i(TAG, "SCROLL_STATE_TOUCH_SCROLL");
+
+                        // mBusy = true;  
+                        
+                        break;  
+                    case OnScrollListener.SCROLL_STATE_FLING:  
+                        Log.i(TAG, "SCROLL_STATE_FLING");
+                
+                    
+                        hideKeyboard();
+          
+                        break;  
+                    }  
+                
+            }
+            
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount,
+                    int totalItemCount) {
+                // TODO Auto-generated method stub
+                
+            }
+        });
 		mKeyboardSwitchLayout.setOnClickListener(new View.OnClickListener() {
 
 			@Override

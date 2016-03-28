@@ -29,14 +29,14 @@
             android:text="@string/set_to_top"
             android:textColor="@color/blue"
             android:textSize="@dimen/prompt_large_text_size"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <View
             style="@style/dividing_line_horizontal"
             android:layout_marginLeft="@dimen/dialog_margin_left2"
             android:layout_marginRight="@dimen/dialog_margin_right2"
             android:background="@color/grey"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <Button
             android:id="@+id/reset_sequence_btn"

@@ -4,16 +4,21 @@ package com.handsomezhou.xdesktophelper.model;
 public class AppStartRecord {
     private String mPackageName;
     private long mStartTime;
+    private long mSetToTop;
+
+   
 
     public AppStartRecord() {
         super();
-        // TODO Auto-generated constructor stub
+       setStartTime(0);
+       setSetToTop(0);
     }
 
-    public AppStartRecord(String packageName, long startTime) {
+    public AppStartRecord(String packageName, long startTime, long setToTop) {
         super();
         mPackageName = packageName;
         mStartTime = startTime;
+        mSetToTop=setToTop;
     }
 
 
@@ -33,4 +38,11 @@ public class AppStartRecord {
         mStartTime = startTime;
     }
 
+    public long getSetToTop() {
+        return mSetToTop;
+    }
+
+    public void setSetToTop(long setToTop) {
+        mSetToTop = setToTop;
+    }
 }
