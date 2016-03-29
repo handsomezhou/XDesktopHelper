@@ -303,6 +303,7 @@ public class AppInfoHelper {
 			
 			mFirstNoQwertySearchResultInput.delete(0, mFirstNoQwertySearchResultInput.length());
 			Log.i(TAG, "null==search,mFirstNoQwertySearchResultInput.length()="+ mFirstNoQwertySearchResultInput.length());
+            Collections.sort(mQwertySearchAppInfos, AppInfo.mSortByDefault);
 			return;
 		}
 		
@@ -363,7 +364,12 @@ public class AppInfoHelper {
 
 			}
 		}else{
-			Collections.sort(mQwertySearchAppInfos, AppInfo.mSortBySearch);
+		    if(TextUtils.isEmpty(search)){
+		        Collections.sort(mQwertySearchAppInfos, AppInfo.mSortByDefault);
+		    }else{
+		        Collections.sort(mQwertySearchAppInfos, AppInfo.mSortBySearch);
+		    }
+			
 		}
 		return;
 	}
@@ -389,6 +395,7 @@ public class AppInfoHelper {
 			
 			mFirstNoT9SearchResultInput.delete(0, mFirstNoT9SearchResultInput.length());
 			Log.i(TAG, "null==search,mFirstNoT9SearchResultInput.length()="+ mFirstNoT9SearchResultInput.length());
+			Collections.sort(mT9SearchAppInfos, AppInfo.mSortByDefault);
 			return;
 		}
 		
@@ -446,7 +453,13 @@ public class AppInfoHelper {
 
 			}
 		}else{
-			Collections.sort(mT9SearchAppInfos, AppInfo.mSortBySearch);
+		    
+		    if(TextUtils.isEmpty(search)){
+                Collections.sort(mT9SearchAppInfos, AppInfo.mSortByDefault);
+            }else{
+                Collections.sort(mT9SearchAppInfos, AppInfo.mSortBySearch);
+            }
+		 
 		}
 		return;
 	}
@@ -599,6 +612,33 @@ public class AppInfoHelper {
 	    return removeSuccess;
 	}
 	
+	public boolean updateSetToTop(String key,long setToTop){
+	    boolean updateSuccess=false;
+	    do{
+	        if(TextUtils.isEmpty(key)){
+	            updateSuccess=false;
+	            break;
+	        }
+	        
+	        if(null==mBaseAllAppInfosHashMap){
+	            updateSuccess=false;
+	            break;
+	        }
+	        
+	        if(false==mBaseAllAppInfosHashMap.containsKey(key)){
+	            updateSuccess=false;
+	            break;
+	        }
+	        
+	        AppInfo appinfo=mBaseAllAppInfosHashMap.get(key);
+	        if(null!=appinfo){
+	            appinfo.setSetToTop(setToTop);
+	            updateSuccess=true;
+	        }
+	    }while(false);
+	   
+	    return updateSuccess;
+	}
 	private void clearAppInfoData(){
 		
 		if(null==mBaseAllAppInfos){

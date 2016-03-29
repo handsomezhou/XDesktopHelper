@@ -11,18 +11,18 @@ import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
 import com.handsomezhou.xdesktophelper.model.AppSettingInfo;
 
 
-public class AppInfoDataBaseHelper {
-	private static AppInfoDataBaseHelper mInstance;
+public class AppSettingInfoDataBaseHelper {
+	private static AppSettingInfoDataBaseHelper mInstance;
 	 private XDesktopHelperSQLiteOpenHelper mXDesktopHelperSQLiteOpenHelper;
-	 public static AppInfoDataBaseHelper getInstance(){
+	 public static AppSettingInfoDataBaseHelper getInstance(){
 		 if(null==mInstance){
-			 mInstance=new AppInfoDataBaseHelper();
+			 mInstance=new AppSettingInfoDataBaseHelper();
 		 }
 		    
 		 return mInstance;
 	 }
 		
-	 private AppInfoDataBaseHelper(){
+	 private AppSettingInfoDataBaseHelper(){
 		 initAppInfoDataBaseHelper();
 	 }
 		

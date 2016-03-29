@@ -67,15 +67,27 @@ public class AppInfo extends BaseAppInfo{
 		}
 	};
 	
-	
+	   
 	public static Comparator<AppInfo> mSortByDefault = new Comparator<AppInfo>() {
 
         @Override
         public int compare(AppInfo lhs, AppInfo rhs) {      
-            long compareCommonWeights=rhs.mCommonWeights-lhs.mCommonWeights;
-            int compareCommonWeightsValue=CommonUtil.compare(compareCommonWeights);
+            long compareResult=rhs.getSetToTop()-lhs.getSetToTop();
+            int compareValue=CommonUtil.compare(compareResult);
             
-            return ((0!=compareCommonWeightsValue)?(compareCommonWeightsValue):(mChineseComparator.compare(lhs.mSortKey, rhs.mSortKey)));
+            if(compareValue==0){
+                compareResult=rhs.mCommonWeights-lhs.mCommonWeights;
+                compareValue=CommonUtil.compare(compareResult);
+                if(0==compareValue){
+                    compareValue=mChineseComparator.compare(lhs.mSortKey, rhs.mSortKey);
+                }
+            }else{
+                compareValue=CommonUtil.compare(compareResult);
+            }
+            
+           
+            
+            return compareValue;
         }
     };
     
@@ -85,10 +97,12 @@ public class AppInfo extends BaseAppInfo{
 		public int compare(AppInfo lhs, AppInfo rhs) {
 			int compareMatchStartIndex=(lhs.mMatchStartIndex-rhs.mMatchStartIndex);
 			int compareMatchLength=rhs.mMatchLength-lhs.mMatchLength;
+			long compareSetToTop=rhs.getSetToTop()-lhs.getSetToTop();
+			int compareSetToTopValue=CommonUtil.compare(compareSetToTop);
 			long compareCommonWeights=rhs.mCommonWeights-lhs.mCommonWeights;
 	        int compareCommonWeightsValue=CommonUtil.compare(compareCommonWeights);
-	        
-			return ((0!=compareMatchStartIndex)?(compareMatchStartIndex):((0!=compareMatchLength)?(compareMatchLength):((0!=compareCommonWeightsValue)?(compareCommonWeightsValue):(lhs.getLabel().length()-rhs.getLabel().length()))));
+	       
+			return ((0!=compareMatchStartIndex)?(compareMatchStartIndex):((0!=compareMatchLength)?(compareMatchLength):((0!=compareSetToTopValue)?(compareSetToTopValue):( (0!=compareCommonWeightsValue)?(compareCommonWeightsValue):(lhs.getLabel().length()-rhs.getLabel().length())))));
 		}
 	};
 

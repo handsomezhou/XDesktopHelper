@@ -4,7 +4,6 @@ package com.handsomezhou.xdesktophelper.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -12,28 +11,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.Interface.OnTabChange;
 import com.handsomezhou.xdesktophelper.adapter.CustomPartnerViewPagerAdapter;
 import com.handsomezhou.xdesktophelper.dialog.BaseProgressDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
+import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper.OnAppInfoLoad;
+import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper;
+import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper.OnAppSettingInfoLoad;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper.OnAppStartRecordLoad;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
-import com.handsomezhou.xdesktophelper.model.AppStartRecord;
 import com.handsomezhou.xdesktophelper.model.IconButtonData;
 import com.handsomezhou.xdesktophelper.model.IconButtonValue;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
 import com.handsomezhou.xdesktophelper.model.PartnerView;
 import com.handsomezhou.xdesktophelper.model.SearchMode;
-import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
+import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.CustomViewPager;
 import com.handsomezhou.xdesktophelper.view.TopTabView;
 
-public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad,
+public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad,OnAppSettingInfoLoad,
         OnTabChange {
     private static final String TAG = MainFragment.class.getSimpleName();
     private List<PartnerView> mPartnerViews;
@@ -108,6 +108,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         IconButtonData t9IconBtnData = new IconButtonData(getContext(),
                 t9IconBtnValue);
         mTopTabView.addIconButtonData(t9IconBtnData);
+        
         /* end: T9 search tab */
 
         /* start: Qwerty search tab */
@@ -120,6 +121,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         /* end: Qwerty search tab */
 
         mTopTabView.setOnTabChange(this);
+        
         return view;
     }
 
@@ -139,6 +141,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                         // Toast.makeText(getContext(),addressBookView.getTag().toString()+"+++"
                         // , Toast.LENGTH_LONG).show();
                         mTopTabView.setCurrentTabItem(partnerView.getTag());
+                        SettingsHelper.getInstance().setSearchMode((SearchMode)partnerView.getTag());
                         refreshView();
                     }
 
@@ -153,6 +156,9 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
                     }
                 });
+        
+       
+        mCustomViewPager.setCurrentItem(getPartnerViewItem(SettingsHelper.getInstance().getSearchMode()));
 
     }
 
@@ -168,6 +174,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             } else {
                 Log.i(TAG, "onAppInfoLoadSuccess false");
             }
+            AppSettingInfoHelper.getInstance().startLoadAppSettingInfo(this);
         }
         AppInfoHelper.getInstance().getQwertySearchAppInfo(null);
         AppInfoHelper.getInstance().getT9SearchAppInfo(null);
@@ -194,6 +201,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             } else {
                 Log.i(TAG, "onAppStartRecordSuccess false");
             }
+            AppSettingInfoHelper.getInstance().startLoadAppSettingInfo(this);
         }
 
     }
@@ -206,6 +214,20 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
     /* end: OnAppStartRecordLoad */
 
+    /*start: OnAppSettingInfoLoad*/
+    @Override
+    public void onAppSettingInfoLoadSuccess() {
+        AppSettingInfoHelper.getInstance().parseAppSettingInfo();
+        refreshView();
+    }
+
+    @Override
+    public void onAppSettingInfoLoadFailed() {
+        // TODO Auto-generated method stub
+        
+    }
+    /*end: OnAppSettingInfoLoad*/
+    
     /* start: OnTabChange */
     @Override
     public void onChangeToTab(Object fromTab, Object toTab,
@@ -221,15 +243,17 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                 .getFragment();
         switch ((SearchMode) currentTab) {
             case T9:
-                if (fragment instanceof T9SearchFragment) {
+                onChangeToTab(SearchMode.T9, SearchMode.QWERTY, tabChangeState);
+               /* if (fragment instanceof T9SearchFragment) {
                     // ((T9SearchFragment) fragment).updateView(tabChangeState);
                     ((T9SearchFragment) fragment).refreshView();
-                }
+                }*/
                 break;
             case QWERTY:
-                if (fragment instanceof QwertySearchFragment) {
+                onChangeToTab(SearchMode.QWERTY, SearchMode.T9, tabChangeState);
+               /* if (fragment instanceof QwertySearchFragment) {
                     ((QwertySearchFragment) fragment).refreshView();
-                }
+                }*/
                 break;
             default:
                 break;
@@ -258,8 +282,10 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         mBaseProgressDialog = baseProgressDialog;
     }
 
+  
     private void refreshView() {
         Object currentTab = mTopTabView.getCurrentTab();
+        showTopTabView(SettingsHelper.getInstance().getSearchMode());
         int itemIndex = getPartnerViewItem(currentTab);
         Fragment fragment = mPartnerViews.get(itemIndex).getFragment();
         switch ((SearchMode) currentTab) {
@@ -298,5 +324,13 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
         return item;
     }
+    
+    private void showTopTabView(SearchMode searchMode){
+        for(int i=0; i<mTopTabView.getChildCount(); i++){
+            ViewUtil.hideView(mTopTabView.getChildAt(i));
+        }
+        ViewUtil.showView(mTopTabView.getChildAt(searchMode.ordinal()));
+    }
 
+   
 }

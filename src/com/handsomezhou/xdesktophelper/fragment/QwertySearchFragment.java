@@ -1,5 +1,7 @@
 package com.handsomezhou.xdesktophelper.fragment;
 
+import java.util.Collections;
+
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import com.handsomezhou.xdesktophelper.adapter.AppInfoAdapter;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog.OnAppOperationDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
+import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppOperationType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
@@ -100,10 +103,16 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
          AppInfo appInfo=(AppInfo)dialogData;
         switch (appOperationType) {
             case SET_TO_TOP:
+                boolean setToTopSuccess=AppSettingInfoHelper.getInstance().setToTop(appInfo);
                 
+                if(true==setToTopSuccess){
+                    updateSearch();
+                    refreshView();
+                }
                 break;
             case RESET_SEQUENCE:
                 boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo);
+                AppSettingInfoHelper.getInstance().cancelSetToTop(appInfo);
                 if(true==resetSequenceSuccess){
                     updateSearch();
                     refreshView();
@@ -145,6 +154,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 			return;
 		}
 		updateSearch(mSearchBox.getSearchEtInput());
+	
 	}
 	
 	private void refreshQwertySearchGv() {
@@ -177,6 +187,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 		
 		if (TextUtils.isEmpty(curCharacter)) {
 			AppInfoHelper.getInstance().getQwertySearchAppInfo(null);
+	       
 		} else {
 			AppInfoHelper.getInstance().getQwertySearchAppInfo(curCharacter);
 		}
