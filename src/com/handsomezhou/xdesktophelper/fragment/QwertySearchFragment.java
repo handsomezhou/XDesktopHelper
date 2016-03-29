@@ -25,7 +25,7 @@ import com.handsomezhou.xdesktophelper.view.SearchBox;
 import com.handsomezhou.xdesktophelper.view.SearchBox.OnSearchBox;
 
 public class QwertySearchFragment extends BaseFragment implements OnSearchBox,OnAppOperationDialog{
-	private static final String TAG="QwertySearchFragment";
+	private static final String TAG=QwertySearchFragment.class.getSimpleName();
 	private GridView mQwertySearchGv;
 	private TextView mSearchResultPromptTv;
 	private SearchBox mSearchBox;
@@ -103,7 +103,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
                 
                 break;
             case RESET_SEQUENCE:
-                boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo.getPackageName());
+                boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo);
                 if(true==resetSequenceSuccess){
                     updateSearch();
                     refreshView();

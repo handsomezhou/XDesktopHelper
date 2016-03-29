@@ -8,9 +8,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
@@ -18,21 +16,23 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
-import com.handsomezhou.xdesktophelper.database.AppStartRecordDateBaseHelper;
+import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppInfo.SearchByType;
 import com.handsomezhou.xdesktophelper.model.AppType;
+import com.handsomezhou.xdesktophelper.model.Constant;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
 import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
+import com.handsomezhou.xdesktophelper.util.StringUtil;
 import com.pinyinsearch.model.PinyinSearchUnit;
 import com.pinyinsearch.util.PinyinUtil;
 import com.pinyinsearch.util.QwertyUtil;
 import com.pinyinsearch.util.T9Util;
 
 public class AppInfoHelper {
-	private static final String TAG="AppInfoHelper";
-	private static Character THE_LAST_ALPHABET='z';
+	private static final String TAG=AppInfoHelper.class.getSimpleName();
+	private static Character THE_LAST_ALPHABET=Constant.z;
 	private Context mContext;
 	private static AppInfoHelper mInstance;
 	
@@ -216,7 +216,7 @@ public class AppInfoHelper {
 					appInfo.getLabelPinyinSearchUnit().setBaseData(appInfo.getLabel());
 					PinyinUtil.parse(appInfo.getLabelPinyinSearchUnit());
 					String sortKey=PinyinUtil.getSortKey(appInfo.getLabelPinyinSearchUnit()).toUpperCase();
-					appInfo.setSortKey(praseSortKey(sortKey));
+					appInfo.setSortKey(StringUtil.praseSortKey(sortKey));
 					boolean isKanji=PinyinUtil.isKanji(appInfo.getLabel().charAt(0));
 					if(true==isKanji){
 						kanjiStartAppInfos.add(appInfo);
@@ -459,16 +459,16 @@ public class AppInfoHelper {
 				break;
 			}
 			
-			/*for(AppInfo ai:mBaseAllAppInfos){
+			for(AppInfo ai:mBaseAllAppInfos){
 				if(ai.getPackageName().equals(packageName)){
 					appExist=true;
 					break;
 				}
-			}*/
-			if(mBaseAllAppInfosHashMap.containsKey(packageName)){
+			}
+			/*if(mBaseAllAppInfosHashMap.containsKey(packageName+name)){
 			    appExist=true;
 			    break;
-			}
+			}*/
 		}while(false);
 		
 		return appExist;
@@ -500,9 +500,9 @@ public class AppInfoHelper {
                     appInfo.getLabelPinyinSearchUnit().setBaseData(appInfo.getLabel());
                     PinyinUtil.parse(appInfo.getLabelPinyinSearchUnit());
                     String sortKey=PinyinUtil.getSortKey(appInfo.getLabelPinyinSearchUnit()).toUpperCase();
-                    appInfo.setSortKey(praseSortKey(sortKey));
+                    appInfo.setSortKey(StringUtil.praseSortKey(sortKey));
                     
-                    mBaseAllAppInfosHashMap.put(appInfo.getPackageName(), appInfo);
+                    mBaseAllAppInfosHashMap.put(appInfo.getKey(), appInfo);
                     mBaseAllAppInfos.add(appInfo);
                     Collections.sort(mBaseAllAppInfos, AppInfo.mSortByDefault);
                     addSuccess=true;
@@ -540,18 +540,23 @@ public class AppInfoHelper {
 
 	 */
 	
-	public boolean resetSequence(String packageName){
+	public boolean resetSequence(AppInfo appInfo){
 	    boolean resetSequenceSuccess=false;
 	    do{
-	        if(TextUtils.isEmpty(packageName)){
+	    	if(null==appInfo){
+	    		resetSequenceSuccess=false;
+	    		break;
+	    		
+	    	}
+	        if(TextUtils.isEmpty(appInfo.getKey())){
 	            resetSequenceSuccess=false;
                 break;
             } 
 	        
-	        AppStartRecordDateBaseHelper.getInstance().delete(packageName);
+	        AppStartRecordDataBaseHelper.getInstance().delete(appInfo.getKey());
 	        
-	        if(mBaseAllAppInfosHashMap.containsKey(packageName)){
-	            mBaseAllAppInfosHashMap.get(packageName).setCommonWeights(AppCommonWeightsUtil.COMMON_WEIGHTS_DEFAULT);
+	        if(mBaseAllAppInfosHashMap.containsKey(appInfo.getKey())){
+	            mBaseAllAppInfosHashMap.get(appInfo.getKey()).setCommonWeights(AppCommonWeightsUtil.COMMON_WEIGHTS_DEFAULT);
 	            Collections.sort(mBaseAllAppInfos, AppInfo.mSortByDefault);
 	        }
 	        
@@ -570,9 +575,19 @@ public class AppInfoHelper {
 	            break;
 	        }
 	        
-	        AppStartRecordDateBaseHelper.getInstance().delete(packageName);
+
+        	PackageManager pm=mContext.getPackageManager();
+	        Intent intent = new Intent();
+	        intent.setPackage(packageName);
+	        ResolveInfo resolveInfo = pm.resolveActivity(intent, 0);
+	        if(null!=resolveInfo){
+                AppInfo appInfo=getAppInfo(pm, resolveInfo);
+                if(null!=appInfo){
+                	AppStartRecordDataBaseHelper.getInstance().delete(appInfo.getKey());
+                	mBaseAllAppInfosHashMap.remove(appInfo.getKey());
+                }
+	        }
 	        
-	        mBaseAllAppInfosHashMap.remove(packageName);
 	        for(int i=0; i<mBaseAllAppInfos.size(); i++){
 	            if(mBaseAllAppInfos.get(i).getPackageName().equals(packageName)){
 	                mBaseAllAppInfos.remove(i);
@@ -669,7 +684,7 @@ public class AppInfoHelper {
 		
 		mBaseAllAppInfosHashMap.clear();
 		for(AppInfo ai:mBaseAllAppInfos){
-		    mBaseAllAppInfosHashMap.put(ai.getPackageName(), ai);
+		    mBaseAllAppInfosHashMap.put(ai.getKey(), ai);
 		}
 		
 		Log.i(TAG, "after appInfos.size()"+ appInfos.size());
@@ -683,19 +698,7 @@ public class AppInfoHelper {
 		return;
 	}
 	
-	private String praseSortKey(String sortKey) {
-		if (null == sortKey || sortKey.length() <= 0) {
-			return null;
-		}
-
-		if ((sortKey.charAt(0) >= 'a' && sortKey.charAt(0) <= 'z')
-				|| (sortKey.charAt(0) >= 'A' && sortKey.charAt(0) <= 'Z')) {
-			return sortKey;
-		}
-
-		return String.valueOf(/*QuickAlphabeticBar.DEFAULT_INDEX_CHARACTER*/'#')
-				+ sortKey;
-	}
+	
 	
 	private List<AppInfo> getBaseAppInfo(){
 		List<AppInfo> baseAppInfos=null;

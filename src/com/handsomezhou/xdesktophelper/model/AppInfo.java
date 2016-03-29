@@ -20,8 +20,9 @@ public class AppInfo extends BaseAppInfo{
 	private StringBuffer mMatchKeywords;// Used to save the type of Match Keywords.(label)
 	private int mMatchStartIndex;		//the match start  position of mMatchKeywords in original string(label).
 	private int mMatchLength;			//the match length of mMatchKeywords in original string(name or phoneNumber).
+	private long mSetToTop;
 	private long mCommonWeights;       //Common weights 
-	
+
 
     public AppInfo() {
 		super();
@@ -31,6 +32,7 @@ public class AppInfo extends BaseAppInfo{
 		getMatchKeywords().delete(0, getMatchKeywords().length());
 		setMatchStartIndex(-1);
 		setMatchLength(0);
+		setSetToTop(0);
 		setCommonWeights(0);
 	}
 	
@@ -42,6 +44,7 @@ public class AppInfo extends BaseAppInfo{
 		getMatchKeywords().delete(0, getMatchKeywords().length());
 		setMatchStartIndex(-1);
 		setMatchLength(0);
+		setSetToTop(0);
 	    setCommonWeights(0);
 	}
 
@@ -146,11 +149,23 @@ public class AppInfo extends BaseAppInfo{
 		mMatchLength = matchLength;
 	}
 	
+	public long getSetToTop() {
+		return mSetToTop;
+	}
+
+	public void setSetToTop(long setToTop) {
+		mSetToTop = setToTop;
+	}
+	
 	public long getCommonWeights() {
         return mCommonWeights;
     }
 
     public void setCommonWeights(long commonWeights) {
         mCommonWeights = commonWeights;
+    }
+    
+    public String getKey(){
+    	return getPackageName()+getName();
     }
 }

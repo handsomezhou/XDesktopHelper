@@ -186,7 +186,7 @@ public class T9SearchFragment extends BaseFragment implements
                 
                 break;
             case RESET_SEQUENCE:
-                boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo.getPackageName());
+                boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo);
                 if(true==resetSequenceSuccess){
                     updateSearch();
                     refreshView();

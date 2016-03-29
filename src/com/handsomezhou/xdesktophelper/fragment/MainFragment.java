@@ -35,7 +35,7 @@ import com.handsomezhou.xdesktophelper.view.TopTabView;
 
 public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad,
         OnTabChange {
-    private static final String TAG = "MainFragment";
+    private static final String TAG = MainFragment.class.getSimpleName();
     private List<PartnerView> mPartnerViews;
     private TopTabView mTopTabView;
     private CustomViewPager mCustomViewPager;

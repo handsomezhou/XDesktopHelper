@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.util.Log;
 
-import com.handsomezhou.xdesktophelper.database.AppStartRecordDateBaseHelper;
+import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppStartRecord;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
@@ -17,7 +17,7 @@ import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 
 
 public class AppStartRecordHelper {
-    private static final String TAG="AppStartRecordHelper";
+    private static final String TAG=AppStartRecordHelper.class.getSimpleName();
     private static AppStartRecordHelper mInstance;
     private List<AppStartRecord> mAppStartRecords;
     private LoadStatus mAppStartRecordsLoadStatus;
@@ -108,8 +108,8 @@ public class AppStartRecordHelper {
             }
             
             for(AppStartRecord asr:mAppStartRecords){
-                if(true==AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().containsKey(asr.getPackageName())){
-                    appInfo= AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().get(asr.getPackageName());
+                if(true==AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().containsKey(asr.getKey())){
+                    appInfo= AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().get(asr.getKey());
                     appInfo.setCommonWeights(appInfo.getCommonWeights()+AppCommonWeightsUtil.getCommonWeights(currentTimeMs, asr.getStartTime()));
                 }
             }
@@ -130,11 +130,11 @@ public class AppStartRecordHelper {
     private List<AppStartRecord> loadAppStartRecord(){
         setAppStartRecordsLoadStatus(LoadStatus.LOADING);
         List<AppStartRecord> appStartRecords=new ArrayList<AppStartRecord>();
-        AppStartRecordDateBaseHelper.getInstance().queryAllStocks(appStartRecords);
+        AppStartRecordDataBaseHelper.getInstance().queryAllStocks(appStartRecords);
         Log.i(TAG, "appStartRecords.size()="+appStartRecords.size());
         long currentTimeMs=System.currentTimeMillis();
         for(AppStartRecord asr:appStartRecords){
-            Log.i(TAG, asr.getPackageName()+":"+asr.getStartTime()+":"+AppCommonWeightsUtil.getCommonWeights(currentTimeMs, asr.getStartTime()));
+            Log.i(TAG, asr.getKey()+":"+asr.getStartTime()+":"+AppCommonWeightsUtil.getCommonWeights(currentTimeMs, asr.getStartTime()));
              
         }
         return appStartRecords;

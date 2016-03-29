@@ -14,7 +14,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
-import com.handsomezhou.xdesktophelper.database.AppStartRecordDateBaseHelper;
+import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppStartRecord;
@@ -105,9 +105,9 @@ public class AppUtil {
 					Toast.makeText(context, R.string.app_can_not_be_launched_directly, Toast.LENGTH_SHORT).show();
 				}else{
 				    long startTimeMs=System.currentTimeMillis();
-				    AppStartRecord appStartRecord=new AppStartRecord(appInfo.getPackageName(), startTimeMs,0);
-				    AppStartRecordDateBaseHelper.getInstance().insert(appStartRecord);
-				    AppInfo ai=AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().get(appInfo.getPackageName());
+				    AppStartRecord appStartRecord=new AppStartRecord(appInfo.getKey(), startTimeMs);
+				    AppStartRecordDataBaseHelper.getInstance().insert(appStartRecord);
+				    AppInfo ai=AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().get(appInfo.getKey());
 				    if(null!=ai){
 				        ai.setCommonWeights(ai.getCommonWeights()+AppCommonWeightsUtil.getCommonWeights(startTimeMs));
 				        Log.i(TAG, ai.getPackageName()+":"+ai.getCommonWeights());

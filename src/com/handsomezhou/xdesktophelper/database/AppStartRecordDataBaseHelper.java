@@ -13,18 +13,18 @@ import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
 import com.handsomezhou.xdesktophelper.model.AppStartRecord;
 
 
-public class AppStartRecordDateBaseHelper {
-    private static AppStartRecordDateBaseHelper mInstance;
+public class AppStartRecordDataBaseHelper {
+    private static AppStartRecordDataBaseHelper mInstance;
     private XDesktopHelperSQLiteOpenHelper mXDesktopHelperSQLiteOpenHelper;
-    public static AppStartRecordDateBaseHelper getInstance(){
+    public static AppStartRecordDataBaseHelper getInstance(){
         if(null==mInstance){
-            mInstance=new AppStartRecordDateBaseHelper();
+            mInstance=new AppStartRecordDataBaseHelper();
         }
         
         return mInstance;
     }
     
-    private AppStartRecordDateBaseHelper(){
+    private AppStartRecordDataBaseHelper(){
         initAppStartRecordDateBaseHelper();
     }
     
@@ -53,9 +53,8 @@ public class AppStartRecordDateBaseHelper {
                 ContentValues conferenceMemberValues=new ContentValues();
                 for(AppStartRecord asr:appStartRecords){
                     conferenceMemberValues.clear();
-                    conferenceMemberValues.put(XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME,asr.getPackageName());
+                    conferenceMemberValues.put(XDesktopHelperDatabase.AppStartRecordColumns.KEY,asr.getKey());
                     conferenceMemberValues.put(XDesktopHelperDatabase.AppStartRecordColumns.START_TIME,asr.getStartTime());
-                    conferenceMemberValues.put(XDesktopHelperDatabase.AppStartRecordColumns.SET_TO_TOP,asr.getSetToTop());
                    
                     db.insert(XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE, null, conferenceMemberValues);
                 }
@@ -85,18 +84,18 @@ public class AppStartRecordDateBaseHelper {
     }
     
     /*start: delete*/
-    public boolean delete(String packageName){
+    public boolean delete(String key){
         boolean deleteSuccess=false;
         do{
-            if(TextUtils.isEmpty(packageName)){
+            if(TextUtils.isEmpty(key)){
                 deleteSuccess=false;
                 break;
             }
             
               SQLiteDatabase db=mXDesktopHelperSQLiteOpenHelper.getWritableDatabase();
               if(null!=db){
-                  String whereClause=XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME+" =?";
-                  String[] whereArgs=new String[]{packageName};
+                  String whereClause=XDesktopHelperDatabase.AppStartRecordColumns.KEY+" =?";
+                  String[] whereArgs=new String[]{key};
                   db.delete(XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE, whereClause, whereArgs);
                   db.close();
                   deleteSuccess=true;
@@ -119,8 +118,8 @@ public class AppStartRecordDateBaseHelper {
             
               SQLiteDatabase db=mXDesktopHelperSQLiteOpenHelper.getWritableDatabase();
               if(null!=db){
-                  String whereClause=XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME+" =?";
-                  String[] whereArgs=new String[]{appStartRecord.getPackageName()};
+                  String whereClause=XDesktopHelperDatabase.AppStartRecordColumns.KEY+" =?";
+                  String[] whereArgs=new String[]{appStartRecord.getKey()};
                   db.delete(XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE, whereClause, whereArgs);
                   db.close();
                   deleteSuccess=true;
@@ -164,28 +163,25 @@ public class AppStartRecordDateBaseHelper {
             }
             
             String[] appStartRecordColumns={
-                    XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME,
+                    XDesktopHelperDatabase.AppStartRecordColumns.KEY,
                     XDesktopHelperDatabase.AppStartRecordColumns.START_TIME,
-                    XDesktopHelperDatabase.AppStartRecordColumns.SET_TO_TOP,
+ 
             };
             
-            String appStartRecordOrderBy=XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME+" ASC";//" DESC";
+            String appStartRecordOrderBy=XDesktopHelperDatabase.AppStartRecordColumns.KEY+" ASC";//" DESC";
             Cursor appStartRecordCursor=db.query(XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE, appStartRecordColumns, null, null, null, null, appStartRecordOrderBy);
             if(null!=appStartRecordCursor){
-                int packageNameColumnIndex=appStartRecordCursor.getColumnIndex(appStartRecordColumns[0]);
+                int keyColumnIndex=appStartRecordCursor.getColumnIndex(appStartRecordColumns[0]);
                 int startTimeColumnIndex=appStartRecordCursor.getColumnIndex(appStartRecordColumns[1]);
-                int setToTopColumnIndex=appStartRecordCursor.getColumnIndex(appStartRecordColumns[2]);
                
                 while(appStartRecordCursor.moveToNext()){
                     AppStartRecord appStartRecord=new AppStartRecord();
                    
-                    String packageName=appStartRecordCursor.getString(packageNameColumnIndex);
+                    String key=appStartRecordCursor.getString(keyColumnIndex);
                     long startTime=appStartRecordCursor.getLong(startTimeColumnIndex);
-                    long setToTop=appStartRecordCursor.getLong(setToTopColumnIndex);
                     
-                    appStartRecord.setPackageName(packageName);
+                    appStartRecord.setKey(key);
                     appStartRecord.setStartTime(startTime);
-                    appStartRecord.setSetToTop(setToTop);
                    
                     stocks.add(appStartRecord);
                 }

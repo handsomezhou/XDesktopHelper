@@ -9,13 +9,20 @@ public class XDesktopHelperSQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = "XDesktopHelperSQLiteOpenHelper";
     private static XDesktopHelperSQLiteOpenHelper mInstance;
 
+    private static final String CREATE_APP_INFO_TABLE = "create table "
+            + XDesktopHelperDatabase.Table.AppSettingInfo.APP_INFO_TABLE
+            + "("
+            + XDesktopHelperDatabase.AppSettingInfoColumns.ID + " integer unique,"
+            + XDesktopHelperDatabase.AppSettingInfoColumns.KEY + " text,"
+            + XDesktopHelperDatabase.AppSettingInfoColumns.SET_TO_TOP + " integer"
+            + ")";
+    
     private static final String CREATE_APP_START_RECORD_TABLE = "create table "
             + XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE
             + "("
             + XDesktopHelperDatabase.AppStartRecordColumns.ID + " integer unique,"
-            + XDesktopHelperDatabase.AppStartRecordColumns.PACKAGE_NAME + " text,"
-            + XDesktopHelperDatabase.AppStartRecordColumns.START_TIME + " integer,"
-            + XDesktopHelperDatabase.AppStartRecordColumns.SET_TO_TOP + " integer"
+            + XDesktopHelperDatabase.AppStartRecordColumns.KEY + " text,"
+            + XDesktopHelperDatabase.AppStartRecordColumns.START_TIME + " integer"
             + ")";
 
     public static synchronized XDesktopHelperSQLiteOpenHelper getInstance(Context context) {
@@ -41,13 +48,14 @@ public class XDesktopHelperSQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_APP_START_RECORD_TABLE);
+        db.execSQL(CREATE_APP_INFO_TABLE);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("drop table if exists "
-                + XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE);
+        db.execSQL("drop table if exists "+ XDesktopHelperDatabase.Table.AppStartRecord.APP_START_RECORD_TABLE);
+        db.execSQL("drop table if exists "+ XDesktopHelperDatabase.Table.AppSettingInfo.APP_INFO_TABLE);
         
         onCreate(db);
     }
