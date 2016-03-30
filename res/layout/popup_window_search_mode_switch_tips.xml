@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="@dimen/padding" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical"
+        android:gravity="center"
+        android:paddingBottom="@dimen/padding_bottom"
+        android:paddingTop="@dimen/padding_top"
+        android:text="@string/click_top_tab_swich_search_mode"
+        android:textColor="@color/white"
+        android:textSize="@dimen/prompt_small_text_size" />
+
+</LinearLayout>

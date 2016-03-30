@@ -4,6 +4,8 @@ package com.handsomezhou.xdesktophelper.fragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.PopupWindow;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.Interface.OnTabChange;
@@ -42,6 +46,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     private CustomPartnerViewPagerAdapter mCustomPartnerViewPagerAdapter;
     private SearchMode mSearchMode;
     private BaseProgressDialog mBaseProgressDialog;
+    private PopupWindow mSearchModeSwitchTipsPw;
 
     @Override
     public void onResume() {
@@ -52,7 +57,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             Log.i(TAG, asr.getLabel() + ":" + ":" + asr.getCommonWeights());
 
         }
-
+    
         refreshView();
         super.onResume();
     }
@@ -93,7 +98,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         mCustomViewPager = (CustomViewPager) view
                 .findViewById(R.id.custom_view_pager);
-        mCustomViewPager.setPagingEnabled(true);
+        mCustomViewPager.setPagingEnabled(false);
 
         mTopTabView = (TopTabView) view.findViewById(R.id.top_tab_view);
         mTopTabView.setTextColorFocused(getContext().getResources().getColor(R.color.sea_green4));
@@ -142,6 +147,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                         // , Toast.LENGTH_LONG).show();
                         mTopTabView.setCurrentTabItem(partnerView.getTag());
                         SettingsHelper.getInstance().setSearchMode((SearchMode)partnerView.getTag());
+                        SettingsHelper.getInstance().setSearchModeSwitchTips(false);
                         refreshView();
                     }
 
@@ -219,6 +225,9 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     public void onAppSettingInfoLoadSuccess() {
         AppSettingInfoHelper.getInstance().parseAppSettingInfo();
         refreshView();
+        if(true==SettingsHelper.getInstance().isSearchModeSwitchTips()){
+            getSearchModeSwitchTipsPw().showAsDropDown(mTopTabView);
+        }
     }
 
     @Override
@@ -283,6 +292,37 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     }
 
   
+    public PopupWindow getSearchModeSwitchTipsPw() {
+        if(null==mSearchModeSwitchTipsPw){
+            LayoutInflater inflater = (LayoutInflater) getContext()
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View conference_start_tips_popup_window =(View) inflater.inflate(
+                    R.layout.popup_window_search_mode_switch_tips, null);
+            mSearchModeSwitchTipsPw=new PopupWindow(conference_start_tips_popup_window,
+                    LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+            ColorDrawable dw = new ColorDrawable(R.color.grey21_transparent);
+            mSearchModeSwitchTipsPw.setBackgroundDrawable(dw);
+            mSearchModeSwitchTipsPw.setOutsideTouchable(true);
+         /*   mSearchModeSwitchTipsPw.setFocusable(true);*/
+            mSearchModeSwitchTipsPw.setTouchable(true);
+         
+            conference_start_tips_popup_window.setOnClickListener(new View.OnClickListener() {
+                
+                @Override
+                public void onClick(View v) {
+                    mSearchModeSwitchTipsPw.dismiss();
+                    
+                }
+            });
+        }
+
+        return mSearchModeSwitchTipsPw;
+    }
+
+    public void setSearchModeSwitchTipsPw(PopupWindow searchModeSwitchTipsPw) {
+        mSearchModeSwitchTipsPw = searchModeSwitchTipsPw;
+    }
+
     private void refreshView() {
         Object currentTab = mTopTabView.getCurrentTab();
         showTopTabView(SettingsHelper.getInstance().getSearchMode());
@@ -296,6 +336,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                 }
                 break;
             case QWERTY:
+               
                 if (fragment instanceof QwertySearchFragment) {
                     ((QwertySearchFragment) fragment).updateSearch();
                     ((QwertySearchFragment) fragment).refreshView();
@@ -330,6 +371,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             ViewUtil.hideView(mTopTabView.getChildAt(i));
         }
         ViewUtil.showView(mTopTabView.getChildAt(searchMode.ordinal()));
+       
     }
 
    

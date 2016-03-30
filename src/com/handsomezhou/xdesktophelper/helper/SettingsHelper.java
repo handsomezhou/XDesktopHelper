@@ -1,6 +1,7 @@
 package com.handsomezhou.xdesktophelper.helper;
 
 import com.handsomezhou.xdesktophelper.Interface.sharedPreferences.SearchModeSp;
+import com.handsomezhou.xdesktophelper.Interface.sharedPreferences.SearchModeSwitchTipsSp;
 import com.handsomezhou.xdesktophelper.model.SearchMode;
 
 public class SettingsHelper {
@@ -9,9 +10,10 @@ public class SettingsHelper {
 	private static SettingsHelper mInstance;
 
 	private SearchMode mSearchMode;
+	private boolean mSearchModeSwitchTips=true;
 
-
-	public static SettingsHelper getInstance() {
+	
+    public static SettingsHelper getInstance() {
 		if (null == mInstance) {
 			mInstance = new SettingsHelper();
 		}
@@ -24,10 +26,8 @@ public class SettingsHelper {
 	}
 
 	private void initSettingsHelper() {
-
-
-
 		mSearchMode = SearchModeSp.getSearchMode();
+		mSearchModeSwitchTips=SearchModeSwitchTipsSp.isSearchModeSwitchTips();
 		return;
 	}
 
@@ -40,6 +40,16 @@ public class SettingsHelper {
 		SearchModeSp.saveSearchMode(searchMode);
 		mSearchMode = searchMode;
 	}
+	
+	public boolean isSearchModeSwitchTips() {
+        return mSearchModeSwitchTips;
+    }
+
+    public void setSearchModeSwitchTips(boolean searchModeSwitchTips) {
+        SearchModeSwitchTipsSp.saveSearchMode(searchModeSwitchTips);
+        mSearchModeSwitchTips = searchModeSwitchTips;
+    }
+
 	
 	
 	
