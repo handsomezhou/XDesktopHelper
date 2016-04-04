@@ -44,20 +44,20 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     private TopTabView mTopTabView;
     private CustomViewPager mCustomViewPager;
     private CustomPartnerViewPagerAdapter mCustomPartnerViewPagerAdapter;
-    private SearchMode mSearchMode;
     private BaseProgressDialog mBaseProgressDialog;
     private PopupWindow mSearchModeSwitchTipsPw;
 
     @Override
     public void onResume() {
-        Log.i(TAG, "appStartRecords.size()="
+        /*Log.i(TAG, "appStartRecords.size()="
                 + AppInfoHelper.getInstance().getBaseAllAppInfos().size());
 
         for (AppInfo asr : AppInfoHelper.getInstance().getBaseAllAppInfos()) {
             Log.i(TAG, asr.getLabel() + ":" + ":" + asr.getCommonWeights());
 
-        }
-    
+        }*/
+       // mTopTabView.setCurrentTabItem(SettingsHelper.getInstance().getSearchMode());
+        mCustomViewPager.setCurrentItem(getPartnerViewItem(SettingsHelper.getInstance().getSearchMode()));
         refreshView();
         super.onResume();
     }
@@ -272,13 +272,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
     /* end: OnTabChange */
 
-    public SearchMode getSearchMode() {
-        return mSearchMode;
-    }
 
-    public void setSearchMode(SearchMode searchMode) {
-        mSearchMode = searchMode;
-    }
 
     public BaseProgressDialog getBaseProgressDialog() {
         if (null == mBaseProgressDialog) {
@@ -324,8 +318,8 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     }
 
     private void refreshView() {
-        Object currentTab = mTopTabView.getCurrentTab();
         showTopTabView(SettingsHelper.getInstance().getSearchMode());
+        Object currentTab = mTopTabView.getCurrentTab();
         int itemIndex = getPartnerViewItem(currentTab);
         Fragment fragment = mPartnerViews.get(itemIndex).getFragment();
         switch ((SearchMode) currentTab) {

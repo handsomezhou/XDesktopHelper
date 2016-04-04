@@ -1,11 +1,13 @@
 package com.handsomezhou.xdesktophelper.fragment;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.handsomezhou.xdesktophelper.R;
+import com.handsomezhou.xdesktophelper.activity.ReferenceProjectActivity;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout.OnNavigationBarLayout;
@@ -15,7 +17,7 @@ public class AboutFragment extends BaseFragment implements
 
 	private NavigationBarLayout mNavigationBarLayout;
 	private TextView mVersionNameTv;
-	
+	private View mReferenceProjectLayout;
 	private String mTitle;
 	private String mVersionName;
 	
@@ -47,12 +49,21 @@ public class AboutFragment extends BaseFragment implements
 		mNavigationBarLayout.setTitle(mTitle);
 		mVersionNameTv=(TextView) view.findViewById(R.id.version_name_text_view);
 		mVersionNameTv.setText(mVersionName);
+		mReferenceProjectLayout = view
+				.findViewById(R.id.reference_project_layout);
 		return view;
 	}
 
 	@Override
 	protected void initListener() {
+		mReferenceProjectLayout.setOnClickListener(new View.OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				viewReferenceProject();
+
+			}
+		});
 		return;
 	}
 
@@ -74,5 +85,11 @@ public class AboutFragment extends BaseFragment implements
 	private void back() {
 		getActivity().finish();
 	}
+	
+	private void viewReferenceProject() {
+		Intent intent = new Intent(getContext(), ReferenceProjectActivity.class);
+		startActivity(intent);
+	}
+
 
 }

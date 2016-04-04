@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
+import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppStartRecord;
 
@@ -92,34 +93,44 @@ public class AppUtil {
 	 * @param context
 	 * @param appInfo
 	 */
-	public static void startApp(Context context,AppInfo appInfo){
-		if((null==context)||(null==appInfo)){
-			return;
-		}
-		
-		if(null!=appInfo){
-			
-			if(!appInfo.getPackageName().equals(context.getPackageName())){
-				boolean startAppSuccess=AppUtil.startApp(context, appInfo.getPackageName(), appInfo.getName());
-				if(false==startAppSuccess){
-					Toast.makeText(context, R.string.app_can_not_be_launched_directly, Toast.LENGTH_SHORT).show();
-				}else{
-				    long startTimeMs=System.currentTimeMillis();
-				    AppStartRecord appStartRecord=new AppStartRecord(appInfo.getKey(), startTimeMs);
-				    AppStartRecordDataBaseHelper.getInstance().insert(appStartRecord);
-				    AppInfo ai=AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().get(appInfo.getKey());
-				    if(null!=ai){
-				        ai.setCommonWeights(ai.getCommonWeights()+AppCommonWeightsUtil.getCommonWeights(startTimeMs));
-				        Log.i(TAG, ai.getPackageName()+":"+ai.getCommonWeights());
-			            Collections.sort(AppInfoHelper.getInstance().getBaseAllAppInfos(), AppInfo.mSortByDefault);
-				        
-				    }
-				}
-			}else{
-				Toast.makeText(context, R.string.the_app_has_been_launched, Toast.LENGTH_SHORT).show();
+	public static boolean startApp(Context context,AppInfo appInfo){
+		boolean startAppSuccess=false;
+		do{
+			if((null==context)||(null==appInfo)){
+				startAppSuccess=false;
+				break;
+						
 			}
 			
-		}
+			if(null!=appInfo){
+				
+				if(!appInfo.getPackageName().equals(context.getPackageName())){
+					startAppSuccess=AppUtil.startApp(context, appInfo.getPackageName(), appInfo.getName());
+					if(false==startAppSuccess){
+						Toast.makeText(context, R.string.app_can_not_be_launched_directly, Toast.LENGTH_SHORT).show();
+					}else{
+						if(true==SettingsHelper.getInstance().isSmartSorting()){
+							 long startTimeMs=System.currentTimeMillis();
+							    AppStartRecord appStartRecord=new AppStartRecord(appInfo.getKey(), startTimeMs);
+							    AppStartRecordDataBaseHelper.getInstance().insert(appStartRecord);
+							    AppInfo ai=AppInfoHelper.getInstance().getBaseAllAppInfosHashMap().get(appInfo.getKey());
+							    if(null!=ai){
+							        ai.setCommonWeights(ai.getCommonWeights()+AppCommonWeightsUtil.getCommonWeights(startTimeMs));
+							        Log.i(TAG, ai.getPackageName()+":"+ai.getCommonWeights());
+						            Collections.sort(AppInfoHelper.getInstance().getBaseAllAppInfos(), AppInfo.mSortByDefault);
+							        
+							    }
+						}
+					   
+					}
+				}else{
+					Toast.makeText(context, R.string.the_app_has_been_launched, Toast.LENGTH_SHORT).show();
+				}
+				
+			}
+		}while(false);
+
+		return startAppSuccess;
 	}
 	/**
 	 * whether app can Launch the main activity.

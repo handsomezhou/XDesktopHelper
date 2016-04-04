@@ -11,18 +11,27 @@
     <color name="dodger_blue">#FF1E90FF</color>
     <color name="sea_green4">#FF2E8B57</color>
     <color name="transparent">#00FFFFFF</color>
+    <color name="gray">#FF5C6369</color>
     <color name="grey">#FFBEBEBE</color>
     <color name="grey21_transparent">#D0363636</color>
     <color name="grey_light">#FFD9D9D9</color>
     <color name="dim_grey">#FF696969</color>
     <color name="blue">#FF00AAEE</color>
     <color name="blue_light">#C000AAEE</color>
+    <color name="green">#FF77C72D</color>
+    <color name="green_light">#A077C72D</color> 
     <!--
     <color name="grey_normal">#FF777777</color>
-    <color name="grey_press">#FF474747</color>
+    <color name="grey_press">#FF474747</color>
     -->
+
     <color name="orange">#FFFF8C00</color>
     <color name="dialog_action_btn_normal">#FFE6E6E6</color>
     <color name="dialog_action_btn_press">#FFCCCCCC</color>
+
+    <!-- start:android-segmented-control -->
+    <color name="radio_button_selected_color">#ff33b5e5</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
+    <!-- end:android-segmented-control -->
 
 </resources>

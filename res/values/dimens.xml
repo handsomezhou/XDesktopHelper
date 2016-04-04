@@ -45,6 +45,7 @@
     <dimen name="top_tab_height">54dp</dimen>
     <dimen name="top_tab_height_without_icon">44dp</dimen>
     <dimen name="item_height">54dp</dimen>
+    <dimen name="list_item_height">54dp</dimen>
     <dimen name="app_icon_height">96dp</dimen>
     <dimen name="app_icon_width">96dp</dimen>
     <dimen name="prompt_large_text_size">20dp</dimen>
@@ -75,5 +76,11 @@
     <dimen name="dialog_corner_radius">8dp</dimen>
     <dimen name="dialog_action_btn_corner_radius">4dp</dimen>
     <!-- End:dialog -->
+    <!-- start:android-segmented-control -->
+    <dimen name="radio_button_conner_radius">5dp</dimen>
+    <dimen name="radio_button_stroke_border">1dp</dimen>
+    <dimen name="segmented_group_border_width">2dp</dimen>
+    <dimen name="segmented_group_corner_radius">10dp</dimen>
+    <!-- end:android-segmented-control -->
 
 </resources>

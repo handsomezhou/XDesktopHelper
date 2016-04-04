@@ -40,10 +40,14 @@ public class T9SearchFragment extends BaseFragment implements
 	private ImageView mKeyboardSwitchIv;
 	private AppInfoAdapter mAppInfoAdapter;
 	private AppOperationDialog mAppOperationDialog;
-	
+	private boolean mStartAppSuccess=false; 
 
     @Override
 	public void onResume() {
+    	if(true==mStartAppSuccess){
+			mStartAppSuccess=false;
+			mT9TelephoneDialpadView.getT9InputEt().setText(null);
+		}
         showKeyboard();
 		refreshView();
 		super.onResume();
@@ -83,7 +87,7 @@ public class T9SearchFragment extends BaseFragment implements
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				AppInfo appInfo=(AppInfo) parent.getItemAtPosition(position);
-				AppUtil.startApp(getContext(), appInfo);
+				mStartAppSuccess=AppUtil.startApp(getContext(), appInfo);
 				
 			}
 		});

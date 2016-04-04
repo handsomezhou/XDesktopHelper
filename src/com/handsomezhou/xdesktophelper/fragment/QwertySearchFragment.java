@@ -34,8 +34,13 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 	private SearchBox mSearchBox;
 	private AppInfoAdapter mAppInfoAdapter;
 	private AppOperationDialog mAppOperationDialog;
+	private boolean mStartAppSuccess=false; 
 	@Override
 	public void onResume() {
+		if(true==mStartAppSuccess){
+			mStartAppSuccess=false;
+			mSearchBox.getSearchEt().setText(null);
+		}
 		refreshView();
 		super.onResume();
 	}
@@ -68,7 +73,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				AppInfo appInfo=(AppInfo) parent.getItemAtPosition(position);
-				AppUtil.startApp(getContext(), appInfo);
+				mStartAppSuccess=AppUtil.startApp(getContext(), appInfo);
 				
 			}
 		});

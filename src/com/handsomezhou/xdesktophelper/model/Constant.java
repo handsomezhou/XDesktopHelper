@@ -23,7 +23,7 @@ public interface Constant {
     public static final char DOLLAR_SIGN = '$';
     public static final char PERCENT_SIGN = '%';
     public static final char AMPERSAND = '&';
-    public static final char APOSTROPHE = '’';
+    public static final char APOSTROPHE = '\'';
     public static final char LEFT_ROUND_BRACKETS = '(';
     public static final char RIGHT_ROUND_BRACKETS = ')';
     public static final char ASTERISK = '*';
