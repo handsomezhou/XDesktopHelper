@@ -207,6 +207,10 @@ public class T9SearchFragment extends BaseFragment implements
                 break;
             case UNINSTALL:
                 AppUtil.uninstallApp(getContext(),(AppInfo)dialogData);
+               
+                break;
+            case VIEW_APP_INFO:
+                AppUtil.viewApp(getContext(), (AppInfo)dialogData);
                 break;
 
             default:

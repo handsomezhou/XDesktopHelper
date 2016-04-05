@@ -18,6 +18,7 @@ public class AppOperationDialog extends BaseDialog {
 	private Button mSetToTopBtn;
 	private Button mResetSequenceBtn;
 	private Button mUninstallBtn;    
+	private Button mViewAppInfoBtn;    
 	private AppOperationType mAppOperationType;
     /* End: AppOperationDialog View */
 	private OnAppOperationDialog mOnAppOperationDialog;
@@ -85,6 +86,7 @@ public class AppOperationDialog extends BaseDialog {
 		mSetToTopBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.set_to_top_btn);
 		mResetSequenceBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.reset_sequence_btn);
 		mUninstallBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.uninstall_btn);
+		mViewAppInfoBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.view_app_info_btn);
 		//refreshSetToTop(getSetToTopType());
 		return getAppOperationDialogLayout();
 	}
@@ -94,6 +96,7 @@ public class AppOperationDialog extends BaseDialog {
 		setOnClickListener(mSetToTopBtn, AppOperationType.SET_TO_TOP);
 		setOnClickListener(mResetSequenceBtn, AppOperationType.RESET_SEQUENCE);
 		setOnClickListener(mUninstallBtn, AppOperationType.UNINSTALL);
+		setOnClickListener(mViewAppInfoBtn, AppOperationType.VIEW_APP_INFO);
 		return;
 	}
 

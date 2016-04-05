@@ -18,6 +18,7 @@
     <string name="reset_sequence_success">%s顺序复位成功</string>
     <string name="reset_sequence_failed">%s顺序复位失败</string>
     <string name="uninstall">卸载</string>
+    <string name="view_app_info">查看应用信息</string>
 
     <!-- start: exit_app_prompt_mode -->
     <string name="whether_prompt_exit_app">退出应用时是否提示</string>

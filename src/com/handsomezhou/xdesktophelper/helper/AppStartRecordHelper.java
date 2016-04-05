@@ -6,7 +6,7 @@ import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
-import android.util.Log;
+//import android.util.Log;
 
 import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
@@ -114,9 +114,9 @@ public class AppStartRecordHelper {
                 }
             }
             Collections.sort(AppInfoHelper.getInstance().getBaseAllAppInfos(), AppInfo.mSortByDefault);
-            for(int i=0; i<AppInfoHelper.getInstance().getBaseAllAppInfos().size() ; i++){
+           /* for(int i=0; i<AppInfoHelper.getInstance().getBaseAllAppInfos().size() ; i++){
                 Log.i(TAG, AppInfoHelper.getInstance().getBaseAllAppInfos().get(i).getLabel()+":"+AppInfoHelper.getInstance().getBaseAllAppInfos().get(i).getCommonWeights());
-            }
+            }*/
             parseSuccess=true;
         }while(false);
         
@@ -131,12 +131,12 @@ public class AppStartRecordHelper {
         setAppStartRecordsLoadStatus(LoadStatus.LOADING);
         List<AppStartRecord> appStartRecords=new ArrayList<AppStartRecord>();
         AppStartRecordDataBaseHelper.getInstance().queryAllStocks(appStartRecords);
-        Log.i(TAG, "appStartRecords.size()="+appStartRecords.size());
-        long currentTimeMs=System.currentTimeMillis();
-        for(AppStartRecord asr:appStartRecords){
-            Log.i(TAG, asr.getKey()+":"+asr.getStartTime()+":"+AppCommonWeightsUtil.getCommonWeights(currentTimeMs, asr.getStartTime()));
-             
-        }
+       // Log.i(TAG, "appStartRecords.size()="+appStartRecords.size());
+      //  long currentTimeMs=System.currentTimeMillis();
+//        for(AppStartRecord asr:appStartRecords){
+//            Log.i(TAG, asr.getKey()+":"+asr.getStartTime()+":"+AppCommonWeightsUtil.getCommonWeights(currentTimeMs, asr.getStartTime()));
+//             
+//        }
         return appStartRecords;
     }
     

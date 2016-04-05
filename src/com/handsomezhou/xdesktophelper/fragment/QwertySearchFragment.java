@@ -127,7 +127,9 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
             case UNINSTALL:
                 AppUtil.uninstallApp(getContext(),(AppInfo)dialogData);
                 break;
-
+            case VIEW_APP_INFO:
+                AppUtil.viewApp(getContext(), (AppInfo)dialogData);
+                break;
             default:
                 break;
         }
