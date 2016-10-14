@@ -31,6 +31,9 @@ Depend
 	you can get a lifelike SwitchButton in Android 5.0, iOS 7/8, MIUI, or Flyme and so on.
 [https://github.com/kyleduo/SwitchButton](https://github.com/kyleduo/SwitchButton)
 
+### Apk download
+[XDesktopHelper1.2.1](https://github.com/handsomezhou/XDesktopHelper/blob/master/release/XDesktopHelper_1_2_1.apk?raw=true)
+
 License 
 ---------------
 	Copyright 2015 handsomezhou
