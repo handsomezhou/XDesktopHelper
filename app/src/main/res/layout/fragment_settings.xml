@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+    <com.handsomezhou.xdesktophelper.view.NavigationBarLayout
+        android:id="@+id/navigation_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/navigation_bar_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/reside_menu_position_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/list_item_height">
+
+                <TextView
+                    android:id="@+id/reside_menu_position_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding"
+                    android:text="@string/reside_menu_position"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <com.handsomezhou.xdesktophelper.view.SegmentedGroup
+                    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/reside_menu_position_segmented"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_right4x"
+                    android:orientation="horizontal"
+                    segmentedgroup:border_width="@dimen/segmented_group_border_width"
+                    segmentedgroup:corner_radius="@dimen/segmented_group_corner_radius">
+
+                    <RadioButton
+                        android:id="@+id/left_radio_btn"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/left"/>
+
+                    <RadioButton
+                        android:id="@+id/right_radio_btn"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/right"/>
+                </com.handsomezhou.xdesktophelper.view.SegmentedGroup>
+            </LinearLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/search_mode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/list_item_height">
+
+                <TextView
+                    android:id="@+id/search_mode_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding"
+                    android:text="@string/search_mode"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <com.handsomezhou.xdesktophelper.view.SegmentedGroup
+                    xmlns:segmentedgroup="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/search_mode_segmented"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_right4x"
+                    android:orientation="horizontal"
+                    segmentedgroup:border_width="@dimen/segmented_group_border_width"
+                    segmentedgroup:corner_radius="@dimen/segmented_group_corner_radius">
+
+                    <RadioButton
+                        android:id="@+id/t9_radio_btn"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/t9"/>
+
+                    <RadioButton
+                        android:id="@+id/qwerty_radio_btn"
+                        style="@style/RadioButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/qwerty"/>
+                </com.handsomezhou.xdesktophelper.view.SegmentedGroup>
+            </LinearLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/smart_sorting_mode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/list_item_height">
+
+                <TextView
+                    android:id="@+id/smart_sorting_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding"
+                    android:text="@string/smart_sorting"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <com.handsomezhou.xdesktophelper.view.switchbutton.SwitchButton
+                    android:id="@+id/smart_sorting_switch_btn"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_right4x"/>
+            </LinearLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/exit_app_mode_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/list_item_height">
+
+                <TextView
+                    android:id="@+id/exit_app_prompt_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding"
+                    android:text="@string/whether_prompt_exit_app"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <com.handsomezhou.xdesktophelper.view.switchbutton.SwitchButton
+                    android:id="@+id/exit_app_prompt_switch_btn"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_right4x"/>
+            </LinearLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

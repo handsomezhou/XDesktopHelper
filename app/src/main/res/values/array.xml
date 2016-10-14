@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- start: Reference project(open source project&non-open source project) -->
+    <string-array name="reference_project">
+        <item>{\"project_name\": \"AndroidResideMenu\",\"project_address\":\"https://github.com/SpecialCyCi/AndroidResideMenu/\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"android-segmented-control\",\"project_address\":\"https://github.com/hoang8f/android-segmented-control\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"NineOldAndroids\",\"project_address\":\"https://github.com/JakeWharton/NineOldAndroids\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"pinyin4j\",\"project_address\":\"http://pinyin4j.sourceforge.net/\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"pinyinsearch\",\"project_address\":\"https://github.com/handsomezhou/PinyinSearchLibrary\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"SwitchButton\",\"project_address\":\"https://github.com/kyleduo/SwitchButton\", \"whether_open_source\":true}</item>
+    </string-array>
+    <!-- end: open source project -->
+
+</resources>

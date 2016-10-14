@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <com.handsomezhou.xdesktophelper.view.NavigationBarLayout
+        android:id="@+id/navigation_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/app_info_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/margin"
+                    android:background="@mipmap/logo_256x256"
+                    android:contentDescription="@string/app_name"/>
+
+                <TextView
+                    android:id="@+id/app_name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/icon_image_view"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/margin"
+                    android:gravity="center"
+                    android:text="@string/app_name"
+                    android:textColor="@color/black"/>
+
+                <TextView
+                    android:id="@+id/version_name_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/app_name_text_view"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="@dimen/margin"
+                    android:textColor="@color/black"
+                    android:gravity="center"/>
+            </RelativeLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/author_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/list_item_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/author_prompt_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:padding="@dimen/padding"
+                    android:text="@string/author_prompt"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:text="@string/author"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_small_text_size"/>
+            </LinearLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/contact_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/list_item_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/contact_prompt_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:padding="@dimen/padding"
+                    android:text="@string/contact_prompt"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:autoLink="email"
+                    android:text="@string/email"
+                    android:textColorLink="@color/blue"
+                    android:textSize="@dimen/prompt_small_text_size"/>
+            </LinearLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/reference_project_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/list_item_height"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reference_project_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding"
+                    android:text="@string/reference_project"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <ImageView
+                    android:id="@+id/to_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/margin_right4x"
+                    android:background="@mipmap/to"/>
+            </LinearLayout>
+
+            <View style="@style/dividing_line_horizontal"/>
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
