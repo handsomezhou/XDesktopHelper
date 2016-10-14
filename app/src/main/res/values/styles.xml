@@ -16,13 +16,13 @@
     <style name="text_view">
         <item name="android:background">@color/white</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColorHint">@color/dim_grey</item>
     </style>
 
     <style name="edit_text">
         <item name="android:background">@color/white</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textColorHint">@color/dim_grey</item>
     </style>
     <style name="dividing_line_horizontal">
         <item name="android:layout_width">match_parent</item>
