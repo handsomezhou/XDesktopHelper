@@ -29,7 +29,7 @@
             android:gravity="center"
             android:minHeight="@dimen/dialog_action_btn_height"
             android:text="@string/common_cancel"
-            android:textColor="@color/grey"
+            android:textColor="@color/gray"
             android:textSize="@dimen/prompt_large_text_size" />
 
         <Button

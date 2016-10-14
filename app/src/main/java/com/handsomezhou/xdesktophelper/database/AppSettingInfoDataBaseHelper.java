@@ -81,7 +81,25 @@ public class AppSettingInfoDataBaseHelper {
         return insertSuccess;
     }
     /*end: insert*/
-    
+
+    /*start: delete*/
+    public boolean deleteAll(){
+        boolean deleteSuccess=false;
+        do{
+            SQLiteDatabase db=mXDesktopHelperSQLiteOpenHelper.getWritableDatabase();
+            if(null!=db){
+                db.delete(XDesktopHelperDatabase.Table.AppSettingInfo.APP_INFO_TABLE, null, null);
+                db.close();
+                deleteSuccess=true;
+            }
+
+
+        }while(false);
+
+        return deleteSuccess;
+    }
+    /*end: delete*/
+
     /*start: query*/
     public List<AppSettingInfo> queryAllAppSettingInfo(List<AppSettingInfo> appSettingInfos){
         do{

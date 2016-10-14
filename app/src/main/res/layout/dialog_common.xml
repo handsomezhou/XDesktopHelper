@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="left|center_vertical"
             android:gravity="center_vertical"
-            android:textColor="@color/grey"
+            android:textColor="@color/gray"
             android:textSize="@dimen/prompt_normal_text_size" >
         </TextView>
     </LinearLayout>

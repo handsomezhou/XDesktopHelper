@@ -28,7 +28,7 @@
             android:gravity="center"
             android:paddingLeft="@dimen/dialog_padding_left"
             android:paddingRight="@dimen/dialog_padding_right"
-            android:textColor="@color/sea_green4"
+            android:textColor="@color/blue"
             android:textSize="@dimen/dialog_title" >
         </TextView>
     </LinearLayout>

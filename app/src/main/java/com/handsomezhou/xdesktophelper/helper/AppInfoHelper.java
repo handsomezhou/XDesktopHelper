@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
+import com.handsomezhou.xdesktophelper.database.AppSettingInfoDataBaseHelper;
 import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppInfo.SearchByType;
@@ -577,6 +578,20 @@ public class AppInfoHelper {
 	    }while(false);
 	    
 	    return resetSequenceSuccess;
+	}
+
+	public boolean resetAllSequence(){
+		boolean resetSequenceSuccess=false;
+		boolean deleteStartRecordSuccess= AppStartRecordDataBaseHelper.getInstance().deleteAll();
+		boolean appSettingInfoSuccess=AppSettingInfoDataBaseHelper.getInstance().deleteAll();
+		if((true==deleteStartRecordSuccess)&&(true==appSettingInfoSuccess)){
+			for(AppInfo ai:mBaseAllAppInfos){
+				ai.setSetToTop(0);
+				ai.setCommonWeights(0);
+			}
+			resetSequenceSuccess=true;
+		}
+		return resetSequenceSuccess;
 	}
 	
 	public boolean remove(String packageName){

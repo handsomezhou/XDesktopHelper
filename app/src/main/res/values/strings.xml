@@ -46,6 +46,10 @@
     <string name="qwerty">全键盘</string>
 
     <!-- end: search_mode -->
+    <string name="one_key_reset_sequence">一键顺序复位</string>
+    <string name="sure_to_one_key_reset_sequence">确定一键顺序复位?</string>
+    <string name="one_key_reset_sequence_success">一键顺序复位成功</string>
+    <string name="one_key_reset_sequence_failed">一键顺序复位失敗</string>
 
     <string name="smart_sorting">智能排序</string>
     <!-- end: settings -->
