@@ -1,5 +1,12 @@
 <resources>
 
+    <!--start:xfyun-->
+    <!-- 请替换成在语音云官网申请的appid -->
+    <string name="app_id">55d34b8d</string>
+    <string name="pref_key_iat_show">iat_show</string>
+    <string name="text_begin">请开始说话…</string>
+    <!--start:xfyun-->
+
     <string name="app_name">X桌面助手</string>
     <string name="t9_search">T9搜索</string>
     <string name="qwerty_search">全键盘搜索</string>
@@ -50,7 +57,7 @@
     <string name="sure_to_one_key_reset_sequence">确定一键顺序复位?</string>
     <string name="one_key_reset_sequence_success">一键顺序复位成功</string>
     <string name="one_key_reset_sequence_failed">一键顺序复位失敗</string>
-
+    <string name="voice_start_app">语音启动应用</string>
     <string name="smart_sorting">智能排序</string>
     <!-- end: settings -->
     <!-- start: about -->

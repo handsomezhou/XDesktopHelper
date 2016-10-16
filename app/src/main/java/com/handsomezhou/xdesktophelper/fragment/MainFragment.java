@@ -2,10 +2,16 @@
 package com.handsomezhou.xdesktophelper.fragment;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -15,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.Interface.OnTabChange;
@@ -27,18 +34,33 @@ import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper.OnAppSettingInfoLoad;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper.OnAppStartRecordLoad;
-import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.IconButtonData;
 import com.handsomezhou.xdesktophelper.model.IconButtonValue;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
 import com.handsomezhou.xdesktophelper.model.PartnerView;
 import com.handsomezhou.xdesktophelper.model.SearchMode;
+import com.handsomezhou.xdesktophelper.util.ToastUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.CustomViewPager;
 import com.handsomezhou.xdesktophelper.view.TopTabView;
+import com.handsomezhou.xdesktophelper.fragment.T9SearchFragment.OnT9SearchFragment;
+import com.handsomezhou.xdesktophelper.xfyun.setting.IatSettings;
+import com.handsomezhou.xdesktophelper.xfyun.util.JsonParser;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.InitListener;
+import com.iflytek.cloud.RecognizerListener;
+import com.iflytek.cloud.RecognizerResult;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechError;
+import com.iflytek.cloud.SpeechRecognizer;
+import com.iflytek.cloud.ui.RecognizerDialog;
+import com.iflytek.cloud.ui.RecognizerDialogListener;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad,OnAppSettingInfoLoad,
-        OnTabChange {
+        OnTabChange ,OnT9SearchFragment,QwertySearchFragment.OnQwertySearchFragment {
     private static final String TAG = MainFragment.class.getSimpleName();
     private List<PartnerView> mPartnerViews;
     private TopTabView mTopTabView;
@@ -46,6 +68,23 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     private CustomPartnerViewPagerAdapter mCustomPartnerViewPagerAdapter;
     private BaseProgressDialog mBaseProgressDialog;
     private PopupWindow mSearchModeSwitchTipsPw;
+
+    /*start: xfyun voice input*/
+    // 语音听写对象
+    private SpeechRecognizer mIat;
+    // 语音听写UI
+    private RecognizerDialog mIatDialog;
+    // 用HashMap存储听写结果
+    private HashMap<String, String> mIatResults = new LinkedHashMap<String, String>();
+
+    private Toast mToast;
+    private SharedPreferences mSharedPreferences;
+    // 引擎类型
+    private String mEngineType = SpeechConstant.TYPE_CLOUD;
+    /*end: xfyun voice input*/
+
+    private boolean mVoiceSearch=false;
+    private String mVoiceText=null;
 
     @Override
     public void onResume() {
@@ -63,20 +102,34 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //退出时释放连接
+        if(null!=mIat){
+            mIat.cancel();
+            mIat.destroy();
+        }
+    }
+
+    @Override
     protected void initData() {
         setContext(getActivity());
-
+        initSpeechRecognizer();
         mPartnerViews = new ArrayList<PartnerView>();
         /* start: T9 search view */
-        PartnerView t9PartnerView = new PartnerView(SearchMode.T9,
-                new T9SearchFragment());
+        T9SearchFragment t9SearchFragment=  new T9SearchFragment();
+        t9SearchFragment.setOnT9SearchFragment(this);
+
+        PartnerView t9PartnerView = new PartnerView(SearchMode.T9, t9SearchFragment);
         mPartnerViews.add(t9PartnerView);
 
         /* end: T9 search view */
 
         /* start: Qwerty search view */
+        QwertySearchFragment qwertySearchFragment=  new QwertySearchFragment();
+        qwertySearchFragment.setOnQwertySearchFragment(this);
         PartnerView qwertyPartnerView = new PartnerView(SearchMode.QWERTY,
-                new QwertySearchFragment());
+                qwertySearchFragment);
         mPartnerViews.add(qwertyPartnerView);
         /* end: Qwerty search view */
 
@@ -182,8 +235,8 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             }
             AppSettingInfoHelper.getInstance().startLoadAppSettingInfo(this);
         }
-        AppInfoHelper.getInstance().getQwertySearchAppInfo(null);
-        AppInfoHelper.getInstance().getT9SearchAppInfo(null);
+        AppInfoHelper.getInstance().qwertySearch(null);
+        AppInfoHelper.getInstance().t9Search(null,false);
         refreshView();
 
     }
@@ -200,7 +253,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     @Override
     public void onAppStartRecordSuccess() {
         if (AppInfoHelper.getInstance().getBaseAllAppInfosLoadStatus() == LoadStatus.LOAD_FINISH) {
-            Log.i(TAG, "onAppStartRecordSuccess before");
+           // Log.i(TAG, "onAppStartRecordSuccess before");
             if (true == AppStartRecordHelper.getInstance().parseAppStartRecord()) {
                 Log.i(TAG, "onAppStartRecordSuccess ture");
                 refreshView();
@@ -272,7 +325,21 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
     /* end: OnTabChange */
 
+    /*start: OnT9SearchFragment*/
+    @Override
+    public void onT9SearchVoiceInput() {
+        //ToastUtil.toastLengthshort(getContext(),"onT9SearchVoiceInput main");
+        startVoiceInput();
+    }
+    /*end: OnT9SearchFragment*/
 
+    /*start: OnQwertySearchFragment*/
+    @Override
+    public void onQwertySearchVoiceInput() {
+        //ToastUtil.toastLengthshort(getContext(),"onQwertySearchVoiceInput main");
+        startVoiceInput();
+    }
+    /*end: OnQwertySearchFragment*/
 
     public BaseProgressDialog getBaseProgressDialog() {
         if (null == mBaseProgressDialog) {
@@ -294,7 +361,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                     R.layout.popup_window_search_mode_switch_tips, null);
             mSearchModeSwitchTipsPw=new PopupWindow(conference_start_tips_popup_window,
                     LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-            ColorDrawable dw = new ColorDrawable(R.color.grey21_transparent);
+            ColorDrawable dw = new ColorDrawable(getContext().getResources().getColor(R.color.grey21_transparent));
             mSearchModeSwitchTipsPw.setBackgroundDrawable(dw);
             mSearchModeSwitchTipsPw.setOutsideTouchable(true);
          /*   mSearchModeSwitchTipsPw.setFocusable(true);*/
@@ -317,6 +384,22 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         mSearchModeSwitchTipsPw = searchModeSwitchTipsPw;
     }
 
+    public boolean isVoiceSearch() {
+        return mVoiceSearch;
+    }
+
+    public void setVoiceSearch(boolean voiceSearch) {
+        mVoiceSearch = voiceSearch;
+    }
+
+    public String getVoiceText() {
+        return mVoiceText;
+    }
+
+    public void setVoiceText(String voiceText) {
+        mVoiceText = voiceText;
+    }
+
     private void refreshView() {
         showTopTabView(SettingsHelper.getInstance().getSearchMode());
         Object currentTab = mTopTabView.getCurrentTab();
@@ -325,14 +408,22 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         switch ((SearchMode) currentTab) {
             case T9:
                 if (fragment instanceof T9SearchFragment) {
-                    ((T9SearchFragment) fragment).updateSearch();
+                    if(true==isVoiceSearch()){
+                        ((T9SearchFragment) fragment).voiceSearch(getVoiceText());
+                    }else {
+                        ((T9SearchFragment) fragment).search();
+                    }
                     ((T9SearchFragment) fragment).refreshView();
                 }
                 break;
             case QWERTY:
                
                 if (fragment instanceof QwertySearchFragment) {
-                    ((QwertySearchFragment) fragment).updateSearch();
+                    if(true==isVoiceSearch()){
+                        ((QwertySearchFragment) fragment).voiceSearch(getVoiceText());
+                    }else {
+                        ((QwertySearchFragment) fragment).search();
+                    }
                     ((QwertySearchFragment) fragment).refreshView();
                 }
                 break;
@@ -368,5 +459,211 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
        
     }
 
-   
+    /*start: xfyun voice input*/
+    private void startVoiceInput(){
+        // 移动数据分析，收集开始听写事件
+        //FlowerCollector.onEvent(getActivity(), "iat_recognize");
+        int ret = 0; // 函数调用返回值
+        mIatResults.clear();
+        // 设置参数
+        setParam();
+        boolean isShowDialog = mSharedPreferences.getBoolean(
+                getString(R.string.pref_key_iat_show), true);
+        if (isShowDialog) {
+            // 显示听写对话框
+            mIatDialog.setListener(mRecognizerDialogListener);
+            mIatDialog.show();
+            showTip(getString(R.string.text_begin));
+        } else {
+            // 不显示听写对话框
+            ret = mIat.startListening(mRecognizerListener);
+            if (ret != ErrorCode.SUCCESS) {
+                showTip("听写失败,错误码：" + ret);
+            } else {
+                showTip(getString(R.string.text_begin));
+            }
+        }
+
+
+
+    }
+
+    private void initSpeechRecognizer(){
+        // 初始化识别无UI识别对象
+        // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
+        mIat = SpeechRecognizer.createRecognizer(getActivity(), mInitListener);
+
+        // 初始化听写Dialog，如果只使用有UI听写功能，无需创建SpeechRecognizer
+        // 使用UI听写功能，请根据sdk文件目录下的notice.txt,放置布局文件和图片资源
+        mIatDialog = new RecognizerDialog(getActivity(), mInitListener);
+
+        mSharedPreferences = getContext().getSharedPreferences(IatSettings.PREFER_NAME,
+                Activity.MODE_PRIVATE);
+        mToast = Toast.makeText(getContext(), "", Toast.LENGTH_SHORT);
+    }
+
+    /**
+     * 初始化监听器。
+     */
+    private InitListener mInitListener = new InitListener() {
+
+        @Override
+        public void onInit(int code) {
+            Log.d(TAG, "SpeechRecognizer init() code = " + code);
+            if (code != ErrorCode.SUCCESS) {
+                showTip("初始化失败，错误码：" + code);
+            }
+        }
+    };
+
+    /**
+     * 参数设置
+     */
+    public void setParam() {
+        // 清空参数
+        mIat.setParameter(SpeechConstant.PARAMS, null);
+
+        // 设置听写引擎
+        mIat.setParameter(SpeechConstant.ENGINE_TYPE, mEngineType);
+        // 设置返回结果格式
+        mIat.setParameter(SpeechConstant.RESULT_TYPE, "json");
+
+        String lag = mSharedPreferences.getString("iat_language_preference",
+                "mandarin");
+        if (lag.equals("en_us")) {
+            // 设置语言
+            mIat.setParameter(SpeechConstant.LANGUAGE, "en_us");
+        } else {
+            // 设置语言
+            mIat.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
+            // 设置语言区域
+            mIat.setParameter(SpeechConstant.ACCENT, lag);
+        }
+
+        // 设置语音前端点:静音超时时间，即用户多长时间不说话则当做超时处理
+        mIat.setParameter(SpeechConstant.VAD_BOS, mSharedPreferences.getString("iat_vadbos_preference", "4000"));
+
+        // 设置语音后端点:后端点静音检测时间，即用户停止说话多长时间内即认为不再输入， 自动停止录音
+        mIat.setParameter(SpeechConstant.VAD_EOS, mSharedPreferences.getString("iat_vadeos_preference", "1000"));
+
+        // 设置标点符号,设置为"0"返回结果无标点,设置为"1"返回结果有标点
+        mIat.setParameter(SpeechConstant.ASR_PTT, mSharedPreferences.getString("iat_punc_preference", "0"));
+
+        // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
+        // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
+        mIat.setParameter(SpeechConstant.AUDIO_FORMAT,"wav");
+        mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, Environment.getExternalStorageDirectory()+"/msc/iat.wav");
+    }
+
+    /**
+     * 听写UI监听器
+     */
+    private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
+        public void onResult(RecognizerResult results, boolean isLast) {
+            String voiceText=parseResult(results);
+            if(true==isLast) {
+                setVoiceSearch(true);
+                setVoiceText(voiceText);
+                //ToastUtil.toastLengthshort(getContext(), "2" + voiceText);
+                refreshView();
+                setVoiceSearch(false);
+            }
+        }
+
+        /**
+         * 识别回调错误.
+         */
+        public void onError(SpeechError error) {
+            showTip(error.getPlainDescription(true));
+        }
+
+    };
+
+
+    /**
+     * 听写监听器。
+     */
+    private RecognizerListener mRecognizerListener = new RecognizerListener() {
+
+        @Override
+        public void onBeginOfSpeech() {
+            // 此回调表示：sdk内部录音机已经准备好了，用户可以开始语音输入
+            showTip("开始说话");
+        }
+
+        @Override
+        public void onError(SpeechError error) {
+            // Tips：
+            // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
+            // 如果使用本地功能（语记）需要提示用户开启语记的录音权限。
+
+            showTip(error.getPlainDescription(true));
+        }
+
+        @Override
+        public void onEndOfSpeech() {
+            // 此回调表示：检测到了语音的尾端点，已经进入识别过程，不再接受语音输入
+            showTip("结束说话");
+        }
+
+        @Override
+        public void onResult(RecognizerResult results, boolean isLast) {
+            Log.d(TAG, results.getResultString());
+            String voiceText=parseResult(results);
+         //   ToastUtil.toastLengthshort(getContext(),"1"+voiceText);
+            if (isLast) {
+                setVoiceSearch(true);
+                setVoiceText(voiceText);
+                refreshView();
+                setVoiceSearch(false);
+            }
+        }
+
+        @Override
+        public void onVolumeChanged(int volume, byte[] data) {
+            showTip("当前正在说话，音量大小：" + volume);
+            Log.d(TAG, "返回音频数据："+data.length);
+        }
+
+        @Override
+        public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            // 以下代码用于获取与云端的会话id，当业务出错时将会话id提供给技术支持人员，可用于查询会话日志，定位出错原因
+            // 若使用本地能力，会话id为null
+            //	if (SpeechEvent.EVENT_SESSION_ID == eventType) {
+            //		String sid = obj.getString(SpeechEvent.KEY_EVENT_SESSION_ID);
+            //		Log.d(TAG, "session id =" + sid);
+            //	}
+        }
+    };
+
+    private String parseResult(RecognizerResult results) {
+        String iatResultStr=null;
+        String text = JsonParser.parseIatResult(results.getResultString());
+
+        String sn = null;
+        // 读取json结果中的sn字段
+        try {
+            JSONObject resultJson = new JSONObject(results.getResultString());
+            sn = resultJson.optString("sn");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        mIatResults.put(sn, text);
+
+        StringBuffer resultBuffer = new StringBuffer();
+        for (String key : mIatResults.keySet()) {
+            resultBuffer.append(mIatResults.get(key));
+        }
+
+        iatResultStr=resultBuffer.toString();
+
+        return  iatResultStr;
+    }
+    private void showTip(final String str) {
+        mToast.setText(str);
+        mToast.show();
+    }
+
+    /*end: xfyun voice input*/
 }

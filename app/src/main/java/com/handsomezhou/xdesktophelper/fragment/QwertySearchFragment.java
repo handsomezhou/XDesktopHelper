@@ -1,7 +1,5 @@
 package com.handsomezhou.xdesktophelper.fragment;
 
-import java.util.Collections;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,9 +18,11 @@ import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog.OnAppOperationDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper;
+import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppOperationType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
+import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.SearchBox;
 import com.handsomezhou.xdesktophelper.view.SearchBox.OnSearchBox;
@@ -34,7 +34,13 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 	private SearchBox mSearchBox;
 	private AppInfoAdapter mAppInfoAdapter;
 	private AppOperationDialog mAppOperationDialog;
-	private boolean mStartAppSuccess=false; 
+	private boolean mStartAppSuccess=false;
+	private OnQwertySearchFragment mOnQwertySearchFragment;
+	private boolean mVoiceSearch=false;
+	public interface OnQwertySearchFragment{
+		void onQwertySearchVoiceInput();
+	}
+
 	@Override
 	public void onResume() {
 		if(true==mStartAppSuccess){
@@ -96,9 +102,24 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 	/*start: OnSearchBox*/
 	@Override
 	public void onSearchTextChanged(String curCharacter) {
-		updateSearch(curCharacter);
+		search(curCharacter);
 		refreshView();
-		
+
+		if(true==isVoiceSearch()){
+			if(true== SettingsHelper.getInstance().isVoiceStartApp()) {
+				voiceStartApp();
+			}
+			setVoiceSearch(false);
+		}
+
+	}
+
+	@Override
+	public void onQwertySearchVoiceInput() {
+//		ToastUtil.toastLengthshort(getContext(),"onQwertySearchVoiceInput");
+		if(null!=mOnQwertySearchFragment){
+			mOnQwertySearchFragment.onQwertySearchVoiceInput();
+		}
 	}
 	/*end: OnSearchBox*/
 	
@@ -111,7 +132,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
                 boolean setToTopSuccess=AppSettingInfoHelper.getInstance().setToTop(appInfo);
                 
                 if(true==setToTopSuccess){
-                    updateSearch();
+                    search();
                     refreshView();
                 }
                 break;
@@ -119,7 +140,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
                 boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo);
                 AppSettingInfoHelper.getInstance().cancelSetToTop(appInfo);
                 if(true==resetSequenceSuccess){
-                    updateSearch();
+                    search();
                     refreshView();
                 }
                 
@@ -152,18 +173,51 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
     public void setAppOperationDialog(AppOperationDialog appOperationDialog) {
         mAppOperationDialog = appOperationDialog;
     }
+
+	public OnQwertySearchFragment getOnQwertySearchFragment() {
+		return mOnQwertySearchFragment;
+	}
+
+	public void setOnQwertySearchFragment(OnQwertySearchFragment onQwertySearchFragment) {
+		mOnQwertySearchFragment = onQwertySearchFragment;
+	}
+
+	public boolean isVoiceSearch() {
+		return mVoiceSearch;
+	}
+
+	public void setVoiceSearch(boolean voiceSearch) {
+		mVoiceSearch = voiceSearch;
+	}
+
 	public void refreshView() {
 		refreshQwertySearchGv();
 	}
 	
-	public void updateSearch(){
+	public void search(){
 		if(null==mSearchBox){
 			return;
 		}
-		updateSearch(mSearchBox.getSearchEtInput());
+		search(mSearchBox.getSearchEtInput());
 	
 	}
-	
+
+	public void voiceSearch(String voiceText){
+		do{
+			if(CommonUtil.isEmpty(voiceText)){
+				break;
+			}
+
+			setVoiceSearch(true);
+			mSearchBox.getSearchEt().setText(voiceText);
+			mSearchBox.getSearchEt().setSelection(mSearchBox.getSearchEt().length());
+
+			//ToastUtil.toastLengthshort(getContext(),voiceText);
+		}while (false);
+
+		return;
+	}
+
 	private void refreshQwertySearchGv() {
 		if (null == mQwertySearchGv) {
 			return;
@@ -183,20 +237,27 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 		}
 	}
 	
-	private void updateSearch(String search) {
-		Log.i(TAG, "search=["+search+"]");
+	private void search(String keyword) {
+		Log.i(TAG, "keyword=["+keyword+"]");
 		String curCharacter;
-		if (null == search) {
-			curCharacter = search;
+		if (null == keyword) {
+			curCharacter = keyword;
 		} else {
-			curCharacter = search.trim();
+			curCharacter = keyword.trim();
 		}
 		
 		if (TextUtils.isEmpty(curCharacter)) {
-			AppInfoHelper.getInstance().getQwertySearchAppInfo(null);
+			AppInfoHelper.getInstance().qwertySearch(null);
 	       
 		} else {
-			AppInfoHelper.getInstance().getQwertySearchAppInfo(curCharacter);
+			AppInfoHelper.getInstance().qwertySearch(curCharacter);
+		}
+	}
+
+	private void voiceStartApp(){
+		if(1==mAppInfoAdapter.getCount()){
+			AppInfo appInfo=mAppInfoAdapter.getItem(0);
+			mStartAppSuccess=AppUtil.startApp(getContext(), appInfo);
 		}
 	}
 	

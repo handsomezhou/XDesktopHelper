@@ -22,11 +22,13 @@ public class SearchBox extends LinearLayout {
 	private EditText mSearchEt;
 
 	private ImageView mDeleteIv;
+	private ImageView mVoiceInputIv;
 	/* end: search box */
 	private OnSearchBox mOnSearchBox;
 
 	public interface OnSearchBox {
 		void onSearchTextChanged(String curCharacter);
+		void onQwertySearchVoiceInput();
 	}
 
 	public SearchBox(Context context, AttributeSet attrs) {
@@ -63,6 +65,7 @@ public class SearchBox extends LinearLayout {
 
 		mSearchEt = (EditText) findViewById(R.id.search_edit_text);
 		mDeleteIv = (ImageView) findViewById(R.id.delete_image_view);
+		mVoiceInputIv=(ImageView) findViewById(R.id.voice_input_image_view);
 
 		return;
 	}
@@ -96,8 +99,10 @@ public class SearchBox extends LinearLayout {
 					mOnSearchBox.onSearchTextChanged(inputStr);
 					if(TextUtils.isEmpty(inputStr)){
 						ViewUtil.hideView(mDeleteIv);
+						ViewUtil.showView(mVoiceInputIv);
 					}else{
 						ViewUtil.showView(mDeleteIv);
+						ViewUtil.hideView(mVoiceInputIv);
 					}
 				}
 
@@ -112,12 +117,26 @@ public class SearchBox extends LinearLayout {
 			}
 		});
 
+		mVoiceInputIv.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				voiceInput();
+			}
+		});
+
 		return;
 	}
 
 	private void delete() {
 		mSearchEt.setText("");
 		ViewUtil.hideView(mDeleteIv);
+		ViewUtil.showView(mVoiceInputIv);
+	}
+
+	private void voiceInput(){
+		if(null!=mOnSearchBox){
+			mOnSearchBox.onQwertySearchVoiceInput();
+		}
 	}
 
 }

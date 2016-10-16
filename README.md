@@ -31,7 +31,23 @@ Depend
 	you can get a lifelike SwitchButton in Android 5.0, iOS 7/8, MIUI, or Flyme and so on.
 [https://github.com/kyleduo/SwitchButton](https://github.com/kyleduo/SwitchButton)
 
+### 科大讯飞(在线命令词识别)SDK集成
+xfyun sdk download:[http://www.xfyun.cn/sdk/dispatcher](http://www.xfyun.cn/sdk/dispatcher)
+
+1.copy assets
+2.copy library
+	(1)Msc.jar;
+	(2)Sunflower.jar;
+	(3)arm*/libmsc.so 
+3.add permission(AndroidManifest.xmlRemove non-essential permissions)
+4.use xfyun code
+(1)SpeechDemo\src\com\iflytek\voicedemo\
+5.use IFLYTEK_APPKEY:
+(1)mobile statistical analysis(in AndroidManifest.xml)
+(2)app_id(strings.xml)
+
 ### Apk download
+[XDesktopHelper](https://github.com/handsomezhou/XDesktopHelper/blob/master/release/XDesktopHelper.apk?raw=true)(latest version)
 [XDesktopHelper1.2.1](https://github.com/handsomezhou/XDesktopHelper/blob/master/release/XDesktopHelper_1_2_1.apk?raw=true)
 
 License 

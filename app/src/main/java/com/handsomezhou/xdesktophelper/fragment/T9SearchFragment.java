@@ -1,7 +1,5 @@
 package com.handsomezhou.xdesktophelper.fragment;
 
-import java.util.Collections;
-
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,9 +21,11 @@ import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog.OnAppOperationDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper;
+import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppOperationType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
+import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView.OnT9TelephoneDialpadView;
@@ -40,7 +40,12 @@ public class T9SearchFragment extends BaseFragment implements
 	private ImageView mKeyboardSwitchIv;
 	private AppInfoAdapter mAppInfoAdapter;
 	private AppOperationDialog mAppOperationDialog;
-	private boolean mStartAppSuccess=false; 
+	private boolean mStartAppSuccess=false;
+	private OnT9SearchFragment mOnT9SearchFragment;
+	private boolean mVoiceSearch=false;
+	public interface OnT9SearchFragment{
+		void onT9SearchVoiceInput();
+	}
 
     @Override
 	public void onResume() {
@@ -171,8 +176,18 @@ public class T9SearchFragment extends BaseFragment implements
 
 	@Override
 	public void onDialInputTextChanged(String curCharacter) {
-		updateSearch(curCharacter);
-		refreshView();
+		if(true==isVoiceSearch()){
+			voiceTextSearch(curCharacter);
+			refreshView();
+			if(true== SettingsHelper.getInstance().isVoiceStartApp()) {
+				voiceStartApp();
+			}
+			setVoiceSearch(false);
+		}else {
+			search(curCharacter);
+			refreshView();
+		}
+
 
 	}
 
@@ -180,6 +195,14 @@ public class T9SearchFragment extends BaseFragment implements
 	public void onHideT9TelephoneDialpadView() {
 		hideKeyboard();
 
+	}
+
+	@Override
+	public void onT9SearchVoiceInput() {
+		//ToastUtil.toastLengthshort(getContext(),"onT9SearchVoiceInput");
+		if(null!=mOnT9SearchFragment){
+			mOnT9SearchFragment.onT9SearchVoiceInput();
+		}
 	}
 
 	/* end: OnT9TelephoneDialpadView */
@@ -192,7 +215,7 @@ public class T9SearchFragment extends BaseFragment implements
             case SET_TO_TOP:
                 boolean setToTopSuccess=AppSettingInfoHelper.getInstance().setToTop(appInfo);
                 if(true==setToTopSuccess){
-                    updateSearch();
+                    search();
                     refreshView();
                 }
                 break;
@@ -200,7 +223,7 @@ public class T9SearchFragment extends BaseFragment implements
                 boolean resetSequenceSuccess=AppInfoHelper.getInstance().resetSequence(appInfo);
                 AppSettingInfoHelper.getInstance().cancelSetToTop(appInfo);
                 if(true==resetSequenceSuccess){
-                    updateSearch();
+                    search();
                     refreshView();
                 }
                 
@@ -235,20 +258,73 @@ public class T9SearchFragment extends BaseFragment implements
     public void setAppOperationDialog(AppOperationDialog appOperationDialog) {
         mAppOperationDialog = appOperationDialog;
     }
-    
-	public void refreshView() {		
+
+	public OnT9SearchFragment getOnT9SearchFragment() {
+		return mOnT9SearchFragment;
+	}
+
+	public void setOnT9SearchFragment(OnT9SearchFragment onT9SearchFragment) {
+		mOnT9SearchFragment = onT9SearchFragment;
+	}
+
+	public boolean isVoiceSearch() {
+		return mVoiceSearch;
+	}
+
+	public void setVoiceSearch(boolean voiceSearch) {
+		mVoiceSearch = voiceSearch;
+	}
+
+	public void refreshView() {
 		refreshT9SearchGv();
 		refreshT9TelephoneDialpadView();
 	}
 
-	public void updateSearch(){
+	public void search(){
 		if(null==mT9TelephoneDialpadView){
 			return;
 		}
 		
-		updateSearch(mT9TelephoneDialpadView.getT9Input());
+		search(mT9TelephoneDialpadView.getT9Input());
 	}
-	
+
+	public void voiceSearch(String voiceText){
+		do{
+			if(CommonUtil.isEmpty(voiceText)){
+				break;
+			}
+
+			setVoiceSearch(true);
+			mT9TelephoneDialpadView.getT9InputEt().setText(voiceText);
+		}while (false);
+
+		return;
+	}
+
+	private void search(String keyword) {
+		search(keyword,false);
+	}
+
+	private void voiceTextSearch(String keyword){
+		search(keyword,true);
+	}
+
+	private void search(String keyword, boolean voiceSearch) {
+		Log.i(TAG, "keyword=["+keyword+"]");
+		String curCharacter;
+		if (null == keyword) {
+			curCharacter = keyword;
+		} else {
+			curCharacter = keyword.trim();
+		}
+
+		if (TextUtils.isEmpty(curCharacter)) {
+			AppInfoHelper.getInstance().t9Search(null,voiceSearch);
+		} else {
+			AppInfoHelper.getInstance().t9Search(curCharacter,voiceSearch);
+		}
+	}
+
 	private void switchKeyboard() {
 		if (ViewUtil.getViewVisibility(mT9TelephoneDialpadView) == View.GONE) {
 			showKeyboard();
@@ -296,22 +372,12 @@ public class T9SearchFragment extends BaseFragment implements
 		mT9TelephoneDialpadView.refreshView();
 	}
 	
-	private void updateSearch(String search) {
-		Log.i(TAG, "search=["+search+"]");
-		String curCharacter;
-		if (null == search) {
-			curCharacter = search;
-		} else {
-			curCharacter = search.trim();
-		}
-		
-		if (TextUtils.isEmpty(curCharacter)) {
-			AppInfoHelper.getInstance().getT9SearchAppInfo(null); 		        
-		} else {
-			AppInfoHelper.getInstance().getT9SearchAppInfo(curCharacter);
+
+	private void voiceStartApp(){
+		if(1==mAppInfoAdapter.getCount()){
+			AppInfo appInfo=mAppInfoAdapter.getItem(0);
+			mStartAppSuccess=AppUtil.startApp(getContext(), appInfo);
 		}
 	}
-
-	
 
 }

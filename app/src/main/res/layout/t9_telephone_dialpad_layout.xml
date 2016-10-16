@@ -65,14 +65,26 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/dial_delete_btn"
-                android:layout_width="@dimen/dialpad_icon_width"
-                android:layout_height="@dimen/dialpad_icon_height"
-                android:layout_gravity="center"
-                android:layout_marginRight="@dimen/margin_right"
-                android:background="@drawable/dial_delete_selector"
-                android:visibility="gone"/>
+            <FrameLayout android:layout_width="wrap_content"
+                         android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/dial_delete_btn"
+                    android:layout_width="@dimen/dialpad_icon_width"
+                    android:layout_height="@dimen/dialpad_icon_height"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/margin_right"
+                    android:background="@drawable/dial_delete_selector"
+                    android:visibility="gone"/>
+                <Button
+                    android:id="@+id/voice_input_btn"
+                    android:layout_width="@dimen/dialpad_icon_width"
+                    android:layout_height="@dimen/dialpad_icon_height"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="@dimen/margin_right"
+                    android:background="@drawable/voice_selector"
+                />
+            </FrameLayout>
+
         </LinearLayout>
     </LinearLayout>
 

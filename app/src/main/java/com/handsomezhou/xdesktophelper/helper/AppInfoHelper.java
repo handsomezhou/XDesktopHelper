@@ -285,7 +285,7 @@ public class AppInfoHelper {
 		return appInfos;
 	}
 	
-	public void getQwertySearchAppInfo(String search){
+	public void qwertySearch(String keyword){
 		List<AppInfo> baseAppInfos=getBaseAppInfo();
 		if(null!=mQwertySearchAppInfos){
 			mQwertySearchAppInfos.clear();
@@ -293,7 +293,7 @@ public class AppInfoHelper {
 			mQwertySearchAppInfos=new ArrayList<AppInfo>();
 		}
 		
-		if(TextUtils.isEmpty(search)){
+		if(TextUtils.isEmpty(keyword)){
 			for(AppInfo ai:baseAppInfos){
 				ai.setSearchByType(SearchByType.SearchByNull);
 				ai.clearMatchKeywords();
@@ -309,13 +309,13 @@ public class AppInfoHelper {
 		}
 		
 		if (mFirstNoQwertySearchResultInput.length() > 0) {
-			if (search.contains(mFirstNoQwertySearchResultInput.toString())) {
+			if (keyword.contains(mFirstNoQwertySearchResultInput.toString())) {
 				Log.i(TAG,
 						"no need  to search,null!=search,mFirstNoQwertySearchResultInput.length()="
 								+ mFirstNoQwertySearchResultInput.length() + "["
 								+ mFirstNoQwertySearchResultInput.toString() + "]"
-								+ ";searchlen=" + search.length() + "["
-								+ search + "]");
+								+ ";searchlen=" + keyword.length() + "["
+								+ keyword + "]");
 				return;
 			} else {
 				Log.i(TAG,
@@ -325,9 +325,9 @@ public class AppInfoHelper {
 								+ mFirstNoQwertySearchResultInput.toString()
 								+ "]"
 								+ ";searchlen="
-								+ search.length()
+								+ keyword.length()
 								+ "["
-								+ search + "]");
+								+ keyword + "]");
 				mFirstNoQwertySearchResultInput.delete(0,mFirstNoQwertySearchResultInput.length());
 			}
 		}
@@ -336,7 +336,7 @@ public class AppInfoHelper {
 		int baseAppInfosCount=baseAppInfos.size();
 		for(int i=0; i<baseAppInfosCount; i++){
 			PinyinSearchUnit labelPinyinSearchUnit=baseAppInfos.get(i).getLabelPinyinSearchUnit();
-			boolean match=QwertyUtil.match(labelPinyinSearchUnit,search);
+			boolean match=QwertyUtil.match(labelPinyinSearchUnit,keyword);
 			
 			
 			if (true == match) {// search by LabelPinyinUnits;
@@ -354,18 +354,18 @@ public class AppInfoHelper {
 		
 		if (mQwertySearchAppInfos.size() <= 0) {
 			if (mFirstNoQwertySearchResultInput.length() <= 0) {
-				mFirstNoQwertySearchResultInput.append(search);
+				mFirstNoQwertySearchResultInput.append(keyword);
 				Log.i(TAG,
 						"no search result,null!=search,mFirstNoQwertySearchResultInput.length()="
 								+ mFirstNoQwertySearchResultInput.length() + "["
 								+ mFirstNoQwertySearchResultInput.toString() + "]"
-								+ ";searchlen=" + search.length() + "["
-								+ search + "]");
+								+ ";searchlen=" + keyword.length() + "["
+								+ keyword + "]");
 			} else {
 
 			}
 		}else{
-		    if(TextUtils.isEmpty(search)){
+		    if(TextUtils.isEmpty(keyword)){
 		        Collections.sort(mQwertySearchAppInfos, AppInfo.mSortByDefault);
 		    }else{
 		        Collections.sort(mQwertySearchAppInfos, AppInfo.mSortBySearch);
@@ -375,7 +375,7 @@ public class AppInfoHelper {
 		return;
 	}
 	
-	public void getT9SearchAppInfo(String search){
+	public void t9Search(String search, boolean voiceSearch){
 		List<AppInfo> baseAppInfos=getBaseAppInfo();
 		Log.i(TAG, "baseAppInfos["+baseAppInfos.size()+"]");
 		if(null!=mT9SearchAppInfos){
@@ -428,8 +428,13 @@ public class AppInfoHelper {
 		int baseAppInfosCount=baseAppInfos.size();
 		for(int i=0; i<baseAppInfosCount; i++){
 			PinyinSearchUnit labelPinyinSearchUnit=baseAppInfos.get(i).getLabelPinyinSearchUnit();
-			boolean match=T9Util.match(labelPinyinSearchUnit, search);
-			
+
+			boolean match=false;
+			if(true==voiceSearch){
+				match=QwertyUtil.match(labelPinyinSearchUnit, search);
+			}else {
+				match=T9Util.match(labelPinyinSearchUnit, search);
+			}
 			if (true == match) {// search by LabelPinyinUnits;
 				AppInfo appInfo = baseAppInfos.get(i);
 				appInfo.setSearchByType(SearchByType.SearchByLabel);

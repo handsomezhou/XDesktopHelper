@@ -15,7 +15,6 @@ import com.handsomezhou.xdesktophelper.dialog.CommonDialog;
 import com.handsomezhou.xdesktophelper.dialog.CommonDialog.OnCommonDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
-import com.handsomezhou.xdesktophelper.model.ExitAppPromptMode;
 import com.handsomezhou.xdesktophelper.model.MenuPositionMode;
 import com.handsomezhou.xdesktophelper.model.SearchMode;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
@@ -46,11 +45,12 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 	/* end: search mode */
 
 	private Button mOneKeyResetSequenceBtn;
-
+	private SwitchButton mVoiceStartAppBtn;
+	private SwitchButton mSmartSortingSwitchBtn;
 	/* start : exit_app_prompt switch button */
 	private SwitchButton mExitAppPromptSwitchBtn;
 	/* end : exit_app_prompt switch button */
-	private SwitchButton mSmartSortingSwitchBtn;
+
 
 	private CommonDialog mCommonDialog;
 
@@ -109,22 +109,21 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 		mExitAppPromptSwitchBtn = (SwitchButton) view
 				.findViewById(R.id.exit_app_prompt_switch_btn);
 
-		ExitAppPromptMode exitAppPromptModel = SettingsHelper.getInstance()
-				.getExitAppPromptMode();
-		if (ExitAppPromptMode.PROMPT_NO == exitAppPromptModel) {
-			mExitAppPromptSwitchBtn.setChecked(false);
-		} else {
-			mExitAppPromptSwitchBtn.setChecked(true);
-		}
+
+
+
+		mVoiceStartAppBtn=(SwitchButton) view.findViewById(R.id.voice_start_app_switch_btn);
+		boolean voiceStartApp=SettingsHelper.getInstance().isVoiceStartApp();
+		mVoiceStartAppBtn.setChecked(voiceStartApp);
 
 		mSmartSortingSwitchBtn= (SwitchButton) view
 				.findViewById(R.id.smart_sorting_switch_btn);
 		boolean smartSorting=SettingsHelper.getInstance().isSmartSorting();
-		if (false == smartSorting) {
-			mSmartSortingSwitchBtn.setChecked(false);
-		} else {
-			mSmartSortingSwitchBtn.setChecked(true);
-		}
+		mSmartSortingSwitchBtn.setChecked(smartSorting);
+
+		boolean exitAppPrompt = SettingsHelper.getInstance()
+				.isExitAppPrompt();
+		mExitAppPromptSwitchBtn.setChecked(exitAppPrompt);
 		
 		return view;
 	}
@@ -176,34 +175,35 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 			}
 		});
 
-		mOneKeyResetSequenceBtn.setOnClickListener(new View.OnClickListener(){
+		mOneKeyResetSequenceBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				oneKeyResetSequence();
 			}
 		});
-		mExitAppPromptSwitchBtn
-				.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
-					@Override
-					public void onCheckedChanged(CompoundButton buttonView,
-												 boolean isChecked) {
 
-						ExitAppPromptMode exitAppPromptModel = (false == isChecked) ? (ExitAppPromptMode.PROMPT_NO)
-								: (ExitAppPromptMode.PROMPT_YES);
-						SettingsHelper.getInstance().setExitAppPromptMode(
-								exitAppPromptModel);
-					}
-				});
-
+		mVoiceStartAppBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SettingsHelper.getInstance().setVoiceStartApp(isChecked);
+			}
+		});
 
 		mSmartSortingSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SettingsHelper.getInstance().setSmartSorting(isChecked);
+			}
+		});
+
+		mExitAppPromptSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
 										 boolean isChecked) {
-				boolean smartSorting = isChecked;
-				SettingsHelper.getInstance().setSmartSorting(smartSorting);
+				SettingsHelper.getInstance().setExitAppPrompt(isChecked);
 			}
 		});
 	}

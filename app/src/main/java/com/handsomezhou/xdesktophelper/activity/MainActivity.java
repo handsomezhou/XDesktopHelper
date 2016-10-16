@@ -16,10 +16,9 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
-import com.handsomezhou.xdesktophelper.Interface.sharedPreferences.MenuPositionModeSp;
+import com.handsomezhou.xdesktophelper.sharedPreferences.MenuPositionModeSp;
 import com.handsomezhou.xdesktophelper.fragment.MainFragment;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
-import com.handsomezhou.xdesktophelper.model.ExitAppPromptMode;
 import com.handsomezhou.xdesktophelper.model.MenuItem;
 import com.handsomezhou.xdesktophelper.model.MenuItemIndex;
 import com.handsomezhou.xdesktophelper.model.MenuPositionMode;
@@ -94,7 +93,7 @@ public class MainActivity extends BaseSingleFragmentActivity implements
 		if (mResideMenu.isOpened()) {
 			mResideMenu.closeMenu();
 		} else {
-			if (SettingsHelper.getInstance().getExitAppPromptMode() == ExitAppPromptMode.PROMPT_NO) {
+			if (SettingsHelper.getInstance().isExitAppPrompt() ==false) {
 				runInBackgroud();
 			} else {
 				doubleClickExit();
