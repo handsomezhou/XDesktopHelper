@@ -35,19 +35,29 @@ Depend
 xfyun sdk download:[http://www.xfyun.cn/sdk/dispatcher](http://www.xfyun.cn/sdk/dispatcher)
 
 1.copy assets
+
 2.copy library
+
 	(1)Msc.jar;
 	(2)Sunflower.jar;
-	(3)arm*/libmsc.so 
+	(3)arm*/libmsc.so
+
 3.add permission(AndroidManifest.xmlRemove non-essential permissions)
+
 4.use xfyun code
+
 (1)SpeechDemo\src\com\iflytek\voicedemo\
+
 5.use IFLYTEK_APPKEY:
+
 (1)mobile statistical analysis(in AndroidManifest.xml)
+
 (2)app_id(strings.xml)
+
 
 ### Apk download
 [XDesktopHelper](https://github.com/handsomezhou/XDesktopHelper/blob/master/release/XDesktopHelper.apk?raw=true)(latest version)
+
 [XDesktopHelper1.2.1](https://github.com/handsomezhou/XDesktopHelper/blob/master/release/XDesktopHelper_1_2_1.apk?raw=true)
 
 License 
