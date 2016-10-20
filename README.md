@@ -55,6 +55,10 @@ xfyun sdk download:[http://www.xfyun.cn/sdk/dispatcher](http://www.xfyun.cn/sdk/
 (2)app_id(strings.xml)
 
 
+### Renderings
+<img src="https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/image/XDesktopHelper.gif"/>
+
+
 ### Apk download
 [XDesktopHelper](https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/bin/XDesktopHelper.apk?raw=true)(latest version)
 
