@@ -9,6 +9,7 @@
         <item>{\"project_name\": \"pinyin4j\",\"project_address\":\"http://pinyin4j.sourceforge.net/\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"pinyinsearch\",\"project_address\":\"https://github.com/handsomezhou/PinyinSearchLibrary\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"SwitchButton\",\"project_address\":\"https://github.com/kyleduo/SwitchButton\", \"whether_open_source\":true}</item>
+		<item>{\"project_name\": \"IFlytek\'s speech recognition library\",\"project_address\":\"http://www.xfyun.cn/\", \"whether_open_source\":false}</item>
     </string-array>
     <!-- end: open source project -->
 
