@@ -28,7 +28,6 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 	private static final char DIAL_X_SECOND_MEANING = ',';
 	private static final char DIAL_0_SECOND_MEANING = '+';
 	private static final char DIAL_J_SECOND_MEANING = ';';
-
 	/**
 	 * Interface definition for a callback to be invoked when a
 	 * T9TelephoneDialpadView is operated.
@@ -57,6 +56,7 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 	private Button mVoiceInputBtn;
 	private EditText mT9InputEt;
 	private OnT9TelephoneDialpadView mOnT9TelephoneDialpadView = null;
+	private boolean mVoiceSearchEnable=true;
 
 	public T9TelephoneDialpadView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -90,6 +90,7 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 		mDialDeleteBtn = (Button) mDialpadView
 				.findViewById(R.id.dial_delete_btn);
 		mVoiceInputBtn=(Button)mDialpadView.findViewById(R.id.voice_input_btn);
+
 		mT9InputEt = (EditText) mDialpadView
 				.findViewById(R.id.dial_input_edit_text);
 		mT9InputEt.setCursorVisible(false);
@@ -241,6 +242,14 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 		mOnT9TelephoneDialpadView = onT9TelephoneDialpadView;
 	}
 
+	public boolean isVoiceSearchEnable() {
+		return mVoiceSearchEnable;
+	}
+
+	public void setVoiceSearchEnable(boolean voiceSearchEnable) {
+		mVoiceSearchEnable = voiceSearchEnable;
+	}
+
 	public EditText getT9InputEt() {
 		return mT9InputEt;
 	}
@@ -264,7 +273,11 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 			mT9InputEt.setSelection(newCurInputStr.length());
 			if(TextUtils.isEmpty(newCurInputStr)){
 				ViewUtil.hideView(mDialDeleteBtn);
-				ViewUtil.showView(mVoiceInputBtn);
+				if(true==mVoiceSearchEnable) {
+					ViewUtil.showView(mVoiceInputBtn);
+				}else{
+					ViewUtil.hideView(mVoiceInputBtn);
+				}
 			}else{
 				ViewUtil.showView(mDialDeleteBtn);
 				ViewUtil.hideView(mVoiceInputBtn);
@@ -291,7 +304,11 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 			}
 			mT9InputEt.setText("");
 			ViewUtil.hideView(mDialDeleteBtn);
-			ViewUtil.showView(mVoiceInputBtn);
+			if(true==mVoiceSearchEnable) {
+				ViewUtil.showView(mVoiceInputBtn);
+			}else {
+				ViewUtil.hideView(mVoiceInputBtn);
+			}
 		}
 	}
 
@@ -339,7 +356,11 @@ public class T9TelephoneDialpadView extends LinearLayout implements
 	public void refreshView(){
 		if(TextUtils.isEmpty(mT9InputEt.getText().toString())){
 			ViewUtil.hideView(mDialDeleteBtn);
-			ViewUtil.showView(mVoiceInputBtn);
+			if(true==mVoiceSearchEnable) {
+				ViewUtil.showView(mVoiceInputBtn);
+			}else {
+				ViewUtil.hideView(mVoiceInputBtn);
+			}
 		}else{
 			ViewUtil.showView(mDialDeleteBtn);
 			ViewUtil.hideView(mVoiceInputBtn);

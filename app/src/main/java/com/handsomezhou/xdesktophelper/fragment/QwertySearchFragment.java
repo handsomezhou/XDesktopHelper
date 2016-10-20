@@ -43,6 +43,9 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 
 	@Override
 	public void onResume() {
+		if(null!=mSearchBox){
+			mSearchBox.setVoiceSearchEnable(SettingsHelper.getInstance().isVoiceSearchEnable());
+		}
 		if(true==mStartAppSuccess){
 			mStartAppSuccess=false;
 			mSearchBox.getSearchEt().setText(null);
@@ -192,6 +195,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 
 	public void refreshView() {
 		refreshQwertySearchGv();
+		refreshSearchBox();
 	}
 	
 	public void search(){
@@ -236,7 +240,14 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 			}
 		}
 	}
-	
+
+	private void refreshSearchBox(){
+		if(null==mSearchBox){
+			return;
+		}
+
+		mSearchBox.refreshView();
+	}
 	private void search(String keyword) {
 		Log.i(TAG, "keyword=["+keyword+"]");
 		String curCharacter;

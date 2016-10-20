@@ -1,12 +1,4 @@
 <resources>
-
-    <!--start:xfyun-->
-    <!-- 请替换成在语音云官网申请的appid -->
-    <string name="app_id">55d34b8d</string>
-    <string name="pref_key_iat_show">iat_show</string>
-    <string name="text_begin">请开始说话…</string>
-    <!--start:xfyun-->
-
     <string name="app_name">X桌面助手</string>
     <string name="t9_search">T9搜索</string>
     <string name="qwerty_search">全键盘搜索</string>
@@ -57,6 +49,7 @@
     <string name="sure_to_one_key_reset_sequence">确定一键顺序复位?</string>
     <string name="one_key_reset_sequence_success">一键顺序复位成功</string>
     <string name="one_key_reset_sequence_failed">一键顺序复位失敗</string>
+    <string name="voice_search_enable">语音搜索启用</string>
     <string name="voice_start_app">语音启动应用</string>
     <string name="smart_sorting">智能排序</string>
     <!-- end: settings -->
@@ -85,4 +78,73 @@
     <string name="common_ok">确定</string>
     <string name="common_cancel">取消</string>
     <!-- End: common dialog -->
+
+    <!--start:xfyun-->
+    <!-- 请替换成在语音云官网申请的appid -->
+    <string name="app_id">55d34b8d</string>
+    <string name="pref_key_iat_show">iat_show</string>
+    <string name="text_begin">请开始说话…</string>
+    <!--start:Error of Android&Java -->
+    <!-- 20001-->
+    <string name="error_no_network">找不到网络哦</string>
+    <!--20002-->
+    <string name="error_network_timeout">网络不给力啊</string>
+    <!--20003-->
+    <string name="error_net_expection">网络出问题了</string>
+    <!--20004-->
+    <string name="error_invalid_result">无有效的结果</string>
+    <!--20005-->
+    <string name="error_no_match">无匹配结果</string>
+    <!--20006-->
+    <string name="error_audio_record">录音失败,请授予该应用录音权限</string>
+    <!--20007-->
+    <string name="error_no_sppech">未检测到语音</string>
+    <!--20008-->
+    <string name="error_speech_timeout">音频输入超时</string>
+    <!--20009-->
+    <string name="error_empty_utterance">无效的文本输入</string>
+    <!--20010-->
+    <string name="error_file_access">文件读写失败</string>
+    <!--20011-->
+    <string name="error_play_media">音频播放失败</string>
+    <!--20012-->
+    <string name="error_invalid_param">无效的参数</string>
+    <!--20013-->
+    <string name="error_text_overflow">文本溢出</string>
+    <!--20014-->
+    <string name="error_invalid_data">无效数据</string>
+    <!--20015-->
+    <string name="error_login">用户未登陆</string>
+    <!--20016-->
+    <string name="error_permission_denied">无效授权</string>
+    <!--20017-->
+    <string name="error_interrupt">被异常打断</string>
+    <!--20019-->
+    <string name="error_invalid_encoding">无效的编码</string>
+    <!--20020-->
+    <string name="error_memory_wraning">内存不足</string>
+    <!--20999-->
+    <string name="error_unknown">未知错误</string>
+    <!--21001-->
+    <string name="error_component_not_installed">没有安装语音组件</string>
+    <!--21002-->
+    <string name="error_engine_not_supported">引擎不支持</string>
+    <!--21003-->
+    <string name="error_engine_init_fail">初始化失败</string>
+    <!--21004-->
+    <string name="error_engine_call_fail">调用失败</string>
+    <!--21005-->
+    <string name="error_engine_busy">引擎繁忙</string>
+    <!--22001-->
+    <string name="error_local_no_init">本地引擎未初始化</string>
+    <!--22002-->
+    <string name="error_local_resource">本地引擎无资源</string>
+    <!--22003-->
+    <string name="error_local_engine">本地引擎内部错误</string>
+    <!--22004-->
+    <string name="error_ivw_interrupt">本地唤醒引擎被异常打断</string>
+    <!--22005-->
+    <string name="error_version_lower">版本过低</string>
+    <!--end:Error of Android&Java -->
+    <!--start:xfyun-->
 </resources>

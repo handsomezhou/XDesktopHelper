@@ -1,11 +1,6 @@
 
 package com.handsomezhou.xdesktophelper.fragment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -23,27 +18,27 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
-import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.Interface.OnTabChange;
+import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.adapter.CustomPartnerViewPagerAdapter;
 import com.handsomezhou.xdesktophelper.dialog.BaseProgressDialog;
+import com.handsomezhou.xdesktophelper.fragment.T9SearchFragment.OnT9SearchFragment;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
-import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper.OnAppInfoLoad;
 import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper.OnAppSettingInfoLoad;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper.OnAppStartRecordLoad;
+import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.model.IconButtonData;
 import com.handsomezhou.xdesktophelper.model.IconButtonValue;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
 import com.handsomezhou.xdesktophelper.model.PartnerView;
 import com.handsomezhou.xdesktophelper.model.SearchMode;
-import com.handsomezhou.xdesktophelper.util.ToastUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
+import com.handsomezhou.xdesktophelper.util.XfyunErrorCodeUtil;
 import com.handsomezhou.xdesktophelper.view.CustomViewPager;
 import com.handsomezhou.xdesktophelper.view.TopTabView;
-import com.handsomezhou.xdesktophelper.fragment.T9SearchFragment.OnT9SearchFragment;
 import com.handsomezhou.xdesktophelper.xfyun.setting.IatSettings;
 import com.handsomezhou.xdesktophelper.xfyun.util.JsonParser;
 import com.iflytek.cloud.ErrorCode;
@@ -58,6 +53,11 @@ import com.iflytek.cloud.ui.RecognizerDialogListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad,OnAppSettingInfoLoad,
         OnTabChange ,OnT9SearchFragment,QwertySearchFragment.OnQwertySearchFragment {
@@ -574,11 +574,29 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
          * 识别回调错误.
          */
         public void onError(SpeechError error) {
-            showTip(error.getPlainDescription(true));
+
+           // showTip(error.getPlainDescription(true));
+            dealSpeechError(error);
         }
 
     };
 
+    private void dealSpeechError(SpeechError error){
+        do {
+            if(null==error){
+                break;
+            }
+            int errorCode=error.getErrorCode();
+            if(errorCode==ErrorCode.MSP_ERROR_NO_DATA){
+                break;
+            }
+            String xfyunErrorCodeDescription= XfyunErrorCodeUtil.getXfyunErrorCodeDescription(getContext(),errorCode);
+            //  showTip(error.getPlainDescription(true));
+            showTip(xfyunErrorCodeDescription);
+        }while (false);
+
+        return;
+    }
 
     /**
      * 听写监听器。
@@ -597,7 +615,8 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             // 错误码：10118(您没有说话)，可能是录音机权限被禁，需要提示用户打开应用的录音权限。
             // 如果使用本地功能（语记）需要提示用户开启语记的录音权限。
 
-            showTip(error.getPlainDescription(true));
+            //showTip(error.getPlainDescription(true));
+            dealSpeechError(error);
         }
 
         @Override

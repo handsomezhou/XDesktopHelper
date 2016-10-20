@@ -45,6 +45,7 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 	/* end: search mode */
 
 	private Button mOneKeyResetSequenceBtn;
+	private SwitchButton mVoiceSearchEnableBtn;
 	private SwitchButton mVoiceStartAppBtn;
 	private SwitchButton mSmartSortingSwitchBtn;
 	/* start : exit_app_prompt switch button */
@@ -110,7 +111,9 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 				.findViewById(R.id.exit_app_prompt_switch_btn);
 
 
-
+		mVoiceSearchEnableBtn=(SwitchButton) view.findViewById(R.id.voice_search_enable_switch_btn);
+		boolean voiceSearchEnable=SettingsHelper.getInstance().isVoiceSearchEnable();
+		mVoiceSearchEnableBtn.setChecked(voiceSearchEnable);
 
 		mVoiceStartAppBtn=(SwitchButton) view.findViewById(R.id.voice_start_app_switch_btn);
 		boolean voiceStartApp=SettingsHelper.getInstance().isVoiceStartApp();
@@ -182,6 +185,13 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 			}
 		});
 
+
+		mVoiceSearchEnableBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SettingsHelper.getInstance().setVoiceSearchEnable(isChecked);
+			}
+		});
 
 		mVoiceStartAppBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override

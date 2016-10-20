@@ -49,6 +49,9 @@ public class T9SearchFragment extends BaseFragment implements
 
     @Override
 	public void onResume() {
+		if(null!=mT9TelephoneDialpadView){
+			mT9TelephoneDialpadView.setVoiceSearchEnable(SettingsHelper.getInstance().isVoiceSearchEnable());
+		}
     	if(true==mStartAppSuccess){
 			mStartAppSuccess=false;
 			mT9TelephoneDialpadView.getT9InputEt().setText(null);

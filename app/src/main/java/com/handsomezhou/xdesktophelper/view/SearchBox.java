@@ -23,6 +23,7 @@ public class SearchBox extends LinearLayout {
 
 	private ImageView mDeleteIv;
 	private ImageView mVoiceInputIv;
+	private boolean mVoiceSearchEnable=true;
 	/* end: search box */
 	private OnSearchBox mOnSearchBox;
 
@@ -39,6 +40,15 @@ public class SearchBox extends LinearLayout {
 		initListener();
 	}
 
+
+	public boolean isVoiceSearchEnable() {
+		return mVoiceSearchEnable;
+	}
+
+	public void setVoiceSearchEnable(boolean voiceSearchEnable) {
+		mVoiceSearchEnable = voiceSearchEnable;
+	}
+
 	public OnSearchBox getOnSearchBox() {
 		return mOnSearchBox;
 	}
@@ -46,6 +56,7 @@ public class SearchBox extends LinearLayout {
 	public void setOnSearchBox(OnSearchBox onSearchBox) {
 		mOnSearchBox = onSearchBox;
 	}
+
 
 	public EditText getSearchEt() {
 		return mSearchEt;
@@ -59,6 +70,19 @@ public class SearchBox extends LinearLayout {
 		return mSearchEt.getText().toString();
 	}
 
+	public void refreshView(){
+		if(TextUtils.isEmpty(mSearchEt.getText().toString())){
+			ViewUtil.hideView(mDeleteIv);
+			if(true==mVoiceSearchEnable) {
+				ViewUtil.showView(mVoiceInputIv);
+			}else {
+				ViewUtil.hideView(mVoiceInputIv);
+			}
+		}else{
+			ViewUtil.showView(mDeleteIv);
+			ViewUtil.hideView(mVoiceInputIv);
+		}
+	}
 	private void initView() {
 		LayoutInflater.from(mContext).inflate(R.layout.search_box, this);
 		mSearchBox = findViewById(R.id.search_box);
@@ -99,7 +123,11 @@ public class SearchBox extends LinearLayout {
 					mOnSearchBox.onSearchTextChanged(inputStr);
 					if(TextUtils.isEmpty(inputStr)){
 						ViewUtil.hideView(mDeleteIv);
-						ViewUtil.showView(mVoiceInputIv);
+						if(true==mVoiceSearchEnable) {
+							ViewUtil.showView(mVoiceInputIv);
+						}else{
+							ViewUtil.hideView(mVoiceInputIv);
+						}
 					}else{
 						ViewUtil.showView(mDeleteIv);
 						ViewUtil.hideView(mVoiceInputIv);
@@ -130,7 +158,11 @@ public class SearchBox extends LinearLayout {
 	private void delete() {
 		mSearchEt.setText("");
 		ViewUtil.hideView(mDeleteIv);
-		ViewUtil.showView(mVoiceInputIv);
+		if(true==mVoiceSearchEnable) {
+			ViewUtil.showView(mVoiceInputIv);
+		}else{
+			ViewUtil.hideView(mVoiceInputIv);
+		}
 	}
 
 	private void voiceInput(){
