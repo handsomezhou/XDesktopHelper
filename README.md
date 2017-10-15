@@ -62,8 +62,6 @@ xfyun sdk download:[http://www.xfyun.cn/sdk/dispatcher](http://www.xfyun.cn/sdk/
 ### Apk download
 [XDesktopHelper](https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/bin/XDesktopHelper.apk?raw=true)(latest version)
 
-[XDesktopHelper1.2.1](https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/bin/XDesktopHelper_1_2_1.apk?raw=true)
-
 License 
 ---------------
 	Copyright 2015 handsomezhou

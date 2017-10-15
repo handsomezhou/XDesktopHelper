@@ -36,7 +36,6 @@ public class XDesktopHelperService extends Service{
 	@Override
 	public void onDestroy() {
 		Log.i(TAG, "onDestroy");
-		startService();
 		super.onDestroy();
 	}
 	
