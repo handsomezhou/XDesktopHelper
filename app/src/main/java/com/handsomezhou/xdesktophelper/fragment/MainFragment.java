@@ -21,6 +21,11 @@ import android.widget.Toast;
 import com.handsomezhou.xdesktophelper.Interface.OnTabChange;
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.adapter.CustomPartnerViewPagerAdapter;
+import com.handsomezhou.xdesktophelper.baidu.aip.constant.BaiduConstant;
+import com.handsomezhou.xdesktophelper.baidu.aip.helper.BaiduAipHelper;
+import com.handsomezhou.xdesktophelper.baidu.aip.model.Event;
+import com.handsomezhou.xdesktophelper.baidu.aip.model.NlpLexer;
+import com.handsomezhou.xdesktophelper.constant.EventAction;
 import com.handsomezhou.xdesktophelper.dialog.BaseProgressDialog;
 import com.handsomezhou.xdesktophelper.fragment.T9SearchFragment.OnT9SearchFragment;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
@@ -30,11 +35,16 @@ import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper.OnAppSettingI
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper.OnAppStartRecordLoad;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
+import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.IconButtonData;
 import com.handsomezhou.xdesktophelper.model.IconButtonValue;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
 import com.handsomezhou.xdesktophelper.model.PartnerView;
 import com.handsomezhou.xdesktophelper.model.SearchMode;
+import com.handsomezhou.xdesktophelper.util.AppUtil;
+import com.handsomezhou.xdesktophelper.util.CommonUtil;
+import com.handsomezhou.xdesktophelper.util.ContextAnalysisUtil;
+import com.handsomezhou.xdesktophelper.util.ToastUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.util.XfyunErrorCodeUtil;
 import com.handsomezhou.xdesktophelper.view.CustomViewPager;
@@ -59,8 +69,8 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad,OnAppSettingInfoLoad,
-        OnTabChange ,OnT9SearchFragment,QwertySearchFragment.OnQwertySearchFragment {
+public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad, OnAppSettingInfoLoad,
+        OnTabChange, OnT9SearchFragment, QwertySearchFragment.OnQwertySearchFragment {
     private static final String TAG = MainFragment.class.getSimpleName();
     private List<PartnerView> mPartnerViews;
     private TopTabView mTopTabView;
@@ -83,8 +93,8 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     private String mEngineType = SpeechConstant.TYPE_CLOUD;
     /*end: xfyun voice input*/
 
-    private boolean mVoiceSearch=false;
-    private String mVoiceText=null;
+    private boolean mVoiceSearch = false;
+    private String mVoiceText = null;
 
     @Override
     public void onResume() {
@@ -95,7 +105,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             Log.i(TAG, asr.getLabel() + ":" + ":" + asr.getCommonWeights());
 
         }*/
-       // mTopTabView.setCurrentTabItem(SettingsHelper.getInstance().getSearchMode());
+        // mTopTabView.setCurrentTabItem(SettingsHelper.getInstance().getSearchMode());
         mCustomViewPager.setCurrentItem(getPartnerViewItem(SettingsHelper.getInstance().getSearchMode()));
         refreshView();
         super.onResume();
@@ -105,7 +115,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     public void onDestroy() {
         super.onDestroy();
         //退出时释放连接
-        if(null!=mIat){
+        if (null != mIat) {
             mIat.cancel();
             mIat.destroy();
         }
@@ -117,7 +127,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         initSpeechRecognizer();
         mPartnerViews = new ArrayList<PartnerView>();
         /* start: T9 search view */
-        T9SearchFragment t9SearchFragment=  new T9SearchFragment();
+        T9SearchFragment t9SearchFragment = new T9SearchFragment();
         t9SearchFragment.setOnT9SearchFragment(this);
 
         PartnerView t9PartnerView = new PartnerView(SearchMode.T9, t9SearchFragment);
@@ -126,7 +136,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         /* end: T9 search view */
 
         /* start: Qwerty search view */
-        QwertySearchFragment qwertySearchFragment=  new QwertySearchFragment();
+        QwertySearchFragment qwertySearchFragment = new QwertySearchFragment();
         qwertySearchFragment.setOnQwertySearchFragment(this);
         PartnerView qwertyPartnerView = new PartnerView(SearchMode.QWERTY,
                 qwertySearchFragment);
@@ -179,7 +189,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         /* end: Qwerty search tab */
 
         mTopTabView.setOnTabChange(this);
-        
+
         return view;
     }
 
@@ -199,14 +209,14 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                         // Toast.makeText(getContext(),addressBookView.getTag().toString()+"+++"
                         // , Toast.LENGTH_LONG).show();
                         mTopTabView.setCurrentTabItem(partnerView.getTag());
-                        SettingsHelper.getInstance().setSearchMode((SearchMode)partnerView.getTag());
+                        SettingsHelper.getInstance().setSearchMode((SearchMode) partnerView.getTag());
                         SettingsHelper.getInstance().setSearchModeSwitchTips(false);
                         refreshView();
                     }
 
                     @Override
                     public void onPageScrolled(int pos, float posOffset,
-                            int posOffsetPixels) {
+                                               int posOffsetPixels) {
 
                     }
 
@@ -215,8 +225,8 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
                     }
                 });
-        
-       
+
+
         mCustomViewPager.setCurrentItem(getPartnerViewItem(SettingsHelper.getInstance().getSearchMode()));
 
     }
@@ -236,7 +246,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             AppSettingInfoHelper.getInstance().startLoadAppSettingInfo(this);
         }
         AppInfoHelper.getInstance().qwertySearch(null);
-        AppInfoHelper.getInstance().t9Search(null,false);
+        AppInfoHelper.getInstance().t9Search(null, false);
         refreshView();
 
     }
@@ -253,7 +263,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     @Override
     public void onAppStartRecordSuccess() {
         if (AppInfoHelper.getInstance().getBaseAllAppInfosLoadStatus() == LoadStatus.LOAD_FINISH) {
-           // Log.i(TAG, "onAppStartRecordSuccess before");
+            // Log.i(TAG, "onAppStartRecordSuccess before");
             if (true == AppStartRecordHelper.getInstance().parseAppStartRecord()) {
                 Log.i(TAG, "onAppStartRecordSuccess ture");
                 refreshView();
@@ -278,7 +288,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     public void onAppSettingInfoLoadSuccess() {
         AppSettingInfoHelper.getInstance().parseAppSettingInfo();
         refreshView();
-        if(true==SettingsHelper.getInstance().isSearchModeSwitchTips()){
+        if (true == SettingsHelper.getInstance().isSearchModeSwitchTips()) {
             getSearchModeSwitchTipsPw().showAsDropDown(mTopTabView);
         }
     }
@@ -286,14 +296,14 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     @Override
     public void onAppSettingInfoLoadFailed() {
         // TODO Auto-generated method stub
-        
+
     }
     /*end: OnAppSettingInfoLoad*/
-    
+
     /* start: OnTabChange */
     @Override
     public void onChangeToTab(Object fromTab, Object toTab,
-            TAB_CHANGE_STATE tabChangeState) {
+                              TAB_CHANGE_STATE tabChangeState) {
         int item = getPartnerViewItem(toTab);
         mCustomViewPager.setCurrentItem(item);
 
@@ -352,27 +362,27 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         mBaseProgressDialog = baseProgressDialog;
     }
 
-  
+
     public PopupWindow getSearchModeSwitchTipsPw() {
-        if(null==mSearchModeSwitchTipsPw){
+        if (null == mSearchModeSwitchTipsPw) {
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View conference_start_tips_popup_window =(View) inflater.inflate(
+            View conference_start_tips_popup_window = (View) inflater.inflate(
                     R.layout.popup_window_search_mode_switch_tips, null);
-            mSearchModeSwitchTipsPw=new PopupWindow(conference_start_tips_popup_window,
+            mSearchModeSwitchTipsPw = new PopupWindow(conference_start_tips_popup_window,
                     LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             ColorDrawable dw = new ColorDrawable(getContext().getResources().getColor(R.color.grey21_transparent));
             mSearchModeSwitchTipsPw.setBackgroundDrawable(dw);
             mSearchModeSwitchTipsPw.setOutsideTouchable(true);
          /*   mSearchModeSwitchTipsPw.setFocusable(true);*/
             mSearchModeSwitchTipsPw.setTouchable(true);
-         
+
             conference_start_tips_popup_window.setOnClickListener(new View.OnClickListener() {
-                
+
                 @Override
                 public void onClick(View v) {
                     mSearchModeSwitchTipsPw.dismiss();
-                    
+
                 }
             });
         }
@@ -408,20 +418,20 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         switch ((SearchMode) currentTab) {
             case T9:
                 if (fragment instanceof T9SearchFragment) {
-                    if(true==isVoiceSearch()){
+                    if (true == isVoiceSearch()) {
                         ((T9SearchFragment) fragment).voiceSearch(getVoiceText());
-                    }else {
+                    } else {
                         ((T9SearchFragment) fragment).search();
                     }
                     ((T9SearchFragment) fragment).refreshView();
                 }
                 break;
             case QWERTY:
-               
+
                 if (fragment instanceof QwertySearchFragment) {
-                    if(true==isVoiceSearch()){
+                    if (true == isVoiceSearch()) {
                         ((QwertySearchFragment) fragment).voiceSearch(getVoiceText());
-                    }else {
+                    } else {
                         ((QwertySearchFragment) fragment).search();
                     }
                     ((QwertySearchFragment) fragment).refreshView();
@@ -450,17 +460,17 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
         return item;
     }
-    
-    private void showTopTabView(SearchMode searchMode){
-        for(int i=0; i<mTopTabView.getChildCount(); i++){
+
+    private void showTopTabView(SearchMode searchMode) {
+        for (int i = 0; i < mTopTabView.getChildCount(); i++) {
             ViewUtil.hideView(mTopTabView.getChildAt(i));
         }
         ViewUtil.showView(mTopTabView.getChildAt(searchMode.ordinal()));
-       
+
     }
 
     /*start: xfyun voice input*/
-    private void startVoiceInput(){
+    private void startVoiceInput() {
         // 移动数据分析，收集开始听写事件
         //FlowerCollector.onEvent(getActivity(), "iat_recognize");
         int ret = 0; // 函数调用返回值
@@ -485,10 +495,9 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         }
 
 
-
     }
 
-    private void initSpeechRecognizer(){
+    private void initSpeechRecognizer() {
         // 初始化识别无UI识别对象
         // 使用SpeechRecognizer对象，可根据回调消息自定义界面；
         mIat = SpeechRecognizer.createRecognizer(getActivity(), mInitListener);
@@ -551,8 +560,8 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
         // 设置音频保存路径，保存音频格式支持pcm、wav，设置路径为sd卡请注意WRITE_EXTERNAL_STORAGE权限
         // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
-        mIat.setParameter(SpeechConstant.AUDIO_FORMAT,"wav");
-        mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, Environment.getExternalStorageDirectory()+"/msc/iat.wav");
+        mIat.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
+        mIat.setParameter(SpeechConstant.ASR_AUDIO_PATH, Environment.getExternalStorageDirectory() + "/msc/iat.wav");
     }
 
     /**
@@ -560,13 +569,40 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
      */
     private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
         public void onResult(RecognizerResult results, boolean isLast) {
-            String voiceText=parseResult(results);
-            if(true==isLast) {
+            String voiceText = parseResult(results);
+            if (true == isLast) {
                 setVoiceSearch(true);
-                setVoiceText(voiceText);
-                //ToastUtil.toastLengthshort(getContext(), "2" + voiceText);
-                refreshView();
-                setVoiceSearch(false);
+                if (CommonUtil.isEmpty(BaiduConstant.APP_ID) || CommonUtil.isEmpty(BaiduConstant.API_KEY) || CommonUtil.isEmpty(BaiduConstant.SECRET_KEY)) {
+
+                    setVoiceText(voiceText);
+                    //ToastUtil.toastLengthshort(getContext(), "2" + voiceText);
+                    refreshView();
+                    setVoiceSearch(false);
+                } else {
+                    BaiduAipHelper.getInstance().startNlp(voiceText, new BaiduAipHelper.OnAipNlp() {
+                        @Override
+                        public void onAipNlpSuccess(String text, NlpLexer nlpLexer) {
+                            //ToastUtil.toastLengthshort(getContext(),nlpLexer.getText()+ Constant.NEW_LINE+ JsonUtil.toJson(nlpLexer.getItems()));
+                            List<Event> events = ContextAnalysisUtil.parse(nlpLexer);
+                            if (null == events || events.size() <= 0) {
+                                String tips = getString(R.string.i_can_not_understand_your_words, nlpLexer.getText());
+                                ToastUtil.toastLengthshort(getContext(), tips);
+                                //ToastUtil.toastLengthshort(getContext(),tips+ Constant.NEW_LINE+ JsonUtil.toJson(nlpLexer.getItems()));
+                            } else {
+                                Event event = events.get(events.size() - 1);
+                                processEvent(event);
+                                //ToastUtil.toastLengthshort(getContext(),JsonUtil.toJson(event));
+
+                            }
+                            setVoiceSearch(false);
+                        }
+
+                        @Override
+                        public void onAipNlpFailed(String text) {
+                            setVoiceSearch(false);
+                        }
+                    });
+                }
             }
         }
 
@@ -575,25 +611,26 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
          */
         public void onError(SpeechError error) {
 
-           // showTip(error.getPlainDescription(true));
+            // showTip(error.getPlainDescription(true));
             dealSpeechError(error);
         }
 
     };
 
-    private void dealSpeechError(SpeechError error){
+
+    private void dealSpeechError(SpeechError error) {
         do {
-            if(null==error){
+            if (null == error) {
                 break;
             }
-            int errorCode=error.getErrorCode();
-            if(errorCode==ErrorCode.MSP_ERROR_NO_DATA){
+            int errorCode = error.getErrorCode();
+            if (errorCode == ErrorCode.MSP_ERROR_NO_DATA) {
                 break;
             }
-            String xfyunErrorCodeDescription= XfyunErrorCodeUtil.getXfyunErrorCodeDescription(getContext(),errorCode);
+            String xfyunErrorCodeDescription = XfyunErrorCodeUtil.getXfyunErrorCodeDescription(getContext(), errorCode);
             //  showTip(error.getPlainDescription(true));
             showTip(xfyunErrorCodeDescription);
-        }while (false);
+        } while (false);
 
         return;
     }
@@ -628,20 +665,48 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         @Override
         public void onResult(RecognizerResult results, boolean isLast) {
             Log.d(TAG, results.getResultString());
-            String voiceText=parseResult(results);
-         //   ToastUtil.toastLengthshort(getContext(),"1"+voiceText);
+            String voiceText = parseResult(results);
+            //   ToastUtil.toastLengthshort(getContext(),"1"+voiceText);
             if (isLast) {
                 setVoiceSearch(true);
-                setVoiceText(voiceText);
-                refreshView();
-                setVoiceSearch(false);
+                if (CommonUtil.isEmpty(BaiduConstant.APP_ID) || CommonUtil.isEmpty(BaiduConstant.API_KEY) || CommonUtil.isEmpty(BaiduConstant.SECRET_KEY)) {
+
+                    setVoiceText(voiceText);
+                    //ToastUtil.toastLengthshort(getContext(), "2" + voiceText);
+                    refreshView();
+                    setVoiceSearch(false);
+                } else {
+                    BaiduAipHelper.getInstance().startNlp(voiceText, new BaiduAipHelper.OnAipNlp() {
+                        @Override
+                        public void onAipNlpSuccess(String text, NlpLexer nlpLexer) {
+                            //ToastUtil.toastLengthshort(getContext(),nlpLexer.getText()+ Constant.NEW_LINE+ JsonUtil.toJson(nlpLexer.getItems()));
+                            List<Event> events = ContextAnalysisUtil.parse(nlpLexer);
+                            if (null == events || events.size() <= 0) {
+                                String tips = getString(R.string.i_can_not_understand_your_words, nlpLexer.getText());
+                                ToastUtil.toastLengthshort(getContext(), tips);
+                                //ToastUtil.toastLengthshort(getContext(),tips+ Constant.NEW_LINE+ JsonUtil.toJson(nlpLexer.getItems()));
+                            } else {
+                                Event event = events.get(events.size() - 1);
+                                processEvent(event);
+                                //ToastUtil.toastLengthshort(getContext(),JsonUtil.toJson(event));
+
+                            }
+                            setVoiceSearch(false);
+                        }
+
+                        @Override
+                        public void onAipNlpFailed(String text) {
+                            setVoiceSearch(false);
+                        }
+                    });
+                }
             }
         }
 
         @Override
         public void onVolumeChanged(int volume, byte[] data) {
             showTip("当前正在说话，音量大小：" + volume);
-            Log.d(TAG, "返回音频数据："+data.length);
+            Log.d(TAG, "返回音频数据：" + data.length);
         }
 
         @Override
@@ -656,7 +721,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     };
 
     private String parseResult(RecognizerResult results) {
-        String iatResultStr=null;
+        String iatResultStr = null;
         String text = JsonParser.parseIatResult(results.getResultString());
 
         String sn = null;
@@ -675,14 +740,65 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             resultBuffer.append(mIatResults.get(key));
         }
 
-        iatResultStr=resultBuffer.toString();
+        iatResultStr = resultBuffer.toString();
 
-        return  iatResultStr;
+        return iatResultStr;
     }
+
     private void showTip(final String str) {
         mToast.setText(str);
         mToast.show();
     }
 
     /*end: xfyun voice input*/
+
+    /**
+     * 处理事件
+     *
+     * @param event
+     */
+    public void processEvent(Event event) {
+        do {
+            if (null == event) {
+                break;
+            }
+            AppInfo appInfo = AppInfoHelper.getInstance().qwertySearchMatch(event.getContext());
+            if (CommonUtil.isEmpty(event.getAction())) {
+                if (null == appInfo) {
+                    ToastUtil.toastLengthshort(getContext(), getString(R.string.no_related_app_can_be_opened, event.getContext()));
+                } else {
+                    AppUtil.startApp(getContext(), appInfo);
+                }
+                break;
+            }
+            switch (event.getAction()) {
+                case EventAction.UNINSTALL:
+
+                    if (null == appInfo) {
+                        ToastUtil.toastLengthshort(getContext(), getString(R.string.no_related_app_can_be_uninstalled, event.getContext()));
+                    } else {
+                        AppUtil.uninstallApp(getContext(), appInfo);
+                    }
+                    break;
+                case EventAction.OPEN:
+                    if (null == appInfo) {
+                        ToastUtil.toastLengthshort(getContext(), getString(R.string.no_related_app_can_be_opened, event.getContext()));
+                    } else {
+                        AppUtil.startApp(getContext(), appInfo);
+                    }
+                    break;
+                default:
+                    if (null == appInfo) {
+                        ToastUtil.toastLengthshort(getContext(), getString(R.string.no_related_app_can_be_opened, event.getContext()));
+                    } else {
+                        AppUtil.startApp(getContext(), appInfo);
+                    }
+                    break;
+            }
+
+        } while (false);
+
+        return;
+    }
+
 }

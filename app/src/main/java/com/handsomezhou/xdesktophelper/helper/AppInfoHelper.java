@@ -25,6 +25,7 @@ import com.handsomezhou.xdesktophelper.model.Constant;
 import com.handsomezhou.xdesktophelper.model.LoadStatus;
 import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
+import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.StringUtil;
 import com.pinyinsearch.model.PinyinSearchUnit;
 import com.pinyinsearch.util.PinyinUtil;
@@ -469,7 +470,32 @@ public class AppInfoHelper {
 		}
 		return;
 	}
-	
+
+	public AppInfo qwertySearchMatch(String keyword){
+		 AppInfo appInfo=null;
+		do{
+			if(CommonUtil.isEmpty(keyword)){
+				break;
+			}
+
+
+			List<AppInfo> baseAppInfos=getBaseAppInfo();
+			int baseAppInfosCount=baseAppInfos.size();
+			for(int i=0; i<baseAppInfosCount; i++){
+				PinyinSearchUnit labelPinyinSearchUnit=baseAppInfos.get(i).getLabelPinyinSearchUnit();
+				boolean match=QwertyUtil.match(labelPinyinSearchUnit,keyword);
+
+				if (true == match) {
+					appInfo=baseAppInfos.get(i);
+					break;
+				}
+			}
+
+		}while (false);
+		return appInfo;
+	}
+
+
 	public boolean isAppExist(String packageName){
 		boolean appExist=false;
 		do{

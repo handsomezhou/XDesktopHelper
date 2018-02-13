@@ -14,6 +14,8 @@ import android.widget.TextView;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.adapter.AppInfoAdapter;
+import com.handsomezhou.xdesktophelper.baidu.aip.model.Event;
+import com.handsomezhou.xdesktophelper.constant.EventAction;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog.OnAppOperationDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
@@ -23,6 +25,7 @@ import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppOperationType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
+import com.handsomezhou.xdesktophelper.util.ToastUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.SearchBox;
 import com.handsomezhou.xdesktophelper.view.SearchBox.OnSearchBox;
@@ -221,6 +224,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 
 		return;
 	}
+
 
 	private void refreshQwertySearchGv() {
 		if (null == mQwertySearchGv) {

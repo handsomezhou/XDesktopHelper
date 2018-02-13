@@ -57,6 +57,8 @@
     <string name="about">关于</string>
     <string name="version_name">版本信息</string>
     <string name="colon">:</string>
+    <string name="project_address_prompt">项目地址</string>
+    <string name="project_address">https://github.com/handsomezhou/XDesktopHelper</string>
     <string name="author_prompt">作者</string>
     <string name="author">handsomezhou</string>
     <string name="contact_prompt">联系方式</string>
@@ -71,6 +73,12 @@
 
     <!-- start: long_press_uninstall_app -->
     <string name="long_press_uninstall_app">长按卸载应用</string>
+    <!-- end: long_press_uninstall_app -->
+
+    <!-- start: long_press_uninstall_app -->
+    <string name="i_can_not_understand_your_words">我不能理解你的话[%s]!</string>
+    <string name="no_related_app_can_be_uninstalled">无[%s]应用可以卸载!</string>
+    <string name="no_related_app_can_be_opened">无[%s]应用可以打开!</string>
     <!-- end: long_press_uninstall_app -->
 
 
