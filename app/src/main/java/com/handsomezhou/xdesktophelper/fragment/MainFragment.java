@@ -150,8 +150,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         boolean startLoadSuccess = AppInfoHelper.getInstance()
                 .startLoadAppInfo();
         if (true == startLoadSuccess) {
-            getBaseProgressDialog().show(
-                    getContext().getString(R.string.app_info_loading));
+            //getBaseProgressDialog().show(getContext().getString(R.string.app_info_loading));
         }
 
     }

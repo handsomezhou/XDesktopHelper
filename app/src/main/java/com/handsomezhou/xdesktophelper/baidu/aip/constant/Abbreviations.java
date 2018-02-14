@@ -1,7 +1,7 @@
 package com.handsomezhou.xdesktophelper.baidu.aip.constant;
 
 /**
- * Created by zhoujq on 2018/2/7.
+ * Created by handsomezhou on 2018/2/7.
  * 缩略词
  */
 

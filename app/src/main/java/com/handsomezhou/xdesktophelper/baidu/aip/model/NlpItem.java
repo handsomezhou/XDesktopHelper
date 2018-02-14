@@ -3,7 +3,7 @@ package com.handsomezhou.xdesktophelper.baidu.aip.model;
 import java.util.List;
 
 /**
- * Created by zhoujq on 2018/2/7.
+ * Created by handsomezhou on 2018/2/7.
  */
 
 public class NlpItem {
