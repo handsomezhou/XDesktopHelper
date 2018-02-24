@@ -17,6 +17,8 @@
     <string name="reset_sequence_failed">%s顺序复位失败</string>
     <string name="uninstall">卸载</string>
     <string name="view_app_info">查看应用信息</string>
+    <string name="share_app">分享应用</string>
+    <string name="share">分享</string>
 
     <!-- start: exit_app_prompt_mode -->
     <string name="whether_prompt_exit_app">退出应用时是否提示</string>
@@ -86,6 +88,19 @@
     <string name="common_ok">确定</string>
     <string name="common_cancel">取消</string>
     <!-- End: common dialog -->
+
+    <!-- start: share -->
+    <!-- <string name="share">分享</string> -->
+    <string name="please_select">请选择</string>
+    <string name="wechat_not_installed">未安装微信,请先安装微信</string>
+    <string name="qq_not_installed">未安装QQ</string>
+    <string name="tencent_micro_bo_not_installed">未安装腾讯微博</string>
+    <string name="sina_micro_bo_not_installed">未安装新浪微博</string>
+    <string name="copy_email_success">邮箱已复制.</string>
+    <string name="copy_qq_group_success">QQ群号已复制,可打开QQ添加群.</string>
+    <string name="copy_wechat_public_number_success">微信公众号已复制,可打开微信进行关注.</string>
+    <string name="copy_weibo_success">新浪微博帐号已复制,可打开新浪微博进行关注.</string>
+    <!-- end: share -->
 
     <!--start:xfyun-->
     <!-- 请替换成在语音云官网申请的appid -->

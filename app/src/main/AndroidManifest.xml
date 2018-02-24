@@ -70,16 +70,7 @@
                 <data android:scheme="package" />
             </intent-filter>
         </receiver>
-        <!-- 移动统计分析 -->
 
-        <!-- start: xfyun mobile statistical analysis-->
-        <meta-data
-            android:name="IFLYTEK_APPKEY"
-            android:value="'55d34b8d'" />
-        <meta-data
-            android:name="IFLYTEK_CHANNEL"
-            android:value="Android_XDesktopHelper" />
-        <!-- end: xfyun mobile statistical analysis-->
     </application>
 
 </manifest>

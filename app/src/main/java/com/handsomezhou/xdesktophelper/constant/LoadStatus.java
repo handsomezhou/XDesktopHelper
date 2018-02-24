@@ -1,4 +1,4 @@
-package com.handsomezhou.xdesktophelper.model;
+package com.handsomezhou.xdesktophelper.constant;
 
 public enum LoadStatus {
 	NOT_LOADED,

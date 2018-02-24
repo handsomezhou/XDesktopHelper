@@ -2,10 +2,13 @@
 package com.handsomezhou.xdesktophelper.util;
 
 import java.util.Collections;
+import java.util.List;
+
 import android.annotation.TargetApi;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -249,5 +252,96 @@ public class AppUtil {
         } while (false);
 
         return versionName;
+    }
+
+    /**
+     *
+     * @param context
+     * @param packageName
+     * @return app exist return true,otherwise return false.
+     */
+    public static boolean isAppExist(Context context,String packageName) {
+        boolean appExist=false;
+        do{
+            if(TextUtils.isEmpty(packageName)){
+                break;
+            }
+
+            PackageManager pm = context.getPackageManager();
+            List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
+            for (PackageInfo pi : packageInfos) {
+                if (packageName.equalsIgnoreCase(pi.packageName)){
+                    appExist=true;
+                    break;
+                }
+            }
+
+        }while(false);
+
+        return  appExist;
+    }
+
+    public static ApplicationInfo getApplicationInfo(Context context, String packageName){
+        ApplicationInfo applicationInfo=null;
+
+        PackageInfo packageInfo=AppUtil.getPackageInfo(context,packageName);
+        if(null!=packageInfo){
+            applicationInfo=packageInfo.applicationInfo;
+        }
+
+        return applicationInfo;
+    }
+
+    public static PackageInfo getPackageInfo(Context context,String packageName){
+        PackageInfo packageInfo=null;
+
+        do{
+            if(null==context){
+                break;
+            }
+
+            if(CommonUtil.isEmpty(packageName)){
+                break;
+            }
+
+            PackageManager pm = context.getPackageManager();
+            List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
+            for (PackageInfo pi : packageInfos) {
+                if (packageName.equalsIgnoreCase(pi.packageName)){
+                    packageInfo=pi;
+                    break;
+                }
+            }
+
+        }while (false);
+
+        return packageInfo;
+    }
+
+    /**
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static String getAppName(Context context,String packageName){
+        String appName=null;
+        do{
+            PackageInfo packageInfo=AppUtil.getPackageInfo(context,packageName);
+            if(null==packageInfo){
+                break;
+            }
+
+            PackageManager pm = context.getPackageManager();
+            appName = String.valueOf(pm.getApplicationLabel(packageInfo.applicationInfo));
+            if(false==CommonUtil.isEmpty(appName)){
+                break;
+            }
+
+            appName = packageInfo.packageName;
+
+        }while (false);
+
+        return appName;
     }
 }

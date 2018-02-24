@@ -11,9 +11,7 @@ import android.util.Log;
 import com.handsomezhou.xdesktophelper.database.AppSettingInfoDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppSettingInfo;
-import com.handsomezhou.xdesktophelper.model.AppStartRecord;
-import com.handsomezhou.xdesktophelper.model.LoadStatus;
-import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
+import com.handsomezhou.xdesktophelper.constant.LoadStatus;
 
 public class AppSettingInfoHelper {
     private static final String TAG=AppSettingInfoHelper.class.getSimpleName();

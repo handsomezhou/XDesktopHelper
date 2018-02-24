@@ -17,19 +17,16 @@ import android.widget.TextView;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.adapter.AppInfoAdapter;
-import com.handsomezhou.xdesktophelper.baidu.aip.model.Event;
-import com.handsomezhou.xdesktophelper.constant.EventAction;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog;
 import com.handsomezhou.xdesktophelper.dialog.AppOperationDialog.OnAppOperationDialog;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
-import com.handsomezhou.xdesktophelper.model.AppOperationType;
+import com.handsomezhou.xdesktophelper.constant.AppOperationType;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
-import com.handsomezhou.xdesktophelper.util.ContextAnalysisUtil;
-import com.handsomezhou.xdesktophelper.util.ToastUtil;
+import com.handsomezhou.xdesktophelper.util.ShareUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView.OnT9TelephoneDialpadView;
@@ -242,7 +239,9 @@ public class T9SearchFragment extends BaseFragment implements
             case VIEW_APP_INFO:
                 AppUtil.viewApp(getContext(), (AppInfo)dialogData);
                 break;
-
+			case SHARE:
+				ShareUtil.shareInstalledApp(getContext(),((AppInfo) dialogData).getPackageName());
+				break;
             default:
                 break;
         }

@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
-import com.handsomezhou.xdesktophelper.model.MenuPositionMode;
+import com.handsomezhou.xdesktophelper.constant.MenuPositionMode;
 
 public class MenuPositionModeSp {
 	private static final String TAG="MenuPositionModeSp";

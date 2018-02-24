@@ -2,7 +2,7 @@
 package com.handsomezhou.xdesktophelper.util;
 
 
-import com.handsomezhou.xdesktophelper.model.Constant;
+import com.handsomezhou.xdesktophelper.constant.Constant;
 
 public class StringUtil {
     public static String praseSortKey(String sortKey) {

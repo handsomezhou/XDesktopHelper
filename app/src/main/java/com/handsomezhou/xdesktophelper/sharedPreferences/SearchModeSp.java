@@ -6,7 +6,7 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
-import com.handsomezhou.xdesktophelper.model.SearchMode;
+import com.handsomezhou.xdesktophelper.constant.SearchMode;
 
 public class SearchModeSp {
 	private static final String SEARCH_MODE="SEARCH_MODE";

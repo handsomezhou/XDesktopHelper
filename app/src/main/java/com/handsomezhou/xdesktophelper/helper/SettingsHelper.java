@@ -3,8 +3,8 @@ package com.handsomezhou.xdesktophelper.helper;
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
 import com.handsomezhou.xdesktophelper.sharedPreferences.MenuPositionModeSp;
 import com.handsomezhou.xdesktophelper.sharedPreferences.SearchModeSp;
-import com.handsomezhou.xdesktophelper.model.MenuPositionMode;
-import com.handsomezhou.xdesktophelper.model.SearchMode;
+import com.handsomezhou.xdesktophelper.constant.MenuPositionMode;
+import com.handsomezhou.xdesktophelper.constant.SearchMode;
 import com.handsomezhou.xdesktophelper.util.SharedPreferencesUtil;
 
 public class SettingsHelper {

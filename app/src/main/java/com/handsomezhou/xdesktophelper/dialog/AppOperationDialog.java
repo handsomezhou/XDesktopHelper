@@ -6,8 +6,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.handsomezhou.xdesktophelper.R;
-import com.handsomezhou.xdesktophelper.model.AppOperationType;
-import com.handsomezhou.xdesktophelper.util.ViewUtil;
+import com.handsomezhou.xdesktophelper.constant.AppOperationType;
 
 public class AppOperationDialog extends BaseDialog {
 
@@ -19,6 +18,7 @@ public class AppOperationDialog extends BaseDialog {
 	private Button mResetSequenceBtn;
 	private Button mUninstallBtn;    
 	private Button mViewAppInfoBtn;    
+	private Button mShareBtn;
 	private AppOperationType mAppOperationType;
     /* End: AppOperationDialog View */
 	private OnAppOperationDialog mOnAppOperationDialog;
@@ -87,6 +87,7 @@ public class AppOperationDialog extends BaseDialog {
 		mResetSequenceBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.reset_sequence_btn);
 		mUninstallBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.uninstall_btn);
 		mViewAppInfoBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.view_app_info_btn);
+		mShareBtn=(Button)getAppOperationDialogLayout().findViewById(R.id.share_btn);
 		//refreshSetToTop(getSetToTopType());
 		return getAppOperationDialogLayout();
 	}
@@ -97,6 +98,7 @@ public class AppOperationDialog extends BaseDialog {
 		setOnClickListener(mResetSequenceBtn, AppOperationType.RESET_SEQUENCE);
 		setOnClickListener(mUninstallBtn, AppOperationType.UNINSTALL);
 		setOnClickListener(mViewAppInfoBtn, AppOperationType.VIEW_APP_INFO);
+		setOnClickListener(mShareBtn, AppOperationType.SHARE);
 		return;
 	}
 

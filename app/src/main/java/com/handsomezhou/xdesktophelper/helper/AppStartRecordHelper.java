@@ -11,7 +11,7 @@ import android.os.AsyncTask.Status;
 import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppStartRecord;
-import com.handsomezhou.xdesktophelper.model.LoadStatus;
+import com.handsomezhou.xdesktophelper.constant.LoadStatus;
 import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 
 

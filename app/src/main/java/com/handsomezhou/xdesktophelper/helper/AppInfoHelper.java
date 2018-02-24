@@ -16,13 +16,13 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
+import com.handsomezhou.xdesktophelper.constant.Constant;
 import com.handsomezhou.xdesktophelper.database.AppSettingInfoDataBaseHelper;
 import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppInfo.SearchByType;
-import com.handsomezhou.xdesktophelper.model.AppType;
-import com.handsomezhou.xdesktophelper.model.Constant;
-import com.handsomezhou.xdesktophelper.model.LoadStatus;
+import com.handsomezhou.xdesktophelper.constant.AppType;
+import com.handsomezhou.xdesktophelper.constant.LoadStatus;
 import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
@@ -34,7 +34,7 @@ import com.pinyinsearch.util.T9Util;
 
 public class AppInfoHelper {
 	private static final String TAG=AppInfoHelper.class.getSimpleName();
-	private static Character THE_LAST_ALPHABET=Constant.z;
+	private static Character THE_LAST_ALPHABET= Constant.z;
 	private Context mContext;
 	private static AppInfoHelper mInstance;
 	
