@@ -6,6 +6,7 @@
         <item>{\"project_name\": \"AndroidResideMenu\",\"project_address\":\"https://github.com/SpecialCyCi/AndroidResideMenu/\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"android-segmented-control\",\"project_address\":\"https://github.com/hoang8f/android-segmented-control\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"gson\",\"project_address\":\"https://github.com/google/gson\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"MiStats\",\"project_address\":\"https://dev.mi.com/console/appservice/\", \"whether_open_source\":false}</item>
         <item>{\"project_name\": \"NineOldAndroids\",\"project_address\":\"https://github.com/JakeWharton/NineOldAndroids\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"pinyin4j\",\"project_address\":\"http://pinyin4j.sourceforge.net/\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"pinyinsearch\",\"project_address\":\"https://github.com/handsomezhou/PinyinSearchLibrary\", \"whether_open_source\":true}</item>

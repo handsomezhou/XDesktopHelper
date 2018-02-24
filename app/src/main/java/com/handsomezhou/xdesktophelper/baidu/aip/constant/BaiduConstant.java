@@ -8,10 +8,11 @@ public interface BaiduConstant {
     /**
      * http://ai.baidu.com/tech/nlp/lexical
      * http://ai.baidu.com/docs#/NLP-Java-SDK/top
-     *
+     * <p>
      * 如想正常使用分词功能,请先初始化以下值
      */
-    String APP_ID = "";
-    String API_KEY = "";
-    String SECRET_KEY = "";
+
+    String APP_ID = "10805093";
+    String API_KEY = "raFEUHTE1j7Nr4dNfEiAKxRN";
+    String SECRET_KEY = "CBNiFAjG7BYcikeGXvjsIO4GCLQBQH70";
 }

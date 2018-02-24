@@ -3,21 +3,26 @@ package com.handsomezhou.xdesktophelper.application;
 import android.app.Application;
 import android.content.Context;
 
-import com.handsomezhou.xdesktophelper.R;
+import com.handsomezhou.xdesktophelper.constant.MiConstant;
+import com.handsomezhou.xdesktophelper.constant.XfyunConstant;
+import com.handsomezhou.xdesktophelper.util.TimeUtil;
 import com.iflytek.cloud.SpeechUtility;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 public class XDesktopHelperApplication extends Application {
-	private static Context mContext;
+	private static Context sContext;
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		mContext = getApplicationContext();
+		sContext = getApplicationContext();
+
 		initXfyunSpeechRecognizer();
+		initMiStat();
 	}
 
 	public static Context getContext() {
-		return mContext;
+		return sContext;
 	}
 
 	private void initXfyunSpeechRecognizer() {
@@ -29,9 +34,20 @@ public class XDesktopHelperApplication extends Application {
 
 		// 注意： appid 必须和下载的SDK保持一致，否则会出现10407错误
 
-		SpeechUtility.createUtility(XDesktopHelperApplication.this, "appid=" + getString(R.string.app_id));
+		SpeechUtility.createUtility(XDesktopHelperApplication.this, "appid=" + XfyunConstant.APP_ID);
 
 		// 以下语句用于设置日志开关（默认开启），设置成false时关闭语音云SDK日志打印
 		// Setting.setShowLog(false);
+	}
+
+	/**
+	 * 初始化小米统计
+	 */
+	private void initMiStat(){
+		MiStatInterface.initialize(this, MiConstant.APP_ID, MiConstant.APP_KEY, MiConstant.CHANNEL);
+		long UPLOAD_POLICY_INTERVAL_MS= TimeUtil.min2ms(5);
+		MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_INTERVAL, UPLOAD_POLICY_INTERVAL_MS);//设置上报策略
+		//MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_REALTIME, 0);//设置上报策略
+		MiStatInterface.enableExceptionCatcher(true);//崩溃日志收集
 	}
 }

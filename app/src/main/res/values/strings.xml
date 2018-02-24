@@ -103,8 +103,6 @@
     <!-- end: share -->
 
     <!--start:xfyun-->
-    <!-- 请替换成在语音云官网申请的appid -->
-    <string name="app_id">55d34b8d</string>
     <string name="pref_key_iat_show">iat_show</string>
     <string name="text_begin">请开始说话…</string>
     <!--start:Error of Android&Java -->

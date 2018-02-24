@@ -71,6 +71,15 @@
             </intent-filter>
         </receiver>
 
+        <!-- start: xfyun 移动统计分析 -->
+        <meta-data
+            android:name="IFLYTEK_APPKEY"
+            android:value="'5801000a'" />
+        <meta-data
+            android:name="IFLYTEK_CHANNEL"
+            android:value="Android_xdesktophelper" />
+        <!-- end: xfyun 移动统计分析 -->
+
     </application>
 
 </manifest>

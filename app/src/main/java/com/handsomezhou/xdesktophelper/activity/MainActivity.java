@@ -25,10 +25,10 @@ import com.handsomezhou.xdesktophelper.constant.MenuPositionMode;
 import com.handsomezhou.xdesktophelper.service.XDesktopHelperService;
 import com.handsomezhou.xdesktophelper.view.ResideMenu;
 import com.handsomezhou.xdesktophelper.view.ResideMenuItem;
+import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 @SuppressLint("ResourceAsColor")
-public class MainActivity extends BaseSingleFragmentActivity implements
-		OnClickListener {
+public class MainActivity extends BaseSingleFragmentActivity implements OnClickListener {
 	private static final String TAG = "MainActivity";
 	private Context mContext;
 	private MainFragment mMainFragment;
@@ -50,13 +50,20 @@ public class MainActivity extends BaseSingleFragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
+		/**
+		 * start:小米统计
+		 */
+		MiStatInterface.recordPageStart(this, TAG);
 
 	}
 
 	@Override
 	protected void onPause() {
-
 		super.onPause();
+		/**
+		 * end:小米统计
+		 */
+		MiStatInterface.recordPageEnd();
 	}
 
 	@Override

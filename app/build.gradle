@@ -29,15 +29,14 @@ dependencies {
     compile files('libs/aip-java-sdk-4.1.1.jar')
     compile files('libs/log4j-1.2.17.jar')
     compile files('libs/json-20160810.jar')
-
     /**
-     * https://github.com/google/gson
+     *  https://github.com/google/gson
      */
     compile 'com.google.code.gson:gson:2.8.2'
-
     /**
-     * https://github.com/ReactiveX/RxJava
+     *  https://github.com/ReactiveX/RxJava
      */
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
+    compile files('libs/MiStats_SDK_Client_1_9_6.jar')
 }
