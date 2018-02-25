@@ -343,7 +343,7 @@ public class AppInfoHelper {
 			if (true == match) {// search by LabelPinyinUnits;
 				AppInfo appInfo = baseAppInfos.get(i);
 				appInfo.setSearchByType(SearchByType.SearchByLabel);
-				appInfo.setMatchKeywords(labelPinyinSearchUnit.getMatchKeyWord().toString());
+				appInfo.setMatchKeywords(labelPinyinSearchUnit.getMatchKeyword().toString());
 				appInfo.setMatchStartIndex(appInfo.getLabel().indexOf(appInfo.getMatchKeywords().toString()));
 				appInfo.setMatchLength(appInfo.getMatchKeywords().length());
 				
@@ -439,7 +439,7 @@ public class AppInfoHelper {
 			if (true == match) {// search by LabelPinyinUnits;
 				AppInfo appInfo = baseAppInfos.get(i);
 				appInfo.setSearchByType(SearchByType.SearchByLabel);
-				appInfo.setMatchKeywords(labelPinyinSearchUnit.getMatchKeyWord().toString());
+				appInfo.setMatchKeywords(labelPinyinSearchUnit.getMatchKeyword().toString());
 				appInfo.setMatchStartIndex(appInfo.getLabel().indexOf(appInfo.getMatchKeywords().toString()));
 				appInfo.setMatchLength(appInfo.getMatchKeywords().length());
 				mT9SearchAppInfos.add(appInfo);

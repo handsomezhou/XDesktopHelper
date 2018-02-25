@@ -9,7 +9,7 @@ import com.handsomezhou.xdesktophelper.util.SharedPreferencesUtil;
 
 public class SettingsHelper {
 	private static final String TAG = SettingsHelper.class.getSimpleName();
-	public static final String KEY_SEARCH_MODE_SWITCH_TIPS="KEY_SEARCH_MODE_SWITCH_TIPS";
+	public static final String KEY_USER_GUIDE_TIPS="KEY_USER_GUIDE_TIPS";
 	public static final String KEY_SMART_SORTING="KEY_SMART_SORTING";
 	public static final String KEY_VOICE_SEARCH_ENABLE="KEY_VOICE_SEARCH_ENABLE";
 	public static final String KEY_VOICE_START_APP="KEY_VOICE_START_APP";
@@ -19,7 +19,7 @@ public class SettingsHelper {
 	private MenuPositionMode mMenuPositionMode;
 
 	private SearchMode mSearchMode;
-	private boolean mSearchModeSwitchTips = true;
+	private boolean mUserGuideTips = true;
 	private boolean mVoiceSearchEnable=true;
 	private boolean mVoiceStartApp=true;
 	private boolean mSmartSorting;
@@ -42,7 +42,7 @@ public class SettingsHelper {
 	private void initSettingsHelper() {
 		mMenuPositionMode = MenuPositionModeSp.getMenuPositionMode();
 		mSearchMode = SearchModeSp.getSearchMode();
-		mSearchModeSwitchTips = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SEARCH_MODE_SWITCH_TIPS, true);
+		mUserGuideTips = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_USER_GUIDE_TIPS, true);
 		mVoiceSearchEnable=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(),KEY_VOICE_SEARCH_ENABLE,true);
 		mVoiceStartApp=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(),KEY_VOICE_START_APP,true);
 		mSmartSorting=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SMART_SORTING, true);
@@ -69,13 +69,13 @@ public class SettingsHelper {
 		mSearchMode = searchMode;
 	}
 
-	public boolean isSearchModeSwitchTips() {
-		return mSearchModeSwitchTips;
+	public boolean isUserGuideTips() {
+		return mUserGuideTips;
 	}
 
-	public void setSearchModeSwitchTips(boolean searchModeSwitchTips) {
-		SharedPreferencesUtil.putBoolean(XDesktopHelperApplication.getContext(), KEY_SEARCH_MODE_SWITCH_TIPS, searchModeSwitchTips);
-		mSearchModeSwitchTips = searchModeSwitchTips;
+	public void setUserGuideTips(boolean userGuideTips) {
+		SharedPreferencesUtil.putBoolean(XDesktopHelperApplication.getContext(), KEY_USER_GUIDE_TIPS, userGuideTips);
+		mUserGuideTips = userGuideTips;
 	}
 
 	public boolean isVoiceStartApp() {

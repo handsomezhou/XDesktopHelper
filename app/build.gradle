@@ -5,10 +5,10 @@ android {
     buildToolsVersion "23.0.1"
     defaultConfig {
         applicationId "com.handsomezhou.xdesktophelper"
-        minSdkVersion 9
+        minSdkVersion 14
         targetSdkVersion 23
-        versionCode 8
-        versionName "1.2.3"
+        versionCode 9
+        versionName "1.2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -27,8 +27,10 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.0.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/aip-java-sdk-4.1.1.jar')
-    compile files('libs/log4j-1.2.17.jar')
     compile files('libs/json-20160810.jar')
+    compile files('libs/log4j-1.2.17.jar')
+    compile files('libs/MiStats_SDK_Client_1_9_6.jar')
+
     /**
      *  https://github.com/google/gson
      */
@@ -38,5 +40,9 @@ dependencies {
      */
     compile 'io.reactivex:rxjava:1.1.6'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile files('libs/MiStats_SDK_Client_1_9_6.jar')
+
+    /**
+     * https://github.com/yilylong/UserGuideView
+     */
+    compile 'com.github.yilylong:UserGuideView:1.0.2'
 }

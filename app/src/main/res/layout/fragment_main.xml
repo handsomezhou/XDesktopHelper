@@ -1,23 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent">
 
-    <com.handsomezhou.xdesktophelper.view.TopTabView
-        android:id="@+id/top_tab_view"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+                  android:orientation="vertical">
+
+        <com.handsomezhou.xdesktophelper.view.TopTabView
+            android:id="@+id/top_tab_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/top_tab_height_without_icon"
+            android:padding="@dimen/padding"/>
+
+        <View style="@style/dividing_line_horizontal"/>
+
+        <com.handsomezhou.xdesktophelper.view.CustomViewPager
+            android:id="@+id/custom_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <com.zhl.userguideview.UserGuideView
+        android:id="@+id/user_guide_view"
+        app:HighlightViewStyle="circle"
+        app:MaskBlurStyle="solid"
+        app:maskColor="#94242323"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="@dimen/top_tab_height_without_icon"
-        android:gravity="center_vertical"
-        android:padding="@dimen/padding" />
+        android:layout_height="match_parent"/>
 
-    <View style="@style/dividing_line_horizontal" />
-
-    <com.handsomezhou.xdesktophelper.view.CustomViewPager
-        android:id="@+id/custom_view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</LinearLayout>
+</FrameLayout>

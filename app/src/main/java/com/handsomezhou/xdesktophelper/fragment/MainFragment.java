@@ -16,15 +16,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.Interface.OnTabChange;
 import com.handsomezhou.xdesktophelper.R;
+import com.handsomezhou.xdesktophelper.activity.MainActivity;
 import com.handsomezhou.xdesktophelper.adapter.CustomPartnerViewPagerAdapter;
 import com.handsomezhou.xdesktophelper.baidu.aip.constant.BaiduConstant;
 import com.handsomezhou.xdesktophelper.baidu.aip.helper.BaiduAipHelper;
 import com.handsomezhou.xdesktophelper.baidu.aip.model.Event;
 import com.handsomezhou.xdesktophelper.baidu.aip.model.NlpLexer;
+import com.handsomezhou.xdesktophelper.constant.Constant;
 import com.handsomezhou.xdesktophelper.constant.EventAction;
 import com.handsomezhou.xdesktophelper.dialog.BaseProgressDialog;
 import com.handsomezhou.xdesktophelper.fragment.T9SearchFragment.OnT9SearchFragment;
@@ -60,6 +63,7 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechRecognizer;
 import com.iflytek.cloud.ui.RecognizerDialog;
 import com.iflytek.cloud.ui.RecognizerDialogListener;
+import com.zhl.userguideview.UserGuideView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,6 +76,9 @@ import java.util.List;
 public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad, OnAppSettingInfoLoad,
         OnTabChange, OnT9SearchFragment, QwertySearchFragment.OnQwertySearchFragment {
     private static final String TAG = MainFragment.class.getSimpleName();
+    private UserGuideView mUserGuideView;
+    private View mTipTextView;
+    private int mUserGuideViewIndex=0;
     private List<PartnerView> mPartnerViews;
     private TopTabView mTopTabView;
     private CustomViewPager mCustomViewPager;
@@ -158,6 +165,18 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     @Override
     protected View initView(LayoutInflater inflater, ViewGroup container) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
+
+        mUserGuideView=(UserGuideView) view.findViewById(R.id.user_guide_view);
+        mUserGuideView.setOnDismissListener(new UserGuideView.OnDismissListener() {
+            @Override
+            public void onDismiss(UserGuideView userGuideView) {
+                showUserGuideView(mUserGuideViewIndex);
+                refreshUserGuideView();
+            }
+        });
+        //
+        mTipTextView=LayoutInflater.from(getActivity()).inflate(R.layout.custom_tipview,null);
+
         mCustomViewPager = (CustomViewPager) view
                 .findViewById(R.id.custom_view_pager);
         mCustomViewPager.setPagingEnabled(false);
@@ -209,7 +228,6 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                         // , Toast.LENGTH_LONG).show();
                         mTopTabView.setCurrentTabItem(partnerView.getTag());
                         SettingsHelper.getInstance().setSearchMode((SearchMode) partnerView.getTag());
-                        SettingsHelper.getInstance().setSearchModeSwitchTips(false);
                         refreshView();
                     }
 
@@ -287,9 +305,11 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     public void onAppSettingInfoLoadSuccess() {
         AppSettingInfoHelper.getInstance().parseAppSettingInfo();
         refreshView();
-        if (true == SettingsHelper.getInstance().isSearchModeSwitchTips()) {
-            getSearchModeSwitchTipsPw().showAsDropDown(mTopTabView);
+        if (true == SettingsHelper.getInstance().isUserGuideTips()) {
+
+            showUserGuideView(mUserGuideViewIndex);
         }
+
     }
 
     @Override
@@ -410,6 +430,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     }
 
     private void refreshView() {
+        refreshUserGuideView();
         showTopTabView(SettingsHelper.getInstance().getSearchMode());
         Object currentTab = mTopTabView.getCurrentTab();
         int itemIndex = getPartnerViewItem(currentTab);
@@ -800,4 +821,41 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         return;
     }
 
+
+    private void showUserGuideView(View targetView,String tips){
+        mUserGuideViewIndex++;
+        TextView tipsTv=(TextView) mTipTextView.findViewById(R.id.tips_text_view);
+        tipsTv.setText(tips);
+        mUserGuideView.setTipView(mTipTextView,600,200);
+        mUserGuideView.setHightLightView(targetView);
+    }
+
+    private void showUserGuideView(int index){
+        switch (index){
+            case Constant.ZERO_OF_INTEGER:
+                showUserGuideView(mTopTabView,getString(R.string.search_mode_swich_tips));
+                break;
+            case Constant.ONE_OF_INTEGER:
+                showUserGuideView(mCustomViewPager,getString(R.string.app_operation_tips));
+                break;
+            case Constant.TWO_OF_INTEGER:
+                if(getActivity() instanceof  MainActivity){
+                    showUserGuideView(mUserGuideView,getString(R.string.menu_operation_tips));
+                }
+                break;
+            default:
+                SettingsHelper.getInstance().setUserGuideTips(false);
+                break;
+        }
+
+        return;
+    }
+
+    private void refreshUserGuideView(){
+        if (true == SettingsHelper.getInstance().isUserGuideTips()){
+            ViewUtil.showView(mUserGuideView);
+        }else {
+            ViewUtil.hideView(mUserGuideView);
+        }
+    }
 }

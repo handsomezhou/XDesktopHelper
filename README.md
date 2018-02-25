@@ -16,16 +16,6 @@ Depend
 	A Java serialization/deserialization library to convert Java Objects into JSON and back
 [https://github.com/google/gson](https://github.com/google/gson)
 
-
-### NineOldAndroids
-    Android library for using the Honeycomb animation API on all versions of the platform back to 1.0!
-[https://github.com/JakeWharton/NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids)
-
-### pinyin4j 
-	Pinyin4j is a popular Java library supporting convertion between Chinese characters 
-	and most popular Pinyin systems. The output format of pinyin could be customized.
-[http://pinyin4j.sourceforge.net/](http://pinyin4j.sourceforge.net/)
-
 ### pinyinsearch 
     The library of PinyinSearch,a Java Library Which provide data analysis methods,  
 	data matching method and so on for T9 pinyin search and Qwerty pinyin search.
@@ -39,6 +29,10 @@ Depend
 ### rxjava
 	RxJava – Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.
 [https://github.com/ReactiveX/RxJava](https://github.com/ReactiveX/RxJava)
+
+### UserGuideView
+	UserGuideView – User guide view.
+[https://github.com/yilylong/UserGuideView](https://github.com/yilylong/UserGuideView)
 
 ### 百度云(自然语言处理)SDK集成
 百度云 aip-java-sdk-xxx download:[http://ai.baidu.com/sdk#nlp](http://ai.baidu.com/sdk#nlp) [http://ai.baidu.com/tech/nlp/lexical](http://ai.baidu.com/tech/nlp/lexical)
@@ -77,6 +71,8 @@ xfyun sdk download:[http://www.xfyun.cn/sdk/dispatcher](http://www.xfyun.cn/sdk/
 
 (2)app_id(strings.xml)
 
+### 小米统计SDK集成
+MiStats sdk download:[https://dev.mi.com/console/appservice/](https://dev.mi.com/console/appservice/)
 
 ### Renderings
 <img src="https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/image/XDesktopHelper.gif"/>

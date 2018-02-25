@@ -3,6 +3,9 @@
     <string name="t9_search">T9搜索</string>
     <string name="qwerty_search">全键盘搜索</string>
     <string name="click_top_tab_swich_search_mode">点击顶部标签可切换搜索模式</string>
+    <string name="search_mode_swich_tips">点击标签切换搜索模式</string>
+    <string name="app_operation_tips">点击图标打开应用\n长按图标进行更多操作</string>
+    <string name="menu_operation_tips">左/右滑动显示菜单</string>
     <string name="search_input_prompt">输入应用名称</string>
     <string name="app_info_loading">应用信息加载中...</string>
     <string name="no_match_search_result">无相关搜索结果</string>
