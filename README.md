@@ -1,6 +1,9 @@
 # XDesktopHelper
 A efficient and simple desktop application search tool.Support T9 search and Qwerty search.
 
+### Apk download
+[XDesktopHelper](https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/bin/XDesktopHelper.apk?raw=true)(latest version)
+
 Depend
 ---------------
 ### AndroidResideMenu
@@ -76,10 +79,6 @@ MiStats sdk download:[https://dev.mi.com/console/appservice/](https://dev.mi.com
 
 ### Renderings
 <img src="https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/image/XDesktopHelper.gif"/>
-
-
-### Apk download
-[XDesktopHelper](https://github.com/handsomezhou/XDesktopHelper/blob/master/external_res/bin/XDesktopHelper.apk?raw=true)(latest version)
 
 License 
 ---------------
