@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.handsomezhou.xdesktophelper">
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <!-- start: xfyun permission-->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -55,6 +57,14 @@
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.handsomezhou.xdesktophelper.service.X_DESKTOP_HELPER_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".service.FloatingWindowService"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="com.handsomezhou.xdesktophelper.service.FLOATING_WINDOW_SERVICE" />
             </intent-filter>
         </service>
 

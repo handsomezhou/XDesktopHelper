@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
+import com.handsomezhou.xdesktophelper.service.FloatingWindowService;
 import com.handsomezhou.xdesktophelper.sharedPreferences.MenuPositionModeSp;
 import com.handsomezhou.xdesktophelper.fragment.MainFragment;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
@@ -54,6 +55,9 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 		 * start:小米统计
 		 */
 		MiStatInterface.recordPageStart(this, TAG);
+		if(true==SettingsHelper.getInstance().isFloatingWindowShow()) {
+			FloatingWindowService.stopService(getApplicationContext());
+		}
 
 	}
 
@@ -64,6 +68,9 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 		 * end:小米统计
 		 */
 		MiStatInterface.recordPageEnd();
+		if(true==SettingsHelper.getInstance().isFloatingWindowShow()) {
+			FloatingWindowService.startService(getApplicationContext());
+		}
 	}
 
 	@Override
@@ -269,7 +276,6 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 	private void runInBackgroud() {
 		moveTaskToBack(true);
 		XDesktopHelperService.startService(getApplicationContext());
-
 	}
 
 	private void enterMenu() {

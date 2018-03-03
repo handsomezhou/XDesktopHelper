@@ -57,6 +57,8 @@
     <string name="voice_search_enable">语音搜索启用</string>
     <string name="voice_start_app">语音启动应用</string>
     <string name="smart_sorting">智能排序</string>
+    <string name="floating_window_show">悬浮窗显示</string>
+    <string name="floating_window_show_tips">如果悬浮窗未显示,请点击左侧,查看该应用是否已获取悬浮窗显示权限!</string>
     <!-- end: settings -->
     <!-- start: about -->
     <string name="about">关于</string>

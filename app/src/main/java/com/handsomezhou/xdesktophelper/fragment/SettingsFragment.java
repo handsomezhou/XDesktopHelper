@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.handsomezhou.xdesktophelper.R;
@@ -17,7 +18,10 @@ import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.constant.MenuPositionMode;
 import com.handsomezhou.xdesktophelper.constant.SearchMode;
+import com.handsomezhou.xdesktophelper.service.FloatingWindowService;
+import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
+import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout.OnNavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.SegmentedGroup;
@@ -48,6 +52,11 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 	private SwitchButton mVoiceSearchEnableBtn;
 	private SwitchButton mVoiceStartAppBtn;
 	private SwitchButton mSmartSortingSwitchBtn;
+
+	private TextView mFloatingWindowShowTv;
+	private SwitchButton mFloatingWindowShowSwitchBtn;
+
+
 	/* start : exit_app_prompt switch button */
 	private SwitchButton mExitAppPromptSwitchBtn;
 	/* end : exit_app_prompt switch button */
@@ -119,13 +128,17 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 		boolean voiceStartApp=SettingsHelper.getInstance().isVoiceStartApp();
 		mVoiceStartAppBtn.setChecked(voiceStartApp);
 
-		mSmartSortingSwitchBtn= (SwitchButton) view
-				.findViewById(R.id.smart_sorting_switch_btn);
+		mSmartSortingSwitchBtn= (SwitchButton) view.findViewById(R.id.smart_sorting_switch_btn);
 		boolean smartSorting=SettingsHelper.getInstance().isSmartSorting();
 		mSmartSortingSwitchBtn.setChecked(smartSorting);
 
-		boolean exitAppPrompt = SettingsHelper.getInstance()
-				.isExitAppPrompt();
+
+		mFloatingWindowShowTv= (TextView) view.findViewById(R.id.floating_window_show_text_view);
+		mFloatingWindowShowSwitchBtn= (SwitchButton) view.findViewById(R.id.floating_window_show_switch_btn);
+		boolean floatingWindowShow=SettingsHelper.getInstance().isFloatingWindowShow();
+		mFloatingWindowShowSwitchBtn.setChecked(floatingWindowShow);
+
+		boolean exitAppPrompt = SettingsHelper.getInstance().isExitAppPrompt();
 		mExitAppPromptSwitchBtn.setChecked(exitAppPrompt);
 		
 		return view;
@@ -208,6 +221,28 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 			}
 		});
 
+		mFloatingWindowShowTv.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AppUtil.viewApp(getContext(),getContext().getPackageName());
+			}
+		});
+
+		mFloatingWindowShowSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SettingsHelper.getInstance().setFloatingWindowShow(isChecked);
+				if(true==isChecked){
+					FloatingWindowService.startService(getContext());
+					ToastUtil.toastLengthLong(getContext(),R.string.floating_window_show_tips);
+				}else {
+					FloatingWindowService.stopService(getContext());
+				}
+
+			}
+		});
+
 		mExitAppPromptSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override
@@ -217,6 +252,7 @@ SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommon
 			}
 		});
 	}
+
 
 	/*start: OnCommonDialog*/
     @Override
