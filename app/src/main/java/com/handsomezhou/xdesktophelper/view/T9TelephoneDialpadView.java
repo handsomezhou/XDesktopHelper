@@ -115,10 +115,8 @@ public class T9TelephoneDialpadView extends LinearLayout implements OnClickListe
 		}
 
 		/**
-		 * set long click listener for button('1','*','0','#')
+		 * set long click listener for button('*','0','#')
 		 * */
-		View view1=mDialpadView.findViewById(R.id.dialNum1);
-		view1.setOnLongClickListener(this);
 		
 		View viewX = mDialpadView.findViewById(R.id.dialx);
 		viewX.setOnLongClickListener(this);
