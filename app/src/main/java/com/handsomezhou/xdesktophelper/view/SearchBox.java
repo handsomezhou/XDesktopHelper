@@ -145,7 +145,7 @@ public class SearchBox extends LinearLayout {
 			}
 		});
 
-		mVoiceInputIv.setOnClickListener(new View.OnClickListener(){
+		mVoiceInputIv.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 				voiceInput();

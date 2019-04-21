@@ -827,7 +827,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         TextView tipsTv=(TextView) mTipTextView.findViewById(R.id.tips_text_view);
         tipsTv.setText(tips);
         mUserGuideView.setTipView(mTipTextView,600,200);
-        mUserGuideView.setHightLightView(targetView);
+        mUserGuideView.setHighLightView(targetView);
     }
 
     private void showUserGuideView(int index){

@@ -359,8 +359,7 @@ public class SwitchButton extends CompoundButton {
 
 		boolean useGeneralDisableEffect = !isEnabled() && this.notStatableDrawable();
 		if (useGeneralDisableEffect) {
-			canvas.saveLayerAlpha(mSaveLayerZone, 255 / 2, Canvas.MATRIX_SAVE_FLAG | Canvas.CLIP_SAVE_FLAG | Canvas.HAS_ALPHA_LAYER_SAVE_FLAG | Canvas.FULL_COLOR_LAYER_SAVE_FLAG
-					| Canvas.CLIP_TO_LAYER_SAVE_FLAG);
+			canvas.saveLayerAlpha(mSaveLayerZone, 255 / 2, Canvas.ALL_SAVE_FLAG);
 		}
 
 		mConf.getOffDrawable().draw(canvas);

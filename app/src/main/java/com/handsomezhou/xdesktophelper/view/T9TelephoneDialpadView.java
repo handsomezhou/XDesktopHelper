@@ -109,10 +109,22 @@ public class T9TelephoneDialpadView extends LinearLayout implements OnClickListe
 		/**
 		 * set click listener for button("0-9",'*','#')
 		 */
-		for (int i = 0; i < 12; i++) {
+/*		for (int i = 0; i < 12; i++) {
 			View v = mDialpadView.findViewById(R.id.dialNum1 + i);
 			v.setOnClickListener(this);
-		}
+		}*/
+		mDialpadView.findViewById(R.id.dialNum0).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum1).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum2).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum3).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum4).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum5).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum6).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum7).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum8).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialNum9).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialx).setOnClickListener(this);
+		mDialpadView.findViewById(R.id.dialj).setOnClickListener(this);
 
 		/**
 		 * set long click listener for button('*','0','#')

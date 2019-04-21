@@ -3,7 +3,6 @@ package com.handsomezhou.xdesktophelper.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.Test;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

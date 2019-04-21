@@ -33,7 +33,7 @@ public class BaiduAipHelper {
     }
 
     public interface OnAipNlp{
-        void onAipNlpSuccess(String text,NlpLexer nlpLexer);
+        void onAipNlpSuccess(String text, NlpLexer nlpLexer);
         void onAipNlpFailed(String text);
     }
 
