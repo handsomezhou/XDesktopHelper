@@ -1,8 +1,10 @@
 package com.handsomezhou.xdesktophelper.activity;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.handsomezhou.xdesktophelper.fragment.AboutFragment;
+import com.handsomezhou.xdesktophelper.util.ActivityUtil;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 public class AboutActivity extends BaseSingleFragmentActivity {
@@ -36,5 +38,10 @@ public class AboutActivity extends BaseSingleFragmentActivity {
 		 * end:小米统计
 		 */
 		MiStatInterface.recordPageEnd();
+	}
+
+	public static void launch(Context context){
+		ActivityUtil.launch(context, AboutActivity.class);
+		return;
 	}
 }

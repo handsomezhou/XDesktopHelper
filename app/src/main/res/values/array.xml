@@ -16,6 +16,7 @@
 		<item>{\"project_name\": \"Baidu nlp lexical\",\"project_address\":\"http://ai.baidu.com/tech/nlp/lexical\", \"whether_open_source\":false}</item>
 		<item>{\"project_name\": \"IFlytek\'s speech recognition library\",\"project_address\":\"http://www.xfyun.cn/\", \"whether_open_source\":false}</item>
         <item>{\"project_name\": \"MiStats\",\"project_address\":\"https://dev.mi.com/console/appservice/\", \"whether_open_source\":false}</item>
+        <item>{\"project_name\": \"zxing-android-embedded\",\"project_address\":\"https://github.com/journeyapps/zxing-android-embedded\", \"whether_open_source\":true}</item>
     </string-array>
     <!-- end: open source project -->
 

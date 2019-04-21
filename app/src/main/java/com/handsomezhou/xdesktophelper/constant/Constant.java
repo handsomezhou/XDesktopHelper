@@ -2,7 +2,7 @@
 package com.handsomezhou.xdesktophelper.constant;
 
 /**
- * Created by zhoujq.
+ * Created by handsomezhou.
  */
 
 public interface Constant {

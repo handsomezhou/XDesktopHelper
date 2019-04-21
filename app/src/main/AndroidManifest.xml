@@ -37,6 +37,19 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.ToolActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activity.ScanQrCodeActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
+            android:name=".activity.QrCodeParseActivity"
+            android:label="@string/app_name" >
+        </activity>
         <activity
             android:name=".activity.SettingsActivity"
             android:label="@string/app_name" >

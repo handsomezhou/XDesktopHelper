@@ -12,8 +12,7 @@ import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout.OnNavigationBarLayout;
 
-public class AboutFragment extends BaseFragment implements
-		OnNavigationBarLayout {
+public class AboutFragment extends BaseFragment implements OnNavigationBarLayout {
 
 	private NavigationBarLayout mNavigationBarLayout;
 	private TextView mVersionNameTv;

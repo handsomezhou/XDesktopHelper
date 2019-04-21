@@ -27,8 +27,7 @@ import com.handsomezhou.xdesktophelper.view.NavigationBarLayout.OnNavigationBarL
 import com.handsomezhou.xdesktophelper.view.SegmentedGroup;
 import com.handsomezhou.xdesktophelper.view.switchbutton.SwitchButton;
 
-public class
-SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommonDialog {
+public class SettingsFragment extends BaseFragment implements OnNavigationBarLayout ,OnCommonDialog {
 	private static final String TAG = SettingsFragment.class.getSimpleName();
 	private static final int MAX_MENU_POSITION_MODE_SETTING_PROMPT_COUNT = 3;
 

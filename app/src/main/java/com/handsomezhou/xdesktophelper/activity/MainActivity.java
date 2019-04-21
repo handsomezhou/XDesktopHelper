@@ -125,6 +125,9 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 		case MenuItemIndex.HOME_PAGE:
 			enterHomePage();
 			break;
+		case MenuItemIndex.TOOL:
+			enterTool();
+			break;
 		case MenuItemIndex.SETTINGS:
 			enterSettings();
 			break;
@@ -157,6 +160,13 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 				R.mipmap.home_page);
 		mMenuItems.add(MenuItemIndex.HOME_PAGE, homePageMenuItem);
 		/* End: home page */
+
+		/* Start: tool */
+		MenuItem toolMenuItem = new MenuItem(
+				mContext.getString(R.string.tool), titleColor,
+				R.mipmap.tool);
+		mMenuItems.add(MenuItemIndex.TOOL, toolMenuItem);
+		/* End: tool */
 
 		/* Start: settings */
 		MenuItem settingsMenuItem = new MenuItem(
@@ -299,9 +309,12 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 		return;
 	}
 
+	private void enterTool() {
+		ToolActivity.launch(getContext());
+	}
+
 	private void enterSettings() {
-		Intent intent = new Intent(getContext(), SettingsActivity.class);
-		startActivity(intent);
+		SettingsActivity.launch(getContext());
 	}
 
 
@@ -312,7 +325,6 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 
 
 	private void enterAbout() {
-		Intent intent = new Intent(getContext(), AboutActivity.class);
-		startActivity(intent);
+		AboutActivity.launch(getContext());
 	}
 }

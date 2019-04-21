@@ -77,7 +77,13 @@ public class NavigationBarLayout extends RelativeLayout {
 		});
 		return;
 	}
-	
-	
 
+
+	public TextView getTitleTv() {
+		return mTitleTv;
+	}
+
+	public void setTitleTv(TextView titleTv) {
+		mTitleTv = titleTv;
+	}
 }

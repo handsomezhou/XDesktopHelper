@@ -1,8 +1,10 @@
 package com.handsomezhou.xdesktophelper.activity;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.handsomezhou.xdesktophelper.fragment.ReferenceProjectFragment;
+import com.handsomezhou.xdesktophelper.util.ActivityUtil;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 public class ReferenceProjectActivity extends BaseSingleFragmentActivity {
@@ -38,4 +40,8 @@ public class ReferenceProjectActivity extends BaseSingleFragmentActivity {
 		MiStatInterface.recordPageEnd();
 	}
 
+	public static void launch(Context context){
+		ActivityUtil.launch(context, ReferenceProjectActivity.class);
+		return;
+	}
 }

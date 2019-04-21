@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (C) 2008 ZXing authors
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+
+    <com.handsomezhou.xdesktophelper.view.NavigationBarLayout
+        android:id="@+id/navigation_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </com.handsomezhou.xdesktophelper.view.NavigationBarLayout>
+
+
+    <com.journeyapps.barcodescanner.DecoratedBarcodeView
+        android:id="@+id/zxing_barcode_scanner"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@+id/navigation_bar_layout"
+        android:layout_alignParentBottom="true"
+        app:zxing_use_texture_view="true"/>
+
+
+    <!-- Sample for a footer. Also add to DecoratedBarcodeView: android:layout_above="@+id/footer" -->
+    <!-- <TextView
+        android:id="@+id/footer"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:text="Footer"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"/> -->
+</RelativeLayout>

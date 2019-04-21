@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat">
@@ -13,6 +13,21 @@
         <item name="windowNoTitle">true</item>
     </style>
     <!-- Application theme. -->
+    <style name="text_view_style">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/grey21_transparent</item>
+        <item name="android:textColorHint">@color/dim_grey</item>
+    </style>
+
+    <style name="edit_text_style">
+        <item name="android:background">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textColorHint">@color/dim_grey</item>
+        <item name="android:textCursorDrawable" tools:ignore="NewApi">@null</item>
+        <item name="android:padding">@dimen/padding</item>
+    </style>
+
+
     <style name="text_view">
         <item name="android:background">@color/white</item>
         <item name="android:textColor">@color/black</item>

@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
- * Created by zhoujq.
+ * Created by handsomezhou.
  */
 
 public class TimeUtil {

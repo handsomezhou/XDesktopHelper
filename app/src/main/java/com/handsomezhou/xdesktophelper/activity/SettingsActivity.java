@@ -1,8 +1,10 @@
 package com.handsomezhou.xdesktophelper.activity;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.handsomezhou.xdesktophelper.fragment.SettingsFragment;
+import com.handsomezhou.xdesktophelper.util.ActivityUtil;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 public class SettingsActivity extends BaseSingleFragmentActivity {
@@ -39,4 +41,8 @@ public class SettingsActivity extends BaseSingleFragmentActivity {
 		MiStatInterface.recordPageEnd();
 	}
 
+	public static void launch(Context context){
+		ActivityUtil.launch(context, SettingsActivity.class);
+		return;
+	}
 }
