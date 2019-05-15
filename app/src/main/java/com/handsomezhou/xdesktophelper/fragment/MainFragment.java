@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,6 +39,7 @@ import com.handsomezhou.xdesktophelper.helper.AppSettingInfoHelper.OnAppSettingI
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper;
 import com.handsomezhou.xdesktophelper.helper.AppStartRecordHelper.OnAppStartRecordLoad;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
+import com.handsomezhou.xdesktophelper.model.AppDownloadInfo;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.IconButtonData;
 import com.handsomezhou.xdesktophelper.model.IconButtonValue;
@@ -47,6 +49,9 @@ import com.handsomezhou.xdesktophelper.constant.SearchMode;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.ContextAnalysisUtil;
+import com.handsomezhou.xdesktophelper.util.LogUtil;
+import com.handsomezhou.xdesktophelper.util.ShareUtil;
+import com.handsomezhou.xdesktophelper.util.TimeUtil;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
 import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.util.XfyunErrorCodeUtil;
@@ -81,6 +86,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     private int mUserGuideViewIndex=0;
     private List<PartnerView> mPartnerViews;
     private TopTabView mTopTabView;
+    private ImageView mShareIv;
     private CustomViewPager mCustomViewPager;
     private CustomPartnerViewPagerAdapter mCustomPartnerViewPagerAdapter;
     private BaseProgressDialog mBaseProgressDialog;
@@ -188,6 +194,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         mTopTabView.setHideIcon(true);
         mTopTabView.removeAllViews();
 
+
         /* start: T9 search tab */
         IconButtonValue t9IconBtnValue = new IconButtonValue(SearchMode.T9, 0, R.string.t9_search);
         t9IconBtnValue.setHideIcon(mTopTabView.isHideIcon());
@@ -207,18 +214,35 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         /* end: Qwerty search tab */
 
         mTopTabView.setOnTabChange(this);
-
+        mShareIv = (ImageView) view.findViewById(R.id.share_image_view);
         return view;
     }
 
     @Override
     protected void initListener() {
+        mShareIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<AppDownloadInfo> appDownloadInfos=loadAppDownloadInfo();
+                StringBuffer textContentStringBuffer=new StringBuffer();
+                textContentStringBuffer.append(getString(R.string.app_function)).append(Constant.NEW_LINE).append(Constant.NEW_LINE);
+                textContentStringBuffer.append(getString(R.string.x_desktop_helper_download_link)).append(Constant.NEW_LINE);
+                AppDownloadInfo appDownloadInfo=null;
+                for(int i=0; i<appDownloadInfos.size();i++){
+                    appDownloadInfo=appDownloadInfos.get(i);
+                    textContentStringBuffer.append(appDownloadInfo.getAppMarket()).append(Constant.NEW_LINE);
+                    textContentStringBuffer.append(appDownloadInfo.getDownloadAddress()).append(Constant.NEW_LINE).append(Constant.NEW_LINE);
+                }
+
+                ShareUtil.shareTextToMore(getContext(),getString(R.string.app_name),textContentStringBuffer.toString());
+            }
+        });
+
         FragmentManager fm = getChildFragmentManager();
         mCustomPartnerViewPagerAdapter = new CustomPartnerViewPagerAdapter(fm,
                 mPartnerViews);
         mCustomViewPager.setAdapter(mCustomPartnerViewPagerAdapter);
-        mCustomViewPager
-                .setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mCustomViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
                     @Override
                     public void onPageSelected(int pos) {
@@ -857,5 +881,42 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         }else {
             ViewUtil.hideView(mUserGuideView);
         }
+    }
+
+    private List<AppDownloadInfo> loadAppDownloadInfo(){
+        String[] appDownloadInfoItems=getContext().getResources().getStringArray(R.array.app_download_info);
+
+        List<AppDownloadInfo> appDownloadInfos=new ArrayList<AppDownloadInfo>();
+
+        for(String item:appDownloadInfoItems){
+            try {
+                JSONObject jsonObject=new JSONObject(item);
+                if(null!=jsonObject){
+                    AppDownloadInfo appDownloadInfo=new AppDownloadInfo();
+                    if(jsonObject.has(AppDownloadInfo.KEY_ID)){
+                        appDownloadInfo.setId(jsonObject.getInt(AppDownloadInfo.KEY_ID));
+                    }
+
+                    if(jsonObject.has(AppDownloadInfo.KEY_APP_MARKET)){
+                        appDownloadInfo.setAppMarket(jsonObject.getString(AppDownloadInfo.KEY_APP_MARKET));
+                    }
+
+                    if(jsonObject.has(AppDownloadInfo.KEY_DOWNLOAD_ADDRESS)){
+                        appDownloadInfo.setDownloadAddress(jsonObject.getString(AppDownloadInfo.KEY_DOWNLOAD_ADDRESS));
+                    }
+
+                    appDownloadInfos.add(appDownloadInfo);
+
+                }
+
+
+            } catch (JSONException e) {
+                LogUtil.i(TAG, TimeUtil.getLogTime()+e.getMessage());
+                e.printStackTrace();
+            }
+
+
+        }
+        return appDownloadInfos;
     }
 }

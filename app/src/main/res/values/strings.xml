@@ -21,6 +21,8 @@
     <string name="uninstall">卸载</string>
     <string name="view_app_info">查看应用信息</string>
     <string name="share_app">分享应用</string>
+    <string name="x_desktop_helper_download_link">X桌面助手下载链接</string>
+    <string name="app_function">Ｘ桌面助手是一款智能、高效、简洁的桌面应用搜索工具.\n让用户快速、准确找到桌面上的应用,进行打开,分享,卸载，查看应用信息等一系列操作.</string>
 
     <!-- start: exit_app_prompt_mode -->
     <string name="whether_prompt_exit_app">退出应用时是否提示</string>

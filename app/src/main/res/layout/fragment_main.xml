@@ -9,14 +9,36 @@
                   android:layout_height="match_parent"
                   android:orientation="vertical">
 
-        <com.handsomezhou.xdesktophelper.view.TopTabView
-            android:id="@+id/top_tab_view"
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:minHeight="@dimen/top_tab_height_without_icon"
-            android:padding="@dimen/padding"/>
+            android:layout_gravity="center_vertical">
 
+            <com.handsomezhou.xdesktophelper.view.TopTabView
+                android:id="@+id/top_tab_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:minHeight="@dimen/top_tab_height_without_icon"
+                android:padding="@dimen/padding"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|end"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/share_image_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/share_selector"
+                    android:padding="@dimen/padding"/>
+            </RelativeLayout>
+        </FrameLayout>
         <View style="@style/dividing_line_horizontal"/>
 
         <com.handsomezhou.xdesktophelper.view.CustomViewPager
@@ -28,10 +50,10 @@
 
     <com.zhl.userguideview.UserGuideView
         android:id="@+id/user_guide_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:HighlightViewStyle="circle"
         app:MaskBlurStyle="solid"
-        app:maskColor="#94242323"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        app:maskColor="#94242323"/>
 
 </FrameLayout>
