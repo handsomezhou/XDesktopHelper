@@ -28,6 +28,7 @@ import com.handsomezhou.xdesktophelper.baidu.aip.constant.BaiduConstant;
 import com.handsomezhou.xdesktophelper.baidu.aip.helper.BaiduAipHelper;
 import com.handsomezhou.xdesktophelper.baidu.aip.model.Event;
 import com.handsomezhou.xdesktophelper.baidu.aip.model.NlpLexer;
+import com.handsomezhou.xdesktophelper.baidu.aip.util.PartOfSpeechUtil;
 import com.handsomezhou.xdesktophelper.constant.Constant;
 import com.handsomezhou.xdesktophelper.constant.EventAction;
 import com.handsomezhou.xdesktophelper.dialog.BaseProgressDialog;
@@ -49,6 +50,7 @@ import com.handsomezhou.xdesktophelper.constant.SearchMode;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.ContextAnalysisUtil;
+import com.handsomezhou.xdesktophelper.util.JsonUtil;
 import com.handsomezhou.xdesktophelper.util.LogUtil;
 import com.handsomezhou.xdesktophelper.util.ShareUtil;
 import com.handsomezhou.xdesktophelper.util.TimeUtil;
@@ -613,7 +615,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
      */
     private RecognizerDialogListener mRecognizerDialogListener = new RecognizerDialogListener() {
         public void onResult(RecognizerResult results, boolean isLast) {
-            String voiceText = parseResult(results);
+            final String voiceText = parseResult(results);
             if (true == isLast) {
                 setVoiceSearch(true);
                 if (CommonUtil.isEmpty(BaiduConstant.APP_ID) || CommonUtil.isEmpty(BaiduConstant.API_KEY) || CommonUtil.isEmpty(BaiduConstant.SECRET_KEY)) {
@@ -637,6 +639,24 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                                 processEvent(event);
                                 //ToastUtil.toastLengthshort(getContext(),JsonUtil.toJson(event));
 
+                            }
+
+                            //test
+                            if(false==CommonUtil.isEmpty(voiceText)){
+                                LogUtil.i(TAG,"================================start================================");
+                                LogUtil.i(TAG,"voiceText:["+voiceText+"]");
+                                if(null!=nlpLexer){
+                                    LogUtil.i(TAG, "log_id["+nlpLexer.getLog_id()+"]");
+                                    LogUtil.i(TAG, "text:["+nlpLexer.getText()+"]");
+                                    for(int i=0;i<nlpLexer.getItems().size();i++){
+                                        LogUtil.i(TAG, "item"+"["+i+"]["+PartOfSpeechUtil.getPartOfSpeechDesc(nlpLexer.getItems().get(i))+"]"+JsonUtil.toJson(nlpLexer.getItems().get(i)));
+                                    }
+                                }
+
+                                for(int i=0;i<events.size();i++){
+                                    LogUtil.i(TAG,"i=["+i+"] "+events.get(i).toString());
+                                }
+                                LogUtil.i(TAG,"================================end================================");
                             }
                             setVoiceSearch(false);
                         }
