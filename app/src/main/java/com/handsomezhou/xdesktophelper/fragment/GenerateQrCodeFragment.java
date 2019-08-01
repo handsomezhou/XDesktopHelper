@@ -1,5 +1,6 @@
 package com.handsomezhou.xdesktophelper.fragment;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.util.ActivityUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.QRCodeUtil;
+import com.handsomezhou.xdesktophelper.util.ShareUtil;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout;
 
@@ -51,6 +53,15 @@ public class GenerateQrCodeFragment extends BaseFragment  implements NavigationB
             @Override
             public void onClick(View v) {
                 generateQrCode();
+            }
+        });
+
+        mQrCodeIv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String title=getString(R.string.share_qr_code);
+                String imageName=mQrCodeEt.getText().toString();
+                ShareUtil.shareImageToMore( getContext(), title, mQrCodeIv,imageName);
             }
         });
     }

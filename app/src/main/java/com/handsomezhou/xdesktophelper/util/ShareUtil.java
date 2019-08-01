@@ -8,9 +8,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.support.v4.content.FileProvider;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
@@ -19,6 +23,7 @@ import com.handsomezhou.xdesktophelper.constant.AppPackageName;
 import com.handsomezhou.xdesktophelper.constant.Constant;
 
 import java.io.File;
+import java.io.FileOutputStream;
 
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -254,6 +259,51 @@ public class ShareUtil {
 		
 		return;
 	}
+
+	/**
+	 *
+	 * @param context
+	 * @param title
+	 * @param imageView
+	 * @param imageName
+	 */
+	/**
+	 *
+	 * @param context
+	 * @param title
+	 * @param imageView
+	 * @param imageName
+	 */
+	public static void shareImageToMore(Context context, String title, ImageView imageView,String imageName){
+		File root = Environment.getExternalStorageDirectory();
+		String DCIM_CAMERA_PATH=root.getAbsolutePath() +"/DCIM/Camera/";
+		String IMAGE_SUFFIX_JPG=".jpg";
+		imageView.setDrawingCacheEnabled(true);
+		Bitmap bitmap = imageView.getDrawingCache();
+		if(CommonUtil.isEmpty(imageName)){
+			imageName=TimeUtil.getLogTime();
+		}
+		File cachePath = new File(DCIM_CAMERA_PATH +imageName+ IMAGE_SUFFIX_JPG);
+		try
+		{
+			cachePath.createNewFile();
+			FileOutputStream ostream = new FileOutputStream(cachePath);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
+			ostream.close();
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+
+		Intent share = new Intent(Intent.ACTION_SEND);
+		share.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		share.setType("image/*");
+		share.putExtra(Intent.EXTRA_STREAM, Uri.parse(DCIM_CAMERA_PATH +imageName+ IMAGE_SUFFIX_JPG));
+		context.startActivity(Intent.createChooser(share,title));
+	}
+
 
 	public static void shareInstalledApp(Context context, String packageName){
 		do{
