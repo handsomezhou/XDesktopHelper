@@ -38,6 +38,12 @@
     <!-- start: tool -->
     <string name="tool">工具</string>
     <string name="scan_code">扫一扫</string>
+    <string name="qr_code_generator">二维码生成器</string>
+    <string name="generate_qr_code">生成二维码</string>
+    <string name="qr_code_input_tips">请输入需要生成的二维码内容</string>
+    <string name="qr_code_content_can_not_be_empty">二维码内容不能为空!</string>
+    <string name="generate_qr_code_success">生成二维码成功!</string>
+    <string name="generate_qr_code_failed">生成二维码失败!</string>
     <string name="scan_code_content">扫码内容</string>
     <string name="cancel_scan">取消扫描</string>
     <string name="copy">复制</string>

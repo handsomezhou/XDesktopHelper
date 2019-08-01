@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 import com.handsomezhou.xdesktophelper.R;
+import com.handsomezhou.xdesktophelper.activity.GenerateQrCodeActivity;
 import com.handsomezhou.xdesktophelper.activity.QrCodeParseActivity;
 import com.handsomezhou.xdesktophelper.activity.ScanQrCodeActivity;
 import com.handsomezhou.xdesktophelper.model.QrCodeContentParameter;
@@ -29,6 +30,7 @@ public class ToolFragment extends BaseFragment implements NavigationBarLayout.On
     private NavigationBarLayout mNavigationBarLayout;
     private String mTitle;
     private View mScanCodeLayout;
+    private View mGenerateQrCodeLayout;
 
 
     @Override
@@ -67,6 +69,7 @@ public class ToolFragment extends BaseFragment implements NavigationBarLayout.On
         mNavigationBarLayout.setTitle(mTitle);
 
         mScanCodeLayout=view.findViewById(R.id.scan_code_layout);
+        mGenerateQrCodeLayout=view.findViewById(R.id.generate_qr_code_layout);
         return view;
     }
 
@@ -76,6 +79,13 @@ public class ToolFragment extends BaseFragment implements NavigationBarLayout.On
             @Override
             public void onClick(View v) {
                 ScanQrCodeActivity.launch(getActivity());
+            }
+        });
+
+        mGenerateQrCodeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GenerateQrCodeActivity.launch(getActivity());
             }
         });
     }
