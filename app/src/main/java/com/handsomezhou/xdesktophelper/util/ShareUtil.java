@@ -274,26 +274,13 @@ public class ShareUtil {
 	 * @param imageView
 	 * @param imageName
 	 */
-	public static void shareImageToMore(Context context, String title, ImageView imageView,String imageName){
+	public static void shareImageToMore(Context context, String title,String imageName){
 		File root = Environment.getExternalStorageDirectory();
 		String DCIM_CAMERA_PATH=root.getAbsolutePath() +"/DCIM/Camera/";
 		String IMAGE_SUFFIX_JPG=".jpg";
-		imageView.setDrawingCacheEnabled(true);
-		Bitmap bitmap = imageView.getDrawingCache();
+
 		if(CommonUtil.isEmpty(imageName)){
 			imageName=TimeUtil.getLogTime();
-		}
-		File cachePath = new File(DCIM_CAMERA_PATH +imageName+ IMAGE_SUFFIX_JPG);
-		try
-		{
-			cachePath.createNewFile();
-			FileOutputStream ostream = new FileOutputStream(cachePath);
-			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, ostream);
-			ostream.close();
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
 		}
 
 
@@ -304,6 +291,23 @@ public class ShareUtil {
 		context.startActivity(Intent.createChooser(share,title));
 	}
 
+	/**
+	 *
+	 * @param context
+	 */
+	public static void openGallery(Context context){
+		do{
+			if(null==context){
+				break;
+			}
+
+			Intent intent = new Intent();
+			intent.setAction(android.content.Intent.ACTION_VIEW);
+			intent.setType("image/*");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(intent);
+		}while (false);
+	}
 
 	public static void shareInstalledApp(Context context, String packageName){
 		do{

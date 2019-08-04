@@ -7,13 +7,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.handsomezhou.xdesktophelper.R;
 import com.handsomezhou.xdesktophelper.util.ActivityUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
+import com.handsomezhou.xdesktophelper.util.ImageUtil;
 import com.handsomezhou.xdesktophelper.util.QRCodeUtil;
 import com.handsomezhou.xdesktophelper.util.ShareUtil;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
+import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout;
 
 /**
@@ -25,6 +28,7 @@ public class GenerateQrCodeFragment extends BaseFragment  implements NavigationB
     private String mTitle;
     private EditText mQrCodeEt;
     private Button mGenerateQrCodeBtn;
+    private TextView mViewQrCodeImageTv;
     private ImageView mQrCodeIv;
     @Override
     protected void initData() {
@@ -42,6 +46,7 @@ public class GenerateQrCodeFragment extends BaseFragment  implements NavigationB
 
         mQrCodeEt =view.findViewById(R.id.qr_code_edit_text);
         mGenerateQrCodeBtn=view.findViewById(R.id.generate_qr_code_btn);
+        mViewQrCodeImageTv=view.findViewById(R.id.view_qr_code_image_text_view);
         mQrCodeIv=view.findViewById(R.id.qr_code_image_view);
 
         return view;
@@ -53,6 +58,9 @@ public class GenerateQrCodeFragment extends BaseFragment  implements NavigationB
             @Override
             public void onClick(View v) {
                 generateQrCode();
+                //ViewUtil.showView(mViewQrCodeImageTv);
+                //unok
+                ViewUtil.hideView(mViewQrCodeImageTv);
             }
         });
 
@@ -61,7 +69,17 @@ public class GenerateQrCodeFragment extends BaseFragment  implements NavigationB
             public void onClick(View v) {
                 String title=getString(R.string.share_qr_code);
                 String imageName=mQrCodeEt.getText().toString();
-                ShareUtil.shareImageToMore( getContext(), title, mQrCodeIv,imageName);
+                ImageUtil.saveImageToGallery(mQrCodeIv,imageName);
+                ShareUtil.shareImageToMore( getContext(), title,imageName);
+            }
+        });
+
+        mViewQrCodeImageTv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String imageName=mQrCodeEt.getText().toString();
+                ImageUtil.saveImageToGallery(mQrCodeIv,imageName);
+                ShareUtil.openGallery(getContext());
             }
         });
     }
