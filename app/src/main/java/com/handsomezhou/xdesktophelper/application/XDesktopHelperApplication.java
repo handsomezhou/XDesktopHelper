@@ -3,13 +3,23 @@ package com.handsomezhou.xdesktophelper.application;
 import android.app.Application;
 import android.content.Context;
 
+import com.android.commontools.util.DeviceUtil;
+import com.handsomezhou.xdesktophelper.constant.BuglyConstant;
 import com.handsomezhou.xdesktophelper.constant.MiConstant;
+import com.handsomezhou.xdesktophelper.constant.UmengSdkConstant;
 import com.handsomezhou.xdesktophelper.constant.XfyunConstant;
+import com.handsomezhou.xdesktophelper.util.LogUtil;
 import com.handsomezhou.xdesktophelper.util.TimeUtil;
 import com.iflytek.cloud.SpeechUtility;
+import com.tencent.bugly.crashreport.CrashReport;
+import com.tencent.stat.StatConfig;
+import com.tencent.stat.StatService;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.commonsdk.UMConfigure;
 import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 public class XDesktopHelperApplication extends Application {
+	private static final String TAG="TAG";
 	private static Context sContext;
 
 	@Override
@@ -17,8 +27,11 @@ public class XDesktopHelperApplication extends Application {
 		super.onCreate();
 		sContext = getApplicationContext();
 
+		initBugly();
 		initXfyunSpeechRecognizer();
 		initMiStat();
+		initMta();
+		initUmsdk();
 	}
 
 	public static Context getContext() {
@@ -41,6 +54,18 @@ public class XDesktopHelperApplication extends Application {
 	}
 
 	/**
+	 * 初始化bugly
+	 */
+	private void initBugly(){
+		CrashReport.initCrashReport(getApplicationContext(), BuglyConstant.APPID,false);
+
+		String deviceInfo= DeviceUtil.getDeviceFingerprint();
+		LogUtil.i(TAG,"Fingerprint["+deviceInfo+"]");
+		CrashReport.setUserId(getApplicationContext(), deviceInfo);
+
+	}
+
+	/**
 	 * 初始化小米统计
 	 */
 	private void initMiStat(){
@@ -49,5 +74,25 @@ public class XDesktopHelperApplication extends Application {
 		MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_INTERVAL, UPLOAD_POLICY_INTERVAL_MS);//设置上报策略
 		//MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_REALTIME, 0);//设置上报策略
 		MiStatInterface.enableExceptionCatcher(true);//崩溃日志收集
+	}
+
+	/**
+	 * 腾讯移动分析
+	 */
+	private void initMta(){
+		// [可选]设置是否打开debug输出，上线时请关闭，Logcat标签为"MtaSDK"
+		//StatConfig.setDebugEnable(true);
+		// 基础统计API
+		StatService.registerActivityLifecycleCallbacks(this);
+	}
+
+	/**
+	 * 初始化Umsdk
+	 */
+	private void initUmsdk(){
+		// 初始化SDK
+		UMConfigure.init(this, UmengSdkConstant.APP_KEY, "Umeng", UMConfigure.DEVICE_TYPE_PHONE, null);
+		// 选用AUTO页面采集模式
+		MobclickAgent.setPageCollectionMode(MobclickAgent.PageMode.AUTO);
 	}
 }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <!--refrenece:https://blog.csdn.net/yonbor605/article/details/82223882-->
+    <base-config cleartextTrafficPermitted="true" />
+    <!--https://juejin.im/post/5bbdc6d06fb9a05d171d608c-->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">android.bugly.qq.com</domain>
+        <domain includeSubdomains="true">www.pgyer.com</domain>
+        <domain includeSubdomains="true">app-global.pgyer.com</domain>
+    </domain-config>
+
+</network-security-config>

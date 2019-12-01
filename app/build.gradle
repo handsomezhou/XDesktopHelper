@@ -4,12 +4,31 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.handsomezhou.xdesktophelper"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 28
         versionCode 12
         versionName "1.2.7"
         multiDexEnabled true
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+
+        /*start: bugly and so on*/
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi', 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+        /*start: bugly and so on*/
+
+        /**
+         * 腾讯移动分析
+         * https://mta.qq.com/mta/manage/ctr_uni_init?app_id=3104088135
+         */
+        manifestPlaceholders = [
+                //A1Y4QXI1FR4C 属于应用"X桌面助手"独有的 Android AppKey, 用于配置SDK
+                MTA_APPKEY:"A1Y4QXI1FR4C",
+                //标注应用推广渠道用以区分新用户来源，可填写如应用宝，豌豆荚等
+                MTA_CHANNEL:"Custom"
+        ]
     }
     buildTypes {
         release {
@@ -31,19 +50,61 @@ dependencies {
 
 
     implementation files('libs/aip-java-sdk-4.1.1.jar')
-    implementation files('libs/json-20160810.jar')
-    implementation files('libs/log4j-1.2.17.jar')
-    implementation files('libs/MiStats_SDK_Client_1_9_6.jar')
+
+    /**
+     *  https://bugly.qq.com/docs/user-guide/instruction-manual-android/?v=20190712210424#_1
+     */
+    implementation 'com.tencent.bugly:crashreport:latest.release'
+    //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+
+    /**
+     *  https://github.com/handsomezhou/CommonTools
+     */
+    implementation files('libs/commontools_1_0.jar')
 
     /**
      *  https://github.com/google/gson
      */
     implementation 'com.google.code.gson:gson:2.8.2'
+
+    implementation files('libs/json-20160810.jar')
+    implementation files('libs/log4j-1.2.17.jar')
+    implementation files('libs/MiStats_SDK_Client_1_9_6.jar')
+
+
+    /**
+     *  start:腾讯移动分析
+     */
+    //mta 3.4.7 稳定版
+    implementation 'com.qq.mta:mta:3.4.7-Release'
+    //mid jar包 必须添加
+    implementation 'com.tencent.mid:mid:4.06-Release'
+    /**
+     *  end:腾讯移动分析
+     */
+
+    /**
+     *  https://www.pgyer.com/doc/view/new_sdk_android_guide
+     */
+    implementation 'com.pgyersdk:sdk:3.0.10'
+
     /**
      *  https://github.com/ReactiveX/RxJava
      */
     implementation 'io.reactivex:rxjava:1.1.6'
     implementation 'io.reactivex:rxandroid:1.2.1'
+
+    /**
+     *  start: umsdk
+     *  https://developer.umeng.com/docs/119267/detail/118584#h1--1
+     */
+    implementation 'com.umeng.umsdk:analytics:latest.integration'
+    implementation 'com.umeng.umsdk:common:latest.integration'
+    /**
+     *  end: umsdk
+     */
 
     /**
      * https://github.com/yilylong/UserGuideView

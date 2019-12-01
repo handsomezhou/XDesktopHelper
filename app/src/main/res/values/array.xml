@@ -5,17 +5,22 @@
     <string-array name="reference_project">
         <item>{\"project_name\": \"AndroidResideMenu\",\"project_address\":\"https://github.com/SpecialCyCi/AndroidResideMenu/\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"android-segmented-control\",\"project_address\":\"https://github.com/hoang8f/android-segmented-control\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"Baidu nlp lexical\",\"project_address\":\"http://ai.baidu.com/tech/nlp/lexical\", \"whether_open_source\":false}</item>
+        <item>{\"project_name\": \"bugly\",\"project_address\":\"https://bugly.qq.com\", \"whether_open_source\":false}</item>
+        <item>{\"project_name\": \"CommonTools\",\"project_address\":\"https://github.com/handsomezhou/CommonTools\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"gson\",\"project_address\":\"https://github.com/google/gson\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"MiStats\",\"project_address\":\"https://dev.mi.com/console/appservice/\", \"whether_open_source\":false}</item>
+        <item>{\"project_name\": \"mta\",\"project_address\":\"https://mta.qq.com/\", \"whether_open_source\":false}</item>
         <!--<item>{\"project_name\": \"NineOldAndroids\",\"project_address\":\"https://github.com/JakeWharton/NineOldAndroids\", \"whether_open_source\":true}</item>-->
         <!--<item>{\"project_name\": \"pinyin4j\",\"project_address\":\"http://pinyin4j.sourceforge.net/\", \"whether_open_source\":true}</item>-->
+        <item>{\"project_name\": \"pgyersdk\",\"project_address\":\"https://www.pgyer.com\", \"whether_open_source\":false}</item>
+        <item>{\"project_name\": \"pinyin4j\",\"project_address\":\"http://pinyin4j.sourceforge.net/\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"pinyinsearch\",\"project_address\":\"https://github.com/handsomezhou/PinyinSearchLibrary\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"rxjava\",\"project_address\":\"https://github.com/ReactiveX/RxJava\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"SwitchButton\",\"project_address\":\"https://github.com/kyleduo/SwitchButton\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"UserGuideView\",\"project_address\":\"https://github.com/yilylong/UserGuideView\", \"whether_open_source\":true}</item>
-
-		<item>{\"project_name\": \"Baidu nlp lexical\",\"project_address\":\"http://ai.baidu.com/tech/nlp/lexical\", \"whether_open_source\":false}</item>
+        <item>{\"project_name\": \"umeng\",\"project_address\":\"https://developer.umeng.com/\", \"whether_open_source\":false}</item>
 		<item>{\"project_name\": \"IFlytek\'s speech recognition library\",\"project_address\":\"http://www.xfyun.cn/\", \"whether_open_source\":false}</item>
-        <item>{\"project_name\": \"MiStats\",\"project_address\":\"https://dev.mi.com/console/appservice/\", \"whether_open_source\":false}</item>
         <item>{\"project_name\": \"zxing-android-embedded\",\"project_address\":\"https://github.com/journeyapps/zxing-android-embedded\", \"whether_open_source\":true}</item>
     </string-array>
     <!-- end: open source project -->
