@@ -19,11 +19,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 import com.handsomezhou.xdesktophelper.R;
-import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.helper.AppInfoHelper;
 import com.handsomezhou.xdesktophelper.helper.SettingsHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
-import com.handsomezhou.xdesktophelper.model.AppStartRecord;
+import com.handsomezhou.xdesktophelper.model.database.AppStartRecord;
+import com.handsomezhou.xdesktophelper.util.database.AppStartRecordUtil;
 
 public class AppUtil {
     private static final String TAG = "AppUtil";
@@ -119,9 +119,9 @@ public class AppUtil {
                     } else {
                         if (true == SettingsHelper.getInstance().isSmartSorting()) {
                             long startTimeMs = System.currentTimeMillis();
-                            AppStartRecord appStartRecord = new AppStartRecord(appInfo.getKey(),
-                                    startTimeMs);
-                            AppStartRecordDataBaseHelper.getInstance().insert(appStartRecord);
+                            AppStartRecord appStartRecord = new AppStartRecord(appInfo.getKey(), startTimeMs);
+                            appStartRecord.setUpdateTime(TimeUtil.getLogTime());
+                            AppStartRecordUtil.update(appStartRecord);
                             AppInfo ai = AppInfoHelper.getInstance().getBaseAllAppInfosHashMap()
                                     .get(appInfo.getKey());
                             if (null != ai) {

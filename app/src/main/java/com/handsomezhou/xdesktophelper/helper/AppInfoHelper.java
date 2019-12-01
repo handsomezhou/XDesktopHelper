@@ -17,8 +17,6 @@ import android.util.Log;
 
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
 import com.handsomezhou.xdesktophelper.constant.Constant;
-import com.handsomezhou.xdesktophelper.database.AppSettingInfoDataBaseHelper;
-import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
 import com.handsomezhou.xdesktophelper.model.AppInfo.SearchByType;
 import com.handsomezhou.xdesktophelper.constant.AppType;
@@ -27,6 +25,8 @@ import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.StringUtil;
+import com.handsomezhou.xdesktophelper.util.database.AppSettingInfoUtil;
+import com.handsomezhou.xdesktophelper.util.database.AppStartRecordUtil;
 import com.pinyinsearch.model.PinyinSearchUnit;
 import com.pinyinsearch.util.PinyinUtil;
 import com.pinyinsearch.util.QwertyUtil;
@@ -597,8 +597,8 @@ public class AppInfoHelper {
 	            resetSequenceSuccess=false;
                 break;
             } 
-	        
-	        AppStartRecordDataBaseHelper.getInstance().delete(appInfo.getKey());
+
+			AppStartRecordUtil.delete(appInfo.getKey());
 	        
 	        if(mBaseAllAppInfosHashMap.containsKey(appInfo.getKey())){
 	            mBaseAllAppInfosHashMap.get(appInfo.getKey()).setCommonWeights(AppCommonWeightsUtil.COMMON_WEIGHTS_DEFAULT);
@@ -613,8 +613,8 @@ public class AppInfoHelper {
 
 	public boolean resetAllSequence(){
 		boolean resetSequenceSuccess=false;
-		boolean deleteStartRecordSuccess= AppStartRecordDataBaseHelper.getInstance().deleteAll();
-		boolean appSettingInfoSuccess=AppSettingInfoDataBaseHelper.getInstance().deleteAll();
+		boolean deleteStartRecordSuccess= AppStartRecordUtil.deleteAll();
+		boolean appSettingInfoSuccess= AppSettingInfoUtil.deleteAll();
 		if((true==deleteStartRecordSuccess)&&(true==appSettingInfoSuccess)){
 			for(AppInfo ai:mBaseAllAppInfos){
 				ai.setSetToTop(0);
@@ -642,7 +642,7 @@ public class AppInfoHelper {
 	        if(null!=resolveInfo){
                 AppInfo appInfo=getAppInfo(pm, resolveInfo);
                 if(null!=appInfo){
-                	AppStartRecordDataBaseHelper.getInstance().delete(appInfo.getKey());
+                	AppStartRecordUtil.delete(appInfo.getKey());
                 	mBaseAllAppInfosHashMap.remove(appInfo.getKey());
                 }
 	        }

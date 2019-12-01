@@ -12,27 +12,32 @@ public class AppChangedReceiver extends BroadcastReceiver {
 	private static final String TAG="AppChangedReceiver";
 	@Override
 	public void onReceive(Context context, Intent intent) {
+		/**
+		 * update app :ACTION_PACKAGE_REMOVED->ACTION_PACKAGE_ADDED
+		 */
 		if (intent.getAction().equals(Intent.ACTION_PACKAGE_ADDED)) {
 			Log.i(TAG, "ACTION_PACKAGE_ADDED");
-
 			String packageName = intent.getData().getSchemeSpecificPart();
-			if(false==AppInfoHelper.getInstance().isAppExist(packageName)){
+			Log.i(TAG, "packageName "+packageName);
+		/*	if(false==AppInfoHelper.getInstance().isAppExist(packageName)){
 			    AppInfoHelper.getInstance().add(packageName);
 				//AppInfoHelper.getInstance().setAppInfoChanged(true);
-			}
+			}*/
 			
 			//XDesktopHelperService.startService(context);
+			AppInfoHelper.getInstance().setAppInfoChanged(true);
 		} else if (intent.getAction().equals(Intent.ACTION_PACKAGE_CHANGED)) {
 			Log.i(TAG, "ACTION_PACKAGE_CHANGED");
 			//AppInfoHelper.getInstance().setAppInfoChanged(true);
-			XDesktopHelperService.startService(context);
+			//XDesktopHelperService.startService(context);
+			AppInfoHelper.getInstance().setAppInfoChanged(true);
 		} else if (intent.getAction().equals(Intent.ACTION_PACKAGE_REMOVED)) {
-			//Toast.makeText(context, "AppChangedReceiver ACTION_PACKAGE_REMOVED", Toast.LENGTH_LONG).show();
+			AppInfoHelper.getInstance().setAppInfoChanged(true);
 			Log.i(TAG, "ACTION_PACKAGE_REMOVED");
 			String packageName = intent.getData().getSchemeSpecificPart();
 			Log.i(TAG, "packageName "+packageName);		
-			AppInfoHelper.getInstance().remove(packageName);
-		
+			//AppInfoHelper.getInstance().remove(packageName);
+
 			//AppInfoHelper.getInstance().setAppInfoChanged(true);
 			//XDesktopHelperService.startService(context);
 		}

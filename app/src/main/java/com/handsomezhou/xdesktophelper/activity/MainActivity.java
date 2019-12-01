@@ -26,7 +26,6 @@ import com.handsomezhou.xdesktophelper.constant.MenuPositionMode;
 import com.handsomezhou.xdesktophelper.service.XDesktopHelperService;
 import com.handsomezhou.xdesktophelper.view.ResideMenu;
 import com.handsomezhou.xdesktophelper.view.ResideMenuItem;
-import com.xiaomi.mistatistic.sdk.MiStatInterface;
 
 @SuppressLint("ResourceAsColor")
 public class MainActivity extends BaseSingleFragmentActivity implements OnClickListener {
@@ -51,10 +50,7 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 	@Override
 	protected void onResume() {
 		super.onResume();
-		/**
-		 * start:小米统计
-		 */
-		MiStatInterface.recordPageStart(this, TAG);
+
 		if(true==SettingsHelper.getInstance().isFloatingWindowShow()) {
 			FloatingWindowService.stopService(getApplicationContext());
 		}
@@ -64,10 +60,7 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 	@Override
 	protected void onPause() {
 		super.onPause();
-		/**
-		 * end:小米统计
-		 */
-		MiStatInterface.recordPageEnd();
+
 		if(true==SettingsHelper.getInstance().isFloatingWindowShow()) {
 			FloatingWindowService.startService(getApplicationContext());
 		}

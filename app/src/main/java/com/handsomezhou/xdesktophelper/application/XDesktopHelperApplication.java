@@ -12,11 +12,13 @@ import com.handsomezhou.xdesktophelper.util.LogUtil;
 import com.handsomezhou.xdesktophelper.util.TimeUtil;
 import com.iflytek.cloud.SpeechUtility;
 import com.tencent.bugly.crashreport.CrashReport;
-import com.tencent.stat.StatConfig;
+
 import com.tencent.stat.StatService;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
-import com.xiaomi.mistatistic.sdk.MiStatInterface;
+
+
+import org.litepal.LitePal;
 
 public class XDesktopHelperApplication extends Application {
 	private static final String TAG="TAG";
@@ -27,9 +29,14 @@ public class XDesktopHelperApplication extends Application {
 		super.onCreate();
 		sContext = getApplicationContext();
 
+		/**
+		 * 初始化数据库
+		 */
+		LitePal.initialize(this);
+
 		initBugly();
 		initXfyunSpeechRecognizer();
-		initMiStat();
+		//initMiStat();  unavailable
 		initMta();
 		initUmsdk();
 	}
@@ -69,11 +76,11 @@ public class XDesktopHelperApplication extends Application {
 	 * 初始化小米统计
 	 */
 	private void initMiStat(){
-		MiStatInterface.initialize(this, MiConstant.APP_ID, MiConstant.APP_KEY, MiConstant.CHANNEL);
+		/*MiStatInterface.initialize(this, MiConstant.APP_ID, MiConstant.APP_KEY, MiConstant.CHANNEL);
 		long UPLOAD_POLICY_INTERVAL_MS= TimeUtil.min2ms(5);
 		MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_INTERVAL, UPLOAD_POLICY_INTERVAL_MS);//设置上报策略
 		//MiStatInterface.setUploadPolicy(MiStatInterface.UPLOAD_POLICY_REALTIME, 0);//设置上报策略
-		MiStatInterface.enableExceptionCatcher(true);//崩溃日志收集
+		MiStatInterface.enableExceptionCatcher(true);//崩溃日志收集*/
 	}
 
 	/**

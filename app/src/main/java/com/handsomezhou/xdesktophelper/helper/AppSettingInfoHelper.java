@@ -8,16 +8,16 @@ import java.util.List;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.handsomezhou.xdesktophelper.database.AppSettingInfoDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
-import com.handsomezhou.xdesktophelper.model.AppSettingInfo;
 import com.handsomezhou.xdesktophelper.constant.LoadStatus;
+import com.handsomezhou.xdesktophelper.model.database.AppSettingInfo;
+import com.handsomezhou.xdesktophelper.util.database.AppSettingInfoUtil;
 
 public class AppSettingInfoHelper {
     private static final String TAG=AppSettingInfoHelper.class.getSimpleName();
     private static AppSettingInfoHelper mInstance;
     private OnAppSettingInfoLoad mOnAppSettingInfoLoad;
-    private List<AppSettingInfo> mAppSettingInfos;  
+    private List<AppSettingInfo> mAppSettingInfos;
     private HashMap<String, AppSettingInfo> mAppSettingInfoHashMap=null;
     private AsyncTask<Object, Object, List<AppSettingInfo>> mLoadTask=null;
 
@@ -186,7 +186,7 @@ public class AppSettingInfoHelper {
             
             if(insertAppSettingInfos.size()>0){
                 
-                insertSuccess=AppSettingInfoDataBaseHelper.getInstance().insert(appSettingInfos);
+                insertSuccess= AppSettingInfoUtil.update(appSettingInfos);
                 if(true==insertSuccess){
                     for(AppSettingInfo asi:insertAppSettingInfos){
                         if(null!=mAppSettingInfoHashMap){
@@ -243,14 +243,14 @@ public class AppSettingInfoHelper {
             }
             long setToTop=(true==isSetToTop)?(System.currentTimeMillis()):(0);
             if(mAppSettingInfoHashMap.containsKey(appSettingInfo.getKey())){
-                updateSuccess=AppSettingInfoDataBaseHelper.getInstance().update(appSettingInfo, setToTop);
+                updateSuccess=AppSettingInfoUtil.update(appSettingInfo, setToTop);
                 if(true==updateSuccess){
                     appSettingInfo.setSetToTop(setToTop);
                 }
             }else{
                 long srcSetToTop=appSettingInfo.getSetToTop();
                 appSettingInfo.setSetToTop(setToTop);
-                updateSuccess=AppSettingInfoDataBaseHelper.getInstance().insert(appSettingInfo);
+                updateSuccess=AppSettingInfoUtil.update(appSettingInfo);
                 if(false==updateSuccess){
                     appSettingInfo.setSetToTop(srcSetToTop);
                 }else{
@@ -285,7 +285,11 @@ public class AppSettingInfoHelper {
     
     private List<AppSettingInfo> loadAppSettingInfos(){
         initAppSettingInfos();
-        return AppSettingInfoDataBaseHelper.getInstance().queryAllAppSettingInfo(mAppSettingInfos);
+        List<AppSettingInfo> appSettingInfos=AppSettingInfoUtil.findAll();
+        if(appSettingInfos.size()>0){
+            mAppSettingInfos.addAll(appSettingInfos);
+        }
+        return mAppSettingInfos;
     }
     
     private void parseAppSettingInfos( List<AppSettingInfo> appSettingInfos){

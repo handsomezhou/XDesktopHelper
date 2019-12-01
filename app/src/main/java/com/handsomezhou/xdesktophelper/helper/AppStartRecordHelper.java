@@ -1,19 +1,18 @@
 package com.handsomezhou.xdesktophelper.helper;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
-//import android.util.Log;
 
-import com.handsomezhou.xdesktophelper.database.AppStartRecordDataBaseHelper;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
-import com.handsomezhou.xdesktophelper.model.AppStartRecord;
 import com.handsomezhou.xdesktophelper.constant.LoadStatus;
+import com.handsomezhou.xdesktophelper.model.database.AppStartRecord;
 import com.handsomezhou.xdesktophelper.util.AppCommonWeightsUtil;
-
+import com.handsomezhou.xdesktophelper.util.database.AppStartRecordUtil;
 
 
 public class AppStartRecordHelper {
@@ -129,14 +128,9 @@ public class AppStartRecordHelper {
     
     private List<AppStartRecord> loadAppStartRecord(){
         setAppStartRecordsLoadStatus(LoadStatus.LOADING);
-        List<AppStartRecord> appStartRecords=new ArrayList<AppStartRecord>();
-        AppStartRecordDataBaseHelper.getInstance().queryAllStocks(appStartRecords);
-       // Log.i(TAG, "appStartRecords.size()="+appStartRecords.size());
-      //  long currentTimeMs=System.currentTimeMillis();
-//        for(AppStartRecord asr:appStartRecords){
-//            Log.i(TAG, asr.getKey()+":"+asr.getStartTime()+":"+AppCommonWeightsUtil.getCommonWeights(currentTimeMs, asr.getStartTime()));
-//             
-//        }
+        List<AppStartRecord> appStartRecords=AppStartRecordUtil.findAll();
+
+
         return appStartRecords;
     }
     
