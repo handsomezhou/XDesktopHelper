@@ -113,17 +113,17 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
     @Override
     public void onResume() {
-        /*Log.i(TAG, "appStartRecords.size()="
-                + AppInfoHelper.getInstance().getBaseAllAppInfos().size());
+        super.onResume();
 
-        for (AppInfo asr : AppInfoHelper.getInstance().getBaseAllAppInfos()) {
-            Log.i(TAG, asr.getLabel() + ":" + ":" + asr.getCommonWeights());
-
-        }*/
-        // mTopTabView.setCurrentTabItem(SettingsHelper.getInstance().getSearchMode());
         mCustomViewPager.setCurrentItem(getPartnerViewItem(SettingsHelper.getInstance().getSearchMode()));
         refreshView();
-        super.onResume();
+        boolean appInfoChanged=AppInfoHelper.getInstance().isAppInfoChanged();
+        if(true==appInfoChanged) {
+            AppInfoHelper.getInstance().setOnAppInfoLoad(this);
+            boolean startLoadSuccess = AppInfoHelper.getInstance().startLoadAppInfo();
+            if (true == startLoadSuccess) {
+            }
+        }
     }
 
     @Override

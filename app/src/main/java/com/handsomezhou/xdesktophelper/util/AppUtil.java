@@ -115,6 +115,7 @@ public class AppUtil {
                         startAppSuccess=AppUtil.startApp(context,appInfo.getPackageName());
                         if(false==startAppSuccess) {
                             Toast.makeText(context, R.string.app_can_not_be_launched_directly, Toast.LENGTH_SHORT).show();
+                            AppInfoHelper.getInstance().setAppInfoChanged(true);
                         }
                     } else {
                         if (true == SettingsHelper.getInstance().isSmartSorting()) {
