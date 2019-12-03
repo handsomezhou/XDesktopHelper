@@ -72,7 +72,7 @@ public class AppStartRecordUtil {
 
     public static boolean deleteAll(){
         boolean deleteSuccess=false;
-        deleteSuccess= DataSupport.deleteAll(AppStartRecord.class)>0;
+        deleteSuccess= DataSupport.deleteAll(AppStartRecord.class)>=0;
         return deleteSuccess;
     }
 

@@ -558,33 +558,6 @@ public class AppInfoHelper {
 	    return addSuccess;
 	}
 	
-	/**
-	 
-	boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext, pi.packageName);
-                if(true==canLaunchTheMainActivity){
-                    AppInfo appInfo=getAppInfo(pm, pi);
-                    if(null==appInfo){
-                        continue;
-                    }
-                    
-                    if(TextUtils.isEmpty(appInfo.getLabel())){
-                        continue;
-                    }
-                    appInfo.getLabelPinyinSearchUnit().setBaseData(appInfo.getLabel());
-                    PinyinUtil.parse(appInfo.getLabelPinyinSearchUnit());
-                    String sortKey=PinyinUtil.getSortKey(appInfo.getLabelPinyinSearchUnit()).toUpperCase();
-                    appInfo.setSortKey(praseSortKey(sortKey));
-                    boolean isKanji=PinyinUtil.isKanji(appInfo.getLabel().charAt(0));
-                    if(true==isKanji){
-                        kanjiStartAppInfos.add(appInfo);
-                    }else{
-                        nonKanjiStartAppInfos.add(appInfo);
-                    }
-                    
-                }
-
-	 */
-	
 	public boolean resetSequence(AppInfo appInfo){
 	    boolean resetSequenceSuccess=false;
 	    do{
@@ -615,7 +588,7 @@ public class AppInfoHelper {
 		boolean resetSequenceSuccess=false;
 		boolean deleteStartRecordSuccess= AppStartRecordUtil.deleteAll();
 		boolean appSettingInfoSuccess= AppSettingInfoUtil.deleteAll();
-		if((true==deleteStartRecordSuccess)&&(true==appSettingInfoSuccess)){
+		if((true==deleteStartRecordSuccess)||(true==appSettingInfoSuccess)){
 			for(AppInfo ai:mBaseAllAppInfos){
 				ai.setSetToTop(0);
 				ai.setCommonWeights(0);
@@ -725,18 +698,7 @@ public class AppInfoHelper {
 		
 		return;
 	}
-	/*
-	private AppInfo getAppInfo(PackageManager pm,PackageInfo packageInfo){
-		if((null==pm)||(null==packageInfo)){
-			return null;
-		}
-		AppInfo appInfo=new AppInfo();
-		appInfo.setIcon(packageInfo.applicationInfo.loadIcon(pm));
-		appInfo.setLabel((String)packageInfo.applicationInfo.loadLabel(pm));
-		appInfo.setPackageName(packageInfo.packageName);
-		return appInfo;
-		
-	}*/
+
 	private AppInfo getAppInfo(PackageManager pm,ResolveInfo resolveInfo){
 		if((null==pm)||(null==resolveInfo)){
 			return null;
@@ -783,9 +745,7 @@ public class AppInfoHelper {
 		
 		return;
 	}
-	
-	
-	
+
 	private List<AppInfo> getBaseAppInfo(){
 		List<AppInfo> baseAppInfos=null;
 		switch (getCurrentAppType()) {

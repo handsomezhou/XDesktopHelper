@@ -261,6 +261,7 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 				boolean resetAllSequenceSuccess=AppInfoHelper.getInstance().resetAllSequence();
 				if(true==resetAllSequenceSuccess){
 					ToastUtil.toastLengthshort(getContext(),R.string.one_key_reset_sequence_success);
+					AppInfoHelper.getInstance().setAppInfoChanged(true);
 				}else {
 					ToastUtil.toastLengthshort(getContext(),R.string.one_key_reset_sequence_failed);
 				}

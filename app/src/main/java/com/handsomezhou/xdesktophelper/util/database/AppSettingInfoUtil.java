@@ -43,7 +43,7 @@ public class AppSettingInfoUtil {
 
     public static boolean deleteAll(){
         boolean deleteSuccess=false;
-        deleteSuccess= DataSupport.deleteAll(AppSettingInfo.class)>0;
+        deleteSuccess= DataSupport.deleteAll(AppSettingInfo.class)>=0;
         return deleteSuccess;
     }
 
