@@ -109,12 +109,12 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 		search(curCharacter);
 		refreshView();
 
-		if(true==isVoiceSearch()){
-			if(true== SettingsHelper.getInstance().isVoiceStartApp()) {
+		/*if(true==isVoiceSearch()){
+			if(true== SettingsHelper.getInstance().isEnterAppStartVoiceSearch()) {
 				voiceStartApp();
 			}
 			setVoiceSearch(false);
-		}
+		}*/
 
 	}
 

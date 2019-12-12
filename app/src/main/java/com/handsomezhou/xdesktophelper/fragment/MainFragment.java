@@ -119,12 +119,24 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         refreshView();
         boolean appInfoChanged=AppInfoHelper.getInstance().isAppInfoChanged();
         if(true==appInfoChanged) {
+            AppStartRecordHelper.getInstance().setOnAppStartRecordLoad(this);
+            AppStartRecordHelper.getInstance().startLoadAppStartRecord();
+
             AppInfoHelper.getInstance().setOnAppInfoLoad(this);
             boolean startLoadSuccess = AppInfoHelper.getInstance().startLoadAppInfo();
             if (true == startLoadSuccess) {
+
+            }
+        }else {
+            if(true==SettingsHelper.getInstance().isVoiceSearchEnable()){
+                if(true==SettingsHelper.getInstance().isEnterAppStartVoiceSearch()){
+                    startVoiceInput();
+                }
             }
         }
     }
+
+
 
     @Override
     public void onDestroy() {

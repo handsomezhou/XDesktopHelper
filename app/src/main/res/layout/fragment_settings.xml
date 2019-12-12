@@ -171,19 +171,19 @@
                 android:minHeight="@dimen/list_item_height">
 
                 <TextView
-                    android:id="@+id/voice_start_app_text_view"
+                    android:id="@+id/enter_app_start_voice_search_text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_margin="@dimen/margin"
                     android:layout_weight="1"
                     android:padding="@dimen/padding"
-                    android:text="@string/voice_start_app"
-                    android:textColor="@color/gray"
+                    android:text="@string/enter_app_start_voice_search"
+                    android:textColor="@color/blue"
                     android:textSize="@dimen/prompt_normal_text_size"/>
 
                 <com.handsomezhou.xdesktophelper.view.switchbutton.SwitchButton
-                    android:id="@+id/voice_start_app_switch_btn"
+                    android:id="@+id/enter_app_start_voice_search_switch_btn"
                     style="@style/SwitchButtonStyle"
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/margin_right4x"/>

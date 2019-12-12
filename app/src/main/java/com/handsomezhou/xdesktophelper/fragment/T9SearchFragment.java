@@ -180,17 +180,17 @@ public class T9SearchFragment extends BaseFragment implements
 
 	@Override
 	public void onDialInputTextChanged(String curCharacter) {
-		if(true==isVoiceSearch()){
+		/*if(true==isVoiceSearch()){
 			voiceTextSearch(curCharacter);
 			refreshView();
-			if(true== SettingsHelper.getInstance().isVoiceStartApp()) {
+			if(true== SettingsHelper.getInstance().isEnterAppStartVoiceSearch()) {
 				voiceStartApp();
 			}
 			setVoiceSearch(false);
-		}else {
+		}else {*/
 			search(curCharacter);
 			refreshView();
-		}
+		//}
 
 
 	}

@@ -30,6 +30,7 @@
         <item>{\"id\": 0, \"app_market\":\"豌豆荚\",\"download_address\":\"https://www.wandoujia.com/apps/com.handsomezhou.xdesktophelper\"}</item>
         <item>{\"id\": 1, \"app_market\":\"应用宝\",\"download_address\":\"http://a.app.qq.com/o/simple.jsp?pkgname=com.handsomezhou.xdesktophelper\"}</item>
         <item>{\"id\": 2, \"app_market\":\"360\",\"download_address\":\"http://openbox.mobilem.360.cn/index/d/sid/3253269\"}</item>
+        <item>{\"id\": 3, \"app_market\":\"蒲公英(安装密码:123)\",\"download_address\":\"https://www.pgyer.com/xdesktophelper\"}</item>
         <!-- <item>{\"id\": 2, \"app_market\":\"百度\",\"download_address\":\"http://shouji.baidu.com/software/9341717.html\"}</item> -->
     </string-array>
     <!-- end: app download address -->

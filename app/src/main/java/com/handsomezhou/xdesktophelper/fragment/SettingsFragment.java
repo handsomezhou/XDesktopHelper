@@ -21,7 +21,6 @@ import com.handsomezhou.xdesktophelper.constant.SearchMode;
 import com.handsomezhou.xdesktophelper.service.FloatingWindowService;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
-import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout.OnNavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.SegmentedGroup;
@@ -48,8 +47,9 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 	/* end: search mode */
 
 	private Button mOneKeyResetSequenceBtn;
-	private SwitchButton mVoiceSearchEnableBtn;
-	private SwitchButton mVoiceStartAppBtn;
+	private SwitchButton mVoiceSearchEnableSwitchBtn;
+	private TextView mEnterAppStartVoiceSearchTv;
+	private SwitchButton mEnterAppStartVoiceSearchSwitchBtn;
 	private SwitchButton mSmartSortingSwitchBtn;
 
 	private TextView mFloatingWindowShowTv;
@@ -119,17 +119,20 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 				.findViewById(R.id.exit_app_prompt_switch_btn);
 
 
-		mVoiceSearchEnableBtn=(SwitchButton) view.findViewById(R.id.voice_search_enable_switch_btn);
+		mVoiceSearchEnableSwitchBtn =(SwitchButton) view.findViewById(R.id.voice_search_enable_switch_btn);
 		boolean voiceSearchEnable=SettingsHelper.getInstance().isVoiceSearchEnable();
-		mVoiceSearchEnableBtn.setChecked(voiceSearchEnable);
+		mVoiceSearchEnableSwitchBtn.setChecked(voiceSearchEnable);
 
-		mVoiceStartAppBtn=(SwitchButton) view.findViewById(R.id.voice_start_app_switch_btn);
-		boolean voiceStartApp=SettingsHelper.getInstance().isVoiceStartApp();
-		mVoiceStartAppBtn.setChecked(voiceStartApp);
+		mEnterAppStartVoiceSearchTv= (TextView) view.findViewById(R.id.enter_app_start_voice_search_text_view);
+		mEnterAppStartVoiceSearchSwitchBtn =(SwitchButton) view.findViewById(R.id.enter_app_start_voice_search_switch_btn);
+		boolean enterAppStartVoiceSearch=SettingsHelper.getInstance().isEnterAppStartVoiceSearch();
+		mEnterAppStartVoiceSearchSwitchBtn.setChecked(enterAppStartVoiceSearch);
 
 		mSmartSortingSwitchBtn= (SwitchButton) view.findViewById(R.id.smart_sorting_switch_btn);
 		boolean smartSorting=SettingsHelper.getInstance().isSmartSorting();
 		mSmartSortingSwitchBtn.setChecked(smartSorting);
+
+
 
 
 		mFloatingWindowShowTv= (TextView) view.findViewById(R.id.floating_window_show_text_view);
@@ -198,17 +201,30 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 		});
 
 
-		mVoiceSearchEnableBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		mVoiceSearchEnableSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				SettingsHelper.getInstance().setVoiceSearchEnable(isChecked);
 			}
 		});
 
-		mVoiceStartAppBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		mEnterAppStartVoiceSearchTv.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AppUtil.viewApp(getContext(),getContext().getPackageName());
+			}
+		});
+
+		mEnterAppStartVoiceSearchSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				SettingsHelper.getInstance().setVoiceStartApp(isChecked);
+				SettingsHelper.getInstance().setEnterAppStartVoiceSearch(isChecked);
+				if(true==isChecked){
+					ToastUtil.toastLengthLong(getContext(),R.string.enter_app_start_voice_search_tips);
+				}else {
+
+				}
+
 			}
 		});
 

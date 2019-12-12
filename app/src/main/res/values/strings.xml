@@ -78,6 +78,8 @@
     <string name="one_key_reset_sequence_failed">一键顺序复位失敗</string>
     <string name="voice_search_enable">语音搜索启用</string>
     <string name="voice_start_app">语音启动应用</string>
+    <string name="enter_app_start_voice_search">进入应用启动语音搜索</string>
+    <string name="enter_app_start_voice_search_tips">如果录音无法正常使用,请点击左侧,查看该应用是否已获取录音权限!</string>
     <string name="smart_sorting">智能排序</string>
     <string name="floating_window_show">悬浮窗显示</string>
     <string name="floating_window_show_tips">如果悬浮窗未显示,请点击左侧,查看该应用是否已获取悬浮窗显示权限!</string>

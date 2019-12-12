@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.pm.ShortcutManager;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
 import android.text.TextUtils;
@@ -33,7 +34,7 @@ import com.pinyinsearch.util.QwertyUtil;
 import com.pinyinsearch.util.T9Util;
 
 public class AppInfoHelper {
-	private static final String TAG=AppInfoHelper.class.getSimpleName();
+	private static final String TAG="AppInfoHelper";
 	private static Character THE_LAST_ALPHABET= Constant.z;
 	private Context mContext;
 	private static AppInfoHelper mInstance;
@@ -201,9 +202,34 @@ public class AppInfoHelper {
 			setBaseAllAppInfosLoadStatus(LoadStatus.LOADING);
 			Intent it = new Intent(Intent.ACTION_MAIN);
 			it.addCategory(Intent.CATEGORY_LAUNCHER);
-			List<ResolveInfo> resolveInfos = pm.queryIntentActivities(it, 0);
-			
-			Log.i(TAG, resolveInfos.size()+"");
+
+			List<ResolveInfo> resolveInfos=new ArrayList<>();
+			List<ResolveInfo> launcherResolveInfos = pm.queryIntentActivities(it, 0);
+			Log.i(TAG, "launcherResolveInfos["+launcherResolveInfos.size()+"]");
+			if(launcherResolveInfos.size()>0){
+				resolveInfos.addAll(launcherResolveInfos);
+			}
+
+			/*Intent shortcutsIntent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
+			List<ResolveInfo> shortcutResolveInfos= pm.queryIntentActivities(shortcutsIntent, 0);
+			Log.i(TAG, "shortcutResolveInfos"+shortcutResolveInfos.size());
+			if(shortcutResolveInfos.size()>0){
+				resolveInfos.addAll(shortcutResolveInfos);
+			}*/
+
+
+		/*	ShortcutManager shortcutManager = XDesktopHelperApplication.getContext().getSystemService(ShortcutManager.class);
+
+			//shortcutManager.getDynamicShortcuts().size();
+			if (shortcutManager.getDynamicShortcuts().size() == 0) {
+				// Application restored. Need to re-publish dynamic shortcuts.
+				if (shortcutManager.getPinnedShortcuts().size() > 0) {
+					// Pinned shortcuts have been restored. Use
+					// updateShortcuts() to make sure they contain
+					// up-to-date information.
+				}
+			}
+*/
 			for(ResolveInfo ri:resolveInfos){
 				boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext, ri.activityInfo.packageName);
 				if(true==canLaunchTheMainActivity){
