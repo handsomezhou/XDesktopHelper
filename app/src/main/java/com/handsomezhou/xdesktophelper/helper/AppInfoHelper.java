@@ -1,5 +1,6 @@
 package com.handsomezhou.xdesktophelper.helper;
 
+import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,12 +11,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.os.AsyncTask;
 import android.os.AsyncTask.Status;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.commontools.util.LogUtil;
 import com.handsomezhou.xdesktophelper.application.XDesktopHelperApplication;
 import com.handsomezhou.xdesktophelper.constant.Constant;
 import com.handsomezhou.xdesktophelper.model.AppInfo;
@@ -218,18 +222,35 @@ public class AppInfoHelper {
 			}*/
 
 
-		/*	ShortcutManager shortcutManager = XDesktopHelperApplication.getContext().getSystemService(ShortcutManager.class);
+			//@Target(Build.VERSION_CODES.N_MR1
+/*			if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N_MR1) {
+				ShortcutManager shortcutManager = XDesktopHelperApplication.getContext().getSystemService(ShortcutManager.class);
+				List<ShortcutInfo> dynamicShortcuts= shortcutManager.getDynamicShortcuts();
+				List<ShortcutInfo> manifestShortcuts=shortcutManager.getManifestShortcuts();
+				List<ShortcutInfo> pinnedShortcuts=shortcutManager.getPinnedShortcuts();
 
-			//shortcutManager.getDynamicShortcuts().size();
-			if (shortcutManager.getDynamicShortcuts().size() == 0) {
-				// Application restored. Need to re-publish dynamic shortcuts.
-				if (shortcutManager.getPinnedShortcuts().size() > 0) {
-					// Pinned shortcuts have been restored. Use
-					// updateShortcuts() to make sure they contain
-					// up-to-date information.
+				LogUtil.i(TAG,"dynamicShortcuts.size()"+dynamicShortcuts.size());
+				LogUtil.i(TAG,"manifestShortcuts.size()"+manifestShortcuts.size());
+				LogUtil.i(TAG,"pinnedShortcuts.size()"+pinnedShortcuts.size());
+				//dynamicShortcuts.get(0).getPackage();
+				for (ShortcutInfo shortcutInfo:dynamicShortcuts) {
+					//shortcutInfo.
+					LogUtil.i(TAG,"dynamicShortcuts Package["+shortcutInfo.getPackage()+"]ShortLabel["+shortcutInfo.getShortLabel()+"] isDynamic["+shortcutInfo.isDynamic()+"]");
 				}
-			}
-*/
+
+				for (ShortcutInfo shortcutInfo:manifestShortcuts) {
+					//shortcutInfo.
+					LogUtil.i(TAG,"manifestShortcuts Package["+shortcutInfo.getPackage()+"]ShortLabel["+shortcutInfo.getShortLabel()+"] isDynamic["+shortcutInfo.isDynamic()+"]");
+				}
+
+				for (ShortcutInfo shortcutInfo:pinnedShortcuts) {
+					//shortcutInfo.
+					LogUtil.i(TAG,"pinnedShortcuts Package["+shortcutInfo.getPackage()+"]ShortLabel["+shortcutInfo.getShortLabel()+"] isDynamic["+shortcutInfo.isDynamic()+"]");
+				}
+			}else {
+				LogUtil.i(TAG,"Build.VERSION.SDK_INT<Build.VERSION_CODES.N_MR1");
+			}*/
+
 			for(ResolveInfo ri:resolveInfos){
 				boolean canLaunchTheMainActivity=AppUtil.appCanLaunchTheMainActivity(mContext, ri.activityInfo.packageName);
 				if(true==canLaunchTheMainActivity){

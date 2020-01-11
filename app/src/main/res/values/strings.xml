@@ -2,6 +2,7 @@
     <string name="app_name">X桌面助手</string>
     <string name="t9_search">T9搜索</string>
     <string name="qwerty_search">全键盘搜索</string>
+    <string name="data_count">(%d)</string>
     <string name="click_top_tab_swich_search_mode">点击顶部标签可切换搜索模式</string>
     <string name="search_mode_swich_tips">点击标签切换搜索模式</string>
     <string name="app_operation_tips">点击图标打开应用\n长按图标进行更多操作</string>
@@ -72,6 +73,8 @@
     <string name="qwerty">全键盘</string>
 
     <!-- end: search_mode -->
+    <string name="search_data_count_show">搜索数据数量显示</string>
+    <string name="share_show">分享显示</string>
     <string name="one_key_reset_sequence">一键顺序复位</string>
     <string name="sure_to_one_key_reset_sequence">确定一键顺序复位?</string>
     <string name="one_key_reset_sequence_success">一键顺序复位成功</string>

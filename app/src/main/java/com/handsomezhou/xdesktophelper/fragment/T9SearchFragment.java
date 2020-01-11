@@ -31,8 +31,7 @@ import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView;
 import com.handsomezhou.xdesktophelper.view.T9TelephoneDialpadView.OnT9TelephoneDialpadView;
 
-public class T9SearchFragment extends BaseFragment implements
-		OnT9TelephoneDialpadView,OnAppOperationDialog{
+public class T9SearchFragment extends BaseFragment implements OnT9TelephoneDialpadView,OnAppOperationDialog{
 	private static final String TAG="T9SearchFragment";
 	private GridView mT9SearchGv;
 	private TextView mSearchResultPromptTv;
@@ -46,6 +45,7 @@ public class T9SearchFragment extends BaseFragment implements
 	private boolean mVoiceSearch=false;
 	public interface OnT9SearchFragment{
 		void onT9SearchVoiceInput();
+		void onT9SearchRefreshView();
 	}
 
     @Override
@@ -284,6 +284,17 @@ public class T9SearchFragment extends BaseFragment implements
 	public void refreshView() {
 		refreshT9SearchGv();
 		refreshT9TelephoneDialpadView();
+		if(null!=mOnT9SearchFragment){
+			mOnT9SearchFragment.onT9SearchRefreshView();
+		}
+	}
+
+	public int getDataCount(){
+		int dataCount=0;
+		if(null!=mT9SearchGv) {
+			dataCount = mT9SearchGv.getCount();
+		}
+		return dataCount;
 	}
 
 	public void search(){

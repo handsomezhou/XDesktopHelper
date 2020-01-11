@@ -115,6 +115,62 @@
 
             <View style="@style/dividing_line_horizontal"/>
 
+
+
+            <LinearLayout
+                android:id="@+id/search_data_count_show_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/list_item_height">
+
+                <TextView
+                    android:id="@+id/search_data_count_show_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding"
+                    android:text="@string/search_data_count_show"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <com.handsomezhou.xdesktophelper.view.switchbutton.SwitchButton
+                    android:id="@+id/search_data_count_show_switch_btn"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_right4x"/>
+            </LinearLayout>
+            <View style="@style/dividing_line_horizontal"/>
+
+            <LinearLayout
+                android:id="@+id/share_show_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:minHeight="@dimen/list_item_height">
+
+                <TextView
+                    android:id="@+id/share_show_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="@dimen/margin"
+                    android:layout_weight="1"
+                    android:padding="@dimen/padding"
+                    android:text="@string/share_show"
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/prompt_normal_text_size"/>
+
+                <com.handsomezhou.xdesktophelper.view.switchbutton.SwitchButton
+                    android:id="@+id/share_show_switch_btn"
+                    style="@style/SwitchButtonStyle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginRight="@dimen/margin_right4x"/>
+            </LinearLayout>
+            <View style="@style/dividing_line_horizontal"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

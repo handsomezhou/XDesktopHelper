@@ -46,6 +46,13 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 	private RadioButton mQwertyRadioBtn;
 	/* end: search mode */
 
+
+	private TextView mSearchDataCountShowTv;
+	private SwitchButton mSearchDataCountShowSwitchBtn;
+
+	private TextView mShareShowTv;
+	private SwitchButton mShareShowSwitchBtn;
+
 	private Button mOneKeyResetSequenceBtn;
 	private SwitchButton mVoiceSearchEnableSwitchBtn;
 	private TextView mEnterAppStartVoiceSearchTv;
@@ -112,6 +119,17 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 		} else {
 			mT9RadioBtn.setChecked(true);
 		}
+
+		mSearchDataCountShowTv= (TextView) view.findViewById(R.id.search_data_count_show_text_view);
+		mSearchDataCountShowSwitchBtn= (SwitchButton) view.findViewById(R.id.search_data_count_show_switch_btn);
+		boolean searchDataCountShow=SettingsHelper.getInstance().isSearchDataCountShow();
+		mSearchDataCountShowSwitchBtn.setChecked(searchDataCountShow);
+
+
+		mSearchDataCountShowTv= (TextView) view.findViewById(R.id.share_show_text_view);
+		mShareShowSwitchBtn= (SwitchButton) view.findViewById(R.id.share_show_switch_btn);
+		boolean shareShow=SettingsHelper.getInstance().isShareShow();
+		mShareShowSwitchBtn.setChecked(shareShow);
 
 		mOneKeyResetSequenceBtn=(Button) view.findViewById(R.id.one_key_reset_sequence_btn);
 
@@ -193,6 +211,25 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 			}
 		});
 
+		mSearchDataCountShowSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SettingsHelper.getInstance().setSearchDataCountShow(isChecked);
+
+			}
+		});
+
+		mShareShowSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				SettingsHelper.getInstance().setShareShow(isChecked);
+
+			}
+		});
+
+
 		mOneKeyResetSequenceBtn.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -242,6 +279,7 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 				AppUtil.viewApp(getContext(),getContext().getPackageName());
 			}
 		});
+
 
 		mFloatingWindowShowSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 

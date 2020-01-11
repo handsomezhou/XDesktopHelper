@@ -40,6 +40,7 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 	private boolean mVoiceSearch=false;
 	public interface OnQwertySearchFragment{
 		void onQwertySearchVoiceInput();
+		void onQwertySearchRefreshView();
 	}
 
 	@Override
@@ -197,10 +198,22 @@ public class QwertySearchFragment extends BaseFragment implements OnSearchBox,On
 		mVoiceSearch = voiceSearch;
 	}
 
+	public int getDataCount(){
+    	int dataCount=0;
+    	if(null!=mQwertySearchGv) {
+			dataCount = mQwertySearchGv.getCount();
+		}
+    	return dataCount;
+	}
+
 	public void refreshView() {
 		refreshQwertySearchGv();
 		refreshSearchBox();
+		if(null!=mOnQwertySearchFragment){
+			mOnQwertySearchFragment.onQwertySearchRefreshView();
+		}
 	}
+
 	
 	public void search(){
 		if(null==mSearchBox){

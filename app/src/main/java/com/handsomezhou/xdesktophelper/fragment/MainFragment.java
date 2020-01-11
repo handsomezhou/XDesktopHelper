@@ -80,14 +80,14 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad, OnAppSettingInfoLoad,
-        OnTabChange, OnT9SearchFragment, QwertySearchFragment.OnQwertySearchFragment {
+public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppStartRecordLoad, OnAppSettingInfoLoad, OnTabChange, OnT9SearchFragment, QwertySearchFragment.OnQwertySearchFragment {
     private static final String TAG = MainFragment.class.getSimpleName();
     private UserGuideView mUserGuideView;
     private View mTipTextView;
     private int mUserGuideViewIndex=0;
     private List<PartnerView> mPartnerViews;
     private TopTabView mTopTabView;
+    private TextView mDataCountTv;
     private ImageView mShareIv;
     private CustomViewPager mCustomViewPager;
     private CustomPartnerViewPagerAdapter mCustomPartnerViewPagerAdapter;
@@ -110,6 +110,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
     private boolean mVoiceSearch = false;
     private String mVoiceText = null;
+    private int mDataCount=0;
 
     @Override
     public void onResume() {
@@ -207,6 +208,8 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         mTopTabView.setTextColorUnselected(getContext().getResources().getColor(R.color.dim_grey));
         mTopTabView.setHideIcon(true);
         mTopTabView.removeAllViews();
+
+        mDataCountTv=view.findViewById(R.id.data_count_text_view);
 
 
         /* start: T9 search tab */
@@ -398,6 +401,18 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         //ToastUtil.toastLengthshort(getContext(),"onT9SearchVoiceInput main");
         startVoiceInput();
     }
+
+    @Override
+    public void onT9SearchRefreshView() {
+        Object currentTab = mTopTabView.getCurrentTab();
+        int itemIndex = getPartnerViewItem(currentTab);
+        Fragment fragment = mPartnerViews.get(itemIndex).getFragment();
+        if(fragment instanceof T9SearchFragment) {
+            setDataCount(((T9SearchFragment) fragment).getDataCount());
+            refreshDataCountTv();
+        }
+
+    }
     /*end: OnT9SearchFragment*/
 
     /*start: OnQwertySearchFragment*/
@@ -405,6 +420,17 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     public void onQwertySearchVoiceInput() {
         //ToastUtil.toastLengthshort(getContext(),"onQwertySearchVoiceInput main");
         startVoiceInput();
+    }
+
+    @Override
+    public void onQwertySearchRefreshView() {
+        Object currentTab = mTopTabView.getCurrentTab();
+        int itemIndex = getPartnerViewItem(currentTab);
+        Fragment fragment = mPartnerViews.get(itemIndex).getFragment();
+        if(fragment instanceof QwertySearchFragment) {
+            setDataCount(((QwertySearchFragment) fragment).getDataCount());
+            refreshDataCountTv();
+        }
     }
     /*end: OnQwertySearchFragment*/
 
@@ -467,8 +493,17 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         mVoiceText = voiceText;
     }
 
+    public int getDataCount() {
+        return mDataCount;
+    }
+
+    public void setDataCount(int dataCount) {
+        mDataCount = dataCount;
+    }
+
     private void refreshView() {
         refreshUserGuideView();
+        refreshShareIv();
         showTopTabView(SettingsHelper.getInstance().getSearchMode());
         Object currentTab = mTopTabView.getCurrentTab();
         int itemIndex = getPartnerViewItem(currentTab);
@@ -482,6 +517,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                         ((T9SearchFragment) fragment).search();
                     }
                     ((T9SearchFragment) fragment).refreshView();
+                    setDataCount(((T9SearchFragment) fragment).getDataCount());
                 }
                 break;
             case QWERTY:
@@ -493,11 +529,13 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
                         ((QwertySearchFragment) fragment).search();
                     }
                     ((QwertySearchFragment) fragment).refreshView();
+                    setDataCount(((QwertySearchFragment) fragment).getDataCount());
                 }
                 break;
             default:
                 break;
         }
+        refreshDataCountTv();
     }
 
     private int getPartnerViewItem(Object tag) {
@@ -912,6 +950,24 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             ViewUtil.showView(mUserGuideView);
         }else {
             ViewUtil.hideView(mUserGuideView);
+        }
+    }
+
+    private void refreshDataCountTv() {
+        if(true==SettingsHelper.getInstance().isSearchDataCountShow()){
+            mDataCountTv.setText(getContext().getString(R.string.data_count,getDataCount()));
+            ViewUtil.showView(mDataCountTv);
+        }else {
+            ViewUtil.hideView(mDataCountTv);
+        }
+
+    }
+
+    private void refreshShareIv(){
+        if(true==SettingsHelper.getInstance().isShareShow()){
+            ViewUtil.showView(mShareIv);
+        }else {
+            ViewUtil.hideView(mShareIv);
         }
     }
 

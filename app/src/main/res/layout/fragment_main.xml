@@ -13,8 +13,8 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/top_tab_height_without_icon"
-            android:layout_gravity="center_vertical">
+            android:layout_gravity="center_vertical"
+            android:minHeight="@dimen/top_tab_height_without_icon">
 
             <com.handsomezhou.xdesktophelper.view.TopTabView
                 android:id="@+id/top_tab_view"
@@ -23,6 +23,16 @@
                 android:gravity="center_vertical"
                 android:minHeight="@dimen/top_tab_height_without_icon"
                 android:padding="@dimen/padding"/>
+
+            <TextView
+                android:id="@+id/data_count_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="bottom|center_horizontal"
+                android:gravity="center"
+                android:textColor="@color/black_light"
+                android:textSize="@dimen/prompt_minima_text_size"/>
 
             <RelativeLayout
                 android:layout_width="wrap_content"
