@@ -13,11 +13,10 @@ public class SettingsHelper {
 	private static final int FLOATING_WINDOW_POS_Y=0;
 
 	public static final String KEY_USER_GUIDE_TIPS="KEY_USER_GUIDE_TIPS";
-	public static final String KEY_SHARE_SHOW="KEY_SHARE_SHOW";
+	public static final String KEY_APP_SHARE_SHOW="KEY_APP_SHARE_SHOW";
 	public static final String KEY_SEARCH_DATA_COUNT_SHOW="KEY_SEARCH_DATA_COUNT_SHOW";
 	public static final String KEY_SMART_SORTING="KEY_SMART_SORTING";
 	public static final String KEY_VOICE_SEARCH_ENABLE="KEY_VOICE_SEARCH_ENABLE";
-	public static final String KEY_ENTER_APP_START_VOICE_SEARCH="KEY_ENTER_APP_START_VOICE_SEARCH";
 	public static final String KEY_FLOATING_WINDOW_SHOW="KEY_FLOATING_WINDOW_SHOW";
 	public static final String KEY_EXIT_APP_PROMPT="KEY_EXIT_APP_PROMPT";
 
@@ -29,10 +28,10 @@ public class SettingsHelper {
 
 	private SearchMode mSearchMode;
 	private boolean mUserGuideTips = true;
-	private boolean mShareShow=true;
+	private boolean mAppShareShow =true;
 	private boolean mSearchDataCountShow=true;
 	private boolean mVoiceSearchEnable=true;
-	private boolean mEnterAppStartVoiceSearch =false;
+
 	private boolean mSmartSorting;
 	private boolean mFloatingWindowShow=true;
 	private boolean mExitAppPrompt;
@@ -58,10 +57,9 @@ public class SettingsHelper {
 		mMenuPositionMode = MenuPositionModeSp.getMenuPositionMode();
 		mSearchMode = SearchModeSp.getSearchMode();
 		mUserGuideTips = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_USER_GUIDE_TIPS, true);
-		mShareShow = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SHARE_SHOW, true);
+		mAppShareShow = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_APP_SHARE_SHOW, true);
 		mSearchDataCountShow = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SEARCH_DATA_COUNT_SHOW, true);
 		mVoiceSearchEnable=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(),KEY_VOICE_SEARCH_ENABLE,true);
-		mEnterAppStartVoiceSearch =SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(),KEY_ENTER_APP_START_VOICE_SEARCH,false);
 		mSmartSorting=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SMART_SORTING, true);
 		mFloatingWindowShow=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(),KEY_FLOATING_WINDOW_SHOW , false);
 		mExitAppPrompt= SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_EXIT_APP_PROMPT, true);
@@ -98,13 +96,13 @@ public class SettingsHelper {
 		mUserGuideTips = userGuideTips;
 	}
 
-	public boolean isShareShow() {
-		return mShareShow;
+	public boolean isAppShareShow() {
+		return mAppShareShow;
 	}
 
-	public void setShareShow(boolean shareShow) {
-		SharedPreferencesUtil.putBoolean(XDesktopHelperApplication.getContext(), KEY_SHARE_SHOW, shareShow);
-		mShareShow = shareShow;
+	public void setAppShareShow(boolean appShareShow) {
+		SharedPreferencesUtil.putBoolean(XDesktopHelperApplication.getContext(), KEY_APP_SHARE_SHOW, appShareShow);
+		mAppShareShow = appShareShow;
 	}
 
 	public boolean isSearchDataCountShow() {
@@ -116,14 +114,6 @@ public class SettingsHelper {
 		mSearchDataCountShow = searchDataCountShow;
 	}
 
-	public boolean isEnterAppStartVoiceSearch() {
-		return mEnterAppStartVoiceSearch;
-	}
-
-	public void setEnterAppStartVoiceSearch(boolean enterAppStartVoiceSearch) {
-		SharedPreferencesUtil.putBoolean(XDesktopHelperApplication.getContext(), KEY_ENTER_APP_START_VOICE_SEARCH, enterAppStartVoiceSearch);
-		mEnterAppStartVoiceSearch = enterAppStartVoiceSearch;
-	}
 
 	public boolean isVoiceSearchEnable() {
 		return mVoiceSearchEnable;

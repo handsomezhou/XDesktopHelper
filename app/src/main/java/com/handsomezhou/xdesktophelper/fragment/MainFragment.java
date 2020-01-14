@@ -130,9 +130,9 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
             }
         }else {
             if(true==SettingsHelper.getInstance().isVoiceSearchEnable()){
-                if(true==SettingsHelper.getInstance().isEnterAppStartVoiceSearch()){
+               /* if(true==SettingsHelper.getInstance().isEnterAppStartVoiceSearch()){
                     startVoiceInput();
-                }
+                }*/
             }
         }
     }
@@ -964,7 +964,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     }
 
     private void refreshShareIv(){
-        if(true==SettingsHelper.getInstance().isShareShow()){
+        if(true==SettingsHelper.getInstance().isAppShareShow()){
             ViewUtil.showView(mShareIv);
         }else {
             ViewUtil.hideView(mShareIv);

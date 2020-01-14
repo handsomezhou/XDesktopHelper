@@ -74,7 +74,7 @@
 
     <!-- end: search_mode -->
     <string name="search_data_count_show">搜索数据数量显示</string>
-    <string name="share_show">分享显示</string>
+    <string name="app_share_show">应用分享显示</string>
     <string name="one_key_reset_sequence">一键顺序复位</string>
     <string name="sure_to_one_key_reset_sequence">确定一键顺序复位?</string>
     <string name="one_key_reset_sequence_success">一键顺序复位成功</string>

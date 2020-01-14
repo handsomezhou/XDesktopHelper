@@ -50,13 +50,12 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 	private TextView mSearchDataCountShowTv;
 	private SwitchButton mSearchDataCountShowSwitchBtn;
 
-	private TextView mShareShowTv;
-	private SwitchButton mShareShowSwitchBtn;
+	private TextView mAppShareShowTv;
+	private SwitchButton mAppShareShowSwitchBtn;
 
 	private Button mOneKeyResetSequenceBtn;
+	private TextView mVoiceSearchEnableTv;
 	private SwitchButton mVoiceSearchEnableSwitchBtn;
-	private TextView mEnterAppStartVoiceSearchTv;
-	private SwitchButton mEnterAppStartVoiceSearchSwitchBtn;
 	private SwitchButton mSmartSortingSwitchBtn;
 
 	private TextView mFloatingWindowShowTv;
@@ -126,10 +125,10 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 		mSearchDataCountShowSwitchBtn.setChecked(searchDataCountShow);
 
 
-		mSearchDataCountShowTv= (TextView) view.findViewById(R.id.share_show_text_view);
-		mShareShowSwitchBtn= (SwitchButton) view.findViewById(R.id.share_show_switch_btn);
-		boolean shareShow=SettingsHelper.getInstance().isShareShow();
-		mShareShowSwitchBtn.setChecked(shareShow);
+		mAppShareShowTv= (TextView) view.findViewById(R.id.app_share_show_text_view);
+		mAppShareShowSwitchBtn = (SwitchButton) view.findViewById(R.id.app_share_show_switch_btn);
+		boolean shareAppShow=SettingsHelper.getInstance().isAppShareShow();
+		mAppShareShowSwitchBtn.setChecked(shareAppShow);
 
 		mOneKeyResetSequenceBtn=(Button) view.findViewById(R.id.one_key_reset_sequence_btn);
 
@@ -137,14 +136,11 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 				.findViewById(R.id.exit_app_prompt_switch_btn);
 
 
+		mVoiceSearchEnableTv =(TextView) view.findViewById(R.id.voice_search_enable_text_view);
 		mVoiceSearchEnableSwitchBtn =(SwitchButton) view.findViewById(R.id.voice_search_enable_switch_btn);
 		boolean voiceSearchEnable=SettingsHelper.getInstance().isVoiceSearchEnable();
 		mVoiceSearchEnableSwitchBtn.setChecked(voiceSearchEnable);
 
-		mEnterAppStartVoiceSearchTv= (TextView) view.findViewById(R.id.enter_app_start_voice_search_text_view);
-		mEnterAppStartVoiceSearchSwitchBtn =(SwitchButton) view.findViewById(R.id.enter_app_start_voice_search_switch_btn);
-		boolean enterAppStartVoiceSearch=SettingsHelper.getInstance().isEnterAppStartVoiceSearch();
-		mEnterAppStartVoiceSearchSwitchBtn.setChecked(enterAppStartVoiceSearch);
 
 		mSmartSortingSwitchBtn= (SwitchButton) view.findViewById(R.id.smart_sorting_switch_btn);
 		boolean smartSorting=SettingsHelper.getInstance().isSmartSorting();
@@ -220,11 +216,11 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 			}
 		});
 
-		mShareShowSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+		mAppShareShowSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				SettingsHelper.getInstance().setShareShow(isChecked);
+				SettingsHelper.getInstance().setAppShareShow(isChecked);
 
 			}
 		});
@@ -242,28 +238,21 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				SettingsHelper.getInstance().setVoiceSearchEnable(isChecked);
+				if(true==isChecked){
+					ToastUtil.toastLengthLong(getContext(),R.string.enter_app_start_voice_search_tips);
+				}else {
+
+				}
 			}
 		});
 
-		mEnterAppStartVoiceSearchTv.setOnClickListener(new View.OnClickListener() {
+		mVoiceSearchEnableTv.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				AppUtil.viewApp(getContext(),getContext().getPackageName());
 			}
 		});
 
-		mEnterAppStartVoiceSearchSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				SettingsHelper.getInstance().setEnterAppStartVoiceSearch(isChecked);
-				if(true==isChecked){
-					ToastUtil.toastLengthLong(getContext(),R.string.enter_app_start_voice_search_tips);
-				}else {
-
-				}
-
-			}
-		});
 
 		mSmartSortingSwitchBtn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
