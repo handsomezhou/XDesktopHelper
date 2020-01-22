@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">X桌面助手</string>
-    <!--<string name="app_name">应用搜索</string>-->
     <string name="t9_search">T9搜索</string>
     <string name="qwerty_search">全键盘搜索</string>
     <string name="data_count">(%d)</string>
