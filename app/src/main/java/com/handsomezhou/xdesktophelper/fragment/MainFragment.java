@@ -52,6 +52,7 @@ import com.handsomezhou.xdesktophelper.util.CommonUtil;
 import com.handsomezhou.xdesktophelper.util.ContextAnalysisUtil;
 import com.handsomezhou.xdesktophelper.util.JsonUtil;
 import com.handsomezhou.xdesktophelper.util.LogUtil;
+import com.handsomezhou.xdesktophelper.util.PermissionUtil;
 import com.handsomezhou.xdesktophelper.util.ShareUtil;
 import com.handsomezhou.xdesktophelper.util.TimeUtil;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
@@ -115,7 +116,7 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
     @Override
     public void onResume() {
         super.onResume();
-
+        //setListener();
         mCustomViewPager.setCurrentItem(getPartnerViewItem(SettingsHelper.getInstance().getSearchMode()));
         refreshView();
         boolean appInfoChanged=AppInfoHelper.getInstance().isAppInfoChanged();
@@ -538,6 +539,27 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
         refreshDataCountTv();
     }
 
+   /* private void setListener(){
+        showTopTabView(SettingsHelper.getInstance().getSearchMode());
+        Object currentTab = mTopTabView.getCurrentTab();
+        int itemIndex = getPartnerViewItem(currentTab);
+        Fragment fragment = mPartnerViews.get(itemIndex).getFragment();
+        switch ((SearchMode) currentTab) {
+            case T9:
+                if(null==((T9SearchFragment) fragment).getOnT9SearchFragment()) {
+                    ((T9SearchFragment) fragment).setOnT9SearchFragment(this);
+                }
+                break;
+            case QWERTY:
+                if(null==((QwertySearchFragment) fragment).getOnQwertySearchFragment()) {
+                    ((QwertySearchFragment) fragment).setOnQwertySearchFragment(this);
+                }
+                break;
+            default:
+                break;
+        }
+    }*/
+
     private int getPartnerViewItem(Object tag) {
         int item = 0;
         ;
@@ -567,6 +589,10 @@ public class MainFragment extends BaseFragment implements OnAppInfoLoad, OnAppSt
 
     /*start: xfyun voice input*/
     private void startVoiceInput() {
+        if(false==PermissionUtil.hasRecordAudioPermission(getContext())){
+            PermissionUtil.reqRecordAudioPermission(getActivity());
+            return;
+        }
         // 移动数据分析，收集开始听写事件
         //FlowerCollector.onEvent(getActivity(), "iat_recognize");
         int ret = 0; // 函数调用返回值

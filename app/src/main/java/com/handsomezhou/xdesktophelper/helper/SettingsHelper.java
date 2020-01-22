@@ -28,8 +28,9 @@ public class SettingsHelper {
 
 	private SearchMode mSearchMode;
 	private boolean mUserGuideTips = true;
+
 	private boolean mAppShareShow =true;
-	private boolean mSearchDataCountShow=true;
+	private boolean mSearchDataCountShow=false;
 	private boolean mVoiceSearchEnable=true;
 
 	private boolean mSmartSorting;
@@ -39,6 +40,10 @@ public class SettingsHelper {
 	private int mFloatingWindowPosX=0;
 	private int mFloatingWindowPosY=0;
 
+	/**
+	 *
+	 */
+	private boolean mHiddenModule=false;
 
 
 	public static SettingsHelper getInstance() {
@@ -58,7 +63,7 @@ public class SettingsHelper {
 		mSearchMode = SearchModeSp.getSearchMode();
 		mUserGuideTips = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_USER_GUIDE_TIPS, true);
 		mAppShareShow = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_APP_SHARE_SHOW, true);
-		mSearchDataCountShow = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SEARCH_DATA_COUNT_SHOW, true);
+		mSearchDataCountShow = SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SEARCH_DATA_COUNT_SHOW, false);
 		mVoiceSearchEnable=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(),KEY_VOICE_SEARCH_ENABLE,true);
 		mSmartSorting=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(), KEY_SMART_SORTING, true);
 		mFloatingWindowShow=SharedPreferencesUtil.getBoolean(XDesktopHelperApplication.getContext(),KEY_FLOATING_WINDOW_SHOW , false);
@@ -167,5 +172,13 @@ public class SettingsHelper {
 	public void setFloatingWindowPosY(int floatingWindowPosY) {
 		SharedPreferencesUtil.putInt(XDesktopHelperApplication.getContext(), KEY_FLOATING_WINDOW_POS_Y, floatingWindowPosY);
 		mFloatingWindowPosY = floatingWindowPosY;
+	}
+
+	public boolean isHiddenModule() {
+		return mHiddenModule;
+	}
+
+	public void setHiddenModule(boolean hiddenModule) {
+		mHiddenModule = hiddenModule;
 	}
 }

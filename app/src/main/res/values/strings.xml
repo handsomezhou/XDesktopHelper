@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">X桌面助手</string>
+    <!--<string name="app_name">应用搜索</string>-->
     <string name="t9_search">T9搜索</string>
     <string name="qwerty_search">全键盘搜索</string>
     <string name="data_count">(%d)</string>
@@ -24,7 +25,7 @@
     <string name="share_app">分享应用</string>
     <string name="share_qr_code">分享二维码</string>
     <string name="x_desktop_helper_download_link">X桌面助手下载链接</string>
-    <string name="app_function">Ｘ桌面助手是一款智能、高效、简洁的桌面应用搜索工具.\n让用户快速、准确找到桌面上的应用,进行打开,分享,卸载，查看应用信息等一系列操作.</string>
+    <string name="app_function">X桌面助手是一款智能、高效、简洁的桌面应用搜索工具.\n让用户快速、准确找到桌面上的应用,进行打开,分享,卸载，查看应用信息等一系列操作.</string>
 
     <!-- start: exit_app_prompt_mode -->
     <string name="whether_prompt_exit_app">退出应用时是否提示</string>
@@ -135,6 +136,7 @@
     <!-- end: share -->
 
     <!--start:xfyun-->
+    <string name="record_audio_permission">录音权限</string>
     <string name="pref_key_iat_show">iat_show</string>
     <string name="text_begin">请开始说话…</string>
     <!--start:Error of Android&Java -->

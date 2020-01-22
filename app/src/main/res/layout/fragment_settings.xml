@@ -116,7 +116,6 @@
             <View style="@style/dividing_line_horizontal"/>
 
 
-
             <LinearLayout
                 android:id="@+id/search_data_count_show_layout"
                 android:layout_width="match_parent"
@@ -144,7 +143,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/margin_right4x"/>
             </LinearLayout>
-            <View style="@style/dividing_line_horizontal"/>
+            <View style="@style/dividing_line_horizontal" android:visibility="gone"/>
 
             <LinearLayout
                 android:id="@+id/app_share_show_layout"
@@ -220,7 +219,6 @@
             </LinearLayout>
 
             <View style="@style/dividing_line_horizontal"/>
-
 
 
             <LinearLayout

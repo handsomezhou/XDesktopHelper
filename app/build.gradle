@@ -69,6 +69,12 @@ dependencies {
      */
     implementation 'com.google.code.gson:gson:2.8.2'
 
+    /**
+     *     一行代码搞定漂亮的Android6.0权限
+     *     https://github.com/yewei02538/HiPermission
+     */
+    implementation 'me.weyye.hipermission:library:1.0.7'
+
     implementation files('libs/json-20160810.jar')
 
     /**

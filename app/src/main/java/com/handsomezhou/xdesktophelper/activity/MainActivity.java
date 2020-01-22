@@ -169,10 +169,12 @@ public class MainActivity extends BaseSingleFragmentActivity implements OnClickL
 		/* End: settings */
 
 		/* Start: about */
-		MenuItem aboutMenuItem = new MenuItem(
-				mContext.getString(R.string.about), titleColor,
-				R.mipmap.about);
-		mMenuItems.add(MenuItemIndex.ABOUT, aboutMenuItem);
+		if(SettingsHelper.getInstance().isHiddenModule()==false) {
+			MenuItem aboutMenuItem = new MenuItem(
+					mContext.getString(R.string.about), titleColor,
+					R.mipmap.about);
+			mMenuItems.add(MenuItemIndex.ABOUT, aboutMenuItem);
+		}
 		/* End: about */
 
 		/* start: more */

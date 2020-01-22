@@ -9,6 +9,7 @@
         <item>{\"project_name\": \"bugly\",\"project_address\":\"https://bugly.qq.com\", \"whether_open_source\":false}</item>
         <item>{\"project_name\": \"CommonTools\",\"project_address\":\"https://github.com/handsomezhou/CommonTools\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"gson\",\"project_address\":\"https://github.com/google/gson\", \"whether_open_source\":true}</item>
+        <item>{\"project_name\": \"HiPermission\",\"project_address\":\"https://github.com/yewei02538/HiPermission\", \"whether_open_source\":true}</item>
         <item>{\"project_name\": \"MiStats\",\"project_address\":\"https://dev.mi.com/console/appservice/\", \"whether_open_source\":false}</item>
         <item>{\"project_name\": \"mta\",\"project_address\":\"https://mta.qq.com/\", \"whether_open_source\":false}</item>
         <!--<item>{\"project_name\": \"NineOldAndroids\",\"project_address\":\"https://github.com/JakeWharton/NineOldAndroids\", \"whether_open_source\":true}</item>-->

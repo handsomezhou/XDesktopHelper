@@ -21,6 +21,7 @@ import com.handsomezhou.xdesktophelper.constant.SearchMode;
 import com.handsomezhou.xdesktophelper.service.FloatingWindowService;
 import com.handsomezhou.xdesktophelper.util.AppUtil;
 import com.handsomezhou.xdesktophelper.util.ToastUtil;
+import com.handsomezhou.xdesktophelper.util.ViewUtil;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.NavigationBarLayout.OnNavigationBarLayout;
 import com.handsomezhou.xdesktophelper.view.SegmentedGroup;
@@ -50,6 +51,7 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 	private TextView mSearchDataCountShowTv;
 	private SwitchButton mSearchDataCountShowSwitchBtn;
 
+	private View mAppShareShowView;
 	private TextView mAppShareShowTv;
 	private SwitchButton mAppShareShowSwitchBtn;
 
@@ -125,6 +127,10 @@ public class SettingsFragment extends BaseFragment implements OnNavigationBarLay
 		mSearchDataCountShowSwitchBtn.setChecked(searchDataCountShow);
 
 
+		mAppShareShowView= view.findViewById(R.id.app_share_show_layout);
+		if(true==SettingsHelper.getInstance().isHiddenModule()){
+			ViewUtil.hideView(mAppShareShowView);
+		}
 		mAppShareShowTv= (TextView) view.findViewById(R.id.app_share_show_text_view);
 		mAppShareShowSwitchBtn = (SwitchButton) view.findViewById(R.id.app_share_show_switch_btn);
 		boolean shareAppShow=SettingsHelper.getInstance().isAppShareShow();
