@@ -94,6 +94,25 @@ public class PermissionUtil {
         return hasWriteAndReadExternalStoragePermission;
     }
 
+   /* public static boolean hasSystemAlertWindowPermission(Context context){
+        boolean hasPermission=true;
+        do{
+            if(false==needDynamicPermission()){
+                //hasWriteAndReadExternalStoragePermission=true;
+                break;
+            }
+
+            int  permissionCheck = ContextCompat.checkSelfPermission(context,    Manifest.permission.SYSTEM_ALERT_WINDOW);
+            if(permissionCheck== PackageManager.PERMISSION_DENIED) {
+                hasPermission=false;
+                break;
+            }
+
+
+        }while (false);
+
+        return hasPermission;
+    }*/
     /**
      *
      * @param activity
@@ -102,12 +121,12 @@ public class PermissionUtil {
         List<PermissionItem> permissionItems = new ArrayList<PermissionItem>();
         int permissionCheck = ContextCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-            permissionItems.add(new PermissionItem(Manifest.permission.READ_EXTERNAL_STORAGE, "READ_EXTERNAL_STORAGE", R.mipmap.ic_launcher));
+            permissionItems.add(new PermissionItem(Manifest.permission.READ_EXTERNAL_STORAGE, "read_external_storage", R.mipmap.ic_launcher));
         }
 
         permissionCheck = ContextCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permissionCheck == PackageManager.PERMISSION_DENIED) {
-            permissionItems.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "WRITE_EXTERNAL_STORAGE", R.mipmap.ic_launcher));
+            permissionItems.add(new PermissionItem(Manifest.permission.WRITE_EXTERNAL_STORAGE, "write_external_storage", R.mipmap.ic_launcher));
         }
 
         /**
@@ -134,6 +153,24 @@ public class PermissionUtil {
             ActivityCompat.requestPermissions(activity, strs, 0);
         }
     }
+
+  /*  public static void reqSystemAlertWindowPermission(Activity activity) {
+        List<PermissionItem> permissionItems = new ArrayList<PermissionItem>();
+
+        int permissionCheck = ContextCompat.checkSelfPermission(activity.getApplicationContext(), Manifest.permission.SYSTEM_ALERT_WINDOW);
+        if (permissionCheck == PackageManager.PERMISSION_DENIED) {
+
+            permissionItems.add(new PermissionItem(Manifest.permission.SYSTEM_ALERT_WINDOW, activity.getString(R.string.system_alert_window_permission), R.mipmap.ic_launcher));
+        }
+
+        *//**
+         * 无页面直接申请
+         *//*
+        if (permissionItems.size() > 0) {
+            String[] strs = PermissionUtil.getPermissionStrArray(permissionItems);
+            ActivityCompat.requestPermissions(activity, strs, 0);
+        }
+    }*/
 
     public static String[] getPermissionStrArray(List<PermissionItem> permissionItems ) {
         String[] str = new String[permissionItems.size()];

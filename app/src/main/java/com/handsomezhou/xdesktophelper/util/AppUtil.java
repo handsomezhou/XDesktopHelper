@@ -69,9 +69,13 @@ public class AppUtil {
             }
             ComponentName componet = new ComponentName(packageName, cls);
             Intent intent = createLaunchIntent(componet);
-            if (context.getPackageManager().getLaunchIntentForPackage(
-                    packageName) != null) {
-                context.startActivity(intent);
+            if (context.getPackageManager().getLaunchIntentForPackage(packageName) != null) {
+                try{
+                    context.startActivity(intent);
+                }catch (Exception ex){
+                    LogUtil.i(TAG,ex.toString());
+                }
+
                 startAppSuccess = true;
             }
             else {
@@ -109,8 +113,7 @@ public class AppUtil {
             if (null != appInfo) {
 
                 if (!appInfo.getPackageName().equals(context.getPackageName())) {
-                    startAppSuccess = AppUtil.startApp(context, appInfo.getPackageName(),
-                            appInfo.getName());
+                    startAppSuccess = AppUtil.startApp(context, appInfo.getPackageName(), appInfo.getName());
                     if (false == startAppSuccess) {
                         startAppSuccess=AppUtil.startApp(context,appInfo.getPackageName());
                         if(false==startAppSuccess) {

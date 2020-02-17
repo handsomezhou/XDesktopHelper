@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
@@ -112,6 +113,15 @@ public class FloatingWindowService extends Service {
 
     private void initView(){
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
+        /**
+         * Reference: https://inneka.com/programming/android/android-unable-to-add-window-permission-denied-for-this-window-type/
+         */
+        int layout_parms;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            layout_parms = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
+        } else {
+            layout_parms = WindowManager.LayoutParams.TYPE_PHONE;
+        }
 
         mFloatingIv = new ImageView(this);
         mFloatingIv.setImageResource(R.mipmap.floating_icon);
@@ -119,7 +129,7 @@ public class FloatingWindowService extends Service {
         mLayoutParams = new WindowManager.LayoutParams(
                 WindowManager.LayoutParams.WRAP_CONTENT,
                 WindowManager.LayoutParams.WRAP_CONTENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
+                layout_parms,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
 

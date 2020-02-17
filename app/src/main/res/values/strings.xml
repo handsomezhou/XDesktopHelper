@@ -136,6 +136,7 @@
 
     <!--start:xfyun-->
     <string name="record_audio_permission">录音权限</string>
+    <string name="system_alert_window_permission">悬浮窗权限</string>
     <string name="pref_key_iat_show">iat_show</string>
     <string name="text_begin">请开始说话…</string>
     <!--start:Error of Android&Java -->
