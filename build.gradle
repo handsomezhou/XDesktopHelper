@@ -26,7 +26,8 @@ allprojects {
         /**
          * https://developer.umeng.com/docs/119267/detail/118584#h1--1
          */
-        maven { url 'https://dl.bintray.com/umsdk/release' }
+        //maven { url 'https://dl.bintray.com/umsdk/release' }
+        maven { url 'https://repo1.maven.org/maven2/' }
 
         /**
          * https://www.pgyer.com/doc/view/new_sdk_android_guide

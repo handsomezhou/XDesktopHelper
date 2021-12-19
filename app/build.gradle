@@ -111,8 +111,10 @@ dependencies {
      *  start: umsdk
      *  https://developer.umeng.com/docs/119267/detail/118584#h1--1
      */
-    implementation 'com.umeng.umsdk:analytics:latest.integration'
-    implementation 'com.umeng.umsdk:common:latest.integration'
+    //implementation 'com.umeng.umsdk:analytics:latest.integration'
+    //implementation 'com.umeng.umsdk:common:latest.integration'
+    implementation  'com.umeng.umsdk:common:9.4.4'// 必选
+    implementation  'com.umeng.umsdk:asms:1.4.1'// 必选
     /**
      *  end: umsdk
      */
